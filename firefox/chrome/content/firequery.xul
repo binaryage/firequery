@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://firequery/skin/firequery.css"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="strings_firequery" src="chrome://firequery/locale/firequery.properties"/>
+  </stringbundleset>
+  <script type="application/x-javascript" src="chrome://firequery/content/firequery.js"/>
+</overlay>
