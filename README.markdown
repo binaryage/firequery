@@ -27,7 +27,9 @@ Because I was sick of clicking on green object links to see what is contained in
 
 # Current status
 
+This extension is highly experimental. It worked with 06/01/09 night build of Minefield and trunk of firebug 1.4. Use at your own risk!
 
+Mutation effects have been not implemented yet. So, changing jQuery data on elements after they were rendered into HTML panel has no effect on the view.
 
 # Build instructions
 
