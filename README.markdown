@@ -57,9 +57,9 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
   * support for JQuery data
   * jQuery collections highlighter
 
-[fqconsole]: http://github.com/darwin/firequery/tree/master/support/screenshot.png?raw=true "console panel with FireQuery"
-[fqhtml]: http://github.com/darwin/firequery/tree/master/support/screenshot.png?raw=true "html panel with FireQuery"
-[fbconsole]: http://github.com/darwin/firequery/tree/master/support/screenshot.png?raw=true "original Firebug console panel"
-[fbhtml]: http://github.com/darwin/firequery/tree/master/support/screenshot.png?raw=true "original Firebug html panel"
+[fqconsole]: http://github.com/darwin/firequery/tree/master/support/fqconsole.png?raw=true "console panel with FireQuery"
+[fqhtml]: http://github.com/darwin/firequery/tree/master/support/fqhtml.png?raw=true "html panel with FireQuery"
+[fbconsole]: http://github.com/darwin/firequery/tree/master/support/fbconsole.png?raw=true "original Firebug console panel"
+[fbhtml]: http://github.com/darwin/firequery/tree/master/support/fbhtml.png?raw=true "original Firebug html panel"
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
-[testsource]: http://github.com/darwin/firequery/support/test/index.html
+[testsource]: http://github.com/darwin/firequery/tree/master/support/test/index.html
