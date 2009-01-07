@@ -1,5 +1,4 @@
 // This source contains copy&pasted various bits from Firebug sources.
-// Some code comes from FirePHP project (http://www.firephp.org)
 FBL.ns(function() {
     with(FBL) {
         const Cc = Components.classes;
@@ -49,20 +48,93 @@ FBL.ns(function() {
 
         const edgeSize = 1;
 
-        function getNonFrameBody(elt)
-        {
+        var generateGuid = function() {
+            var S4 = function() {
+               return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            };
+            return S4()+S4();
+        };
+
+        function getNonFrameBody(elt) {
             var body = getBody(elt.ownerDocument);
             return body.localName.toUpperCase() == "FRAMESET" ? null : body;
         }
 
-        function attachStyles(context, body)
-        {
+        function attachStyles(context, body) {
             var doc = body.ownerDocument;
             if (!context.highlightStyle)
                 context.highlightStyle = createStyleSheet(doc, highlightCSS);
 
             if (!context.highlightStyle.parentNode || context.highlightStyle.ownerDocument != doc)
                 addStyleSheet(body.ownerDocument, context.highlightStyle);
+        }
+        
+        function isAttached(win) {
+        	return win && win.wrappedJSObject && win.wrappedJSObject._FirebugCommandLine;
+        };
+
+        function attachConsoleOnFocus(context, win) {
+            // User has decided to use the command line, but the web page may not have the console if the page has no javascript
+            if (Firebug.Console.isReadyElsePreparing(FirebugContext, win))
+            {
+                Firebug.Console.injector.forceConsoleCompilationInPage(FirebugContext, win);
+
+                if (FBTrace.DBG_CONSOLE)
+                    FBTrace.sysout("onCommandLineFocus, attachConsole "+win.location+"\n");
+            }
+            else  // the page had _firebug so we know that consoleInjected.js compiled and ran. 
+            {
+                if (FBTrace.DBG_CONSOLE)
+                {
+                    if (FirebugContext)
+                        FBTrace.sysout("onCommandLineFocus: ");
+                    else
+                        FBTrace.sysout("onCommandLineFocus: No FirebugContext\n");
+                }
+            }
+        };
+        
+        function evalExpression(expr, context, thisObj, win) {
+            context = context || FirebugContext;
+            attachConsoleOnFocus(context, win);
+            if (!isAttached(win)) {
+                Firebug.CommandLine.isReadyElsePreparing(context, win);
+            }
+            var res = null;
+            Firebug.CommandLine.evaluate(expr, context, thisObj, win, function(result, context) {
+                res = result;
+            });
+            return res;
+        }
+        
+        function evalJQueryCache(object, context) {
+            var fn = "(function (guid) {\
+                if (!jQuery) return null;\
+                try {\
+                    var result = jQuery('[firequeryselector='+guid+']');\
+                    var node = result.get(0);\
+                    if (!node) return;\
+                    var id = jQuery.data(node);\
+                    return jQuery.cache[id];\
+                } catch (exc) {}\
+                return null;\
+            })";
+           try {
+                var guid = generateGuid();
+                object.setAttribute("firequeryselector", guid);
+                // firebugIgnore seems to be broken in 1.4 branch with latest night build
+                object.firebugIgnore = true;
+                var res = evalExpression(fn+"(\""+guid+"\")", context, null, object.ownerDocument.defaultView);
+            } catch (e) {
+                return;
+            }
+            try {
+                object.firebugIgnore = undefined;
+                object.removeAttribute("firequeryselector");
+                return res;
+            } catch (e) {
+                
+            }
         }
         
         ////////////////////////////////////////////////////////////////////////
@@ -129,6 +201,15 @@ FBL.ns(function() {
                 this.start();
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            showPanel: function(browser, panel) {
+                dbg(">>>FireQuery.showPanel "+panel.name, panel);
+                var isConsole = panel.name == "console";
+                var isHTML = panel.name == "html";
+                if (isConsole || isHTML) {
+                    this.applyPanelCSS("chrome://firequery/skin/firequery.css", panel);
+                }
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
                 dbg(">>>FireQuery.getPref: "+name);
                 var prefName = firequeryPrefDomain + "." + name;
@@ -155,6 +236,27 @@ FBL.ns(function() {
                 firequeryPrefs.setBoolPref(prefName, value);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            applyPanelCSS: function(url, panel) {
+                dbg(">>>FireQuery.applyPanelCSS "+url, panel);
+                var links = FBL.getElementsBySelector(panel.document, "link");
+                for (var i=0; i < links.length; i++) {
+                    var link = links[i];
+                    if (link.getAttribute('href')==url) return; // already applied
+                }
+                var styleElement = panel.document.createElement("link");
+                styleElement.setAttribute("type", "text/css");
+                styleElement.setAttribute("href", url);
+                styleElement.setAttribute("rel", "stylesheet");
+                var head = this.getHeadElement(panel.document);
+                if (head) head.appendChild(styleElement);
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getHeadElement: function(doc) {
+                var heads = doc.getElementsByTagName("head");
+                if (heads.length == 0) return doc.documentElement;
+                return heads[0];
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             onVisitWebsite: function(which) {
                 openNewTab(firequeryURLs[which]);
             }
@@ -164,18 +266,13 @@ FBL.ns(function() {
         // Firebug.FireQuery.JQueryHighlighter
         //
         Firebug.FireQuery.JQueryHighlighter = function() {
-            var generateGuid = function() {
-                var S4 = function() {
-                   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-                };
-                return S4()+S4();
-            };
             this.seed = "highlighter-"+generateGuid();
         };
 
         Firebug.FireQuery.JQueryHighlighter.prototype = {
             /////////////////////////////////////////////////////////////////////////////////////////
             highlight: function(context, element) {
+                if (!element) return;
                 if (element instanceof XULElement) return;
 
                 var offset = getViewOffset(element, true);
@@ -293,7 +390,7 @@ FBL.ns(function() {
             tag:
                 OBJECTBOX({},
                     A({
-                        class: "objectLink objectLink-$className",
+                        class: "objectLink objectLink-jquery-sign",
                         _repObject: "$object"
                     }, "jQuery"),
                     SPAN({class: "arrayLeftBracket"}, "("),
@@ -332,7 +429,208 @@ FBL.ns(function() {
             }
         });
     
+        ////////////////////////////////////////////////////////////////////////
+        // Firebug.FireQuery.JQueryElement
+        //
+        Firebug.FireQuery.JQueryElement = domplate(FirebugReps.Element, {
+            /////////////////////////////////////////////////////////////////////////////////////////
+            tag:
+                OBJECTLINK(
+                    "&lt;",
+                    SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                    FOR("attr", "$object|attrIterator",
+                        "&nbsp;$attr.localName=&quot;", SPAN({class: "nodeValue"}, "$attr.nodeValue"), "&quot;"
+                    ),
+                    "&gt;"
+                 ),
+            /////////////////////////////////////////////////////////////////////////////////////////
+            shortTag:
+                SPAN(
+                    OBJECTLINK(
+                        SPAN({class: "$object|getVisible"},
+                            SPAN({class: "selectorTag"}, "$object|getSelectorTag"),
+                            SPAN({class: "selectorId"}, "$object|getSelectorId"),
+                            SPAN({class: "selectorClass"}, "$object|getSelectorClass"),
+                            SPAN({class: "selectorValue"}, "$object|getValue")
+                        )
+                     ),
+                     A({class: "objectLink objectLink-jquery-data", onclick: "$onDataClick", _objData: "$object" }, "&#9993;") // envelope sign
+                ),
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            onDataClick: function(event) {
+                var object = event.currentTarget.objData;
+                var cache = evalJQueryCache(object);
+                if (!cache) return;
+                var rep = Firebug.getRep(cache);
+                rep.inspectObject(cache, FirebugContext);
+            },
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            dataIterator: function(object) {
+                if (!object) return [];
+                var cache = evalJQueryCache(object);
+                if (!cache) return [];
+                var res = [];
+                for (var data in cache) {
+                    if (cache.hasOwnProperty(data)) {
+                        var rep = Firebug.getRep(cache[data]);
+                        var tag = rep.shortTag ? rep.shortTag : rep.tag;
+                        res.push({
+                            name: data,
+                            data: cache[data],
+                            tag: tag
+                        });
+                    }
+                }
+                return res;
+            },
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            supportsObject: function(object, type) {
+                if (!FirebugReps.Element.supportsObject.call(this, object, type)) return false;
+                var cache = evalJQueryCache(object);
+                return !!cache;
+            }
+        });
+        
+        ////////////////////////////////////////////////////////////////////////
+        // patch Firebug.HTMLPanel.*Element
+        //
+        var AttrTag =
+            SPAN({class: "nodeAttr editGroup"},
+                "&nbsp;", SPAN({class: "nodeName editable"}, "$attr.nodeName"), "=&quot;",
+                SPAN({class: "nodeValue editable"}, "$attr.nodeValue"), "&quot;"
+            );
+            
+        var DataTag =
+            SPAN({class: "jquery-data-tag"},
+                SPAN({class: "jquery-data-tag-name"}, "$attr.name"), 
+                "=",
+                TAG("$attr.tag", {object: "$attr.data"})
+            );
+
+        Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
+            tag:
+                DIV({class: "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object"},
+                    DIV({class: "nodeLabel"},
+                        IMG({class: "twisty"}),
+                        SPAN({class: "nodeLabelBox repTarget"},
+                            "&lt;",
+                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            FOR("attr", "$object|attrIterator", AttrTag),
+                            SPAN({class: "nodeBracket editable insertBefore"}, "&gt;"),
+                            FOR("attr", "$object|dataIterator", DataTag)
+                        )
+                    ),
+                    DIV({class: "nodeChildBox"}),
+                    DIV({class: "nodeCloseLabel"},
+                        SPAN({class: "nodeCloseLabelBox repTarget"},
+                            "&lt;/",
+                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            "&gt;"
+                        )
+                     )
+                )
+        });
+        
+        Firebug.HTMLPanel.CompleteElement = domplate(Firebug.FireQuery.JQueryElement, {
+            tag:
+                DIV({class: "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
+                    DIV({class: "nodeLabel"},
+                        SPAN({class: "nodeLabelBox repTarget repTarget"},
+                            "&lt;",
+                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            FOR("attr", "$object|attrIterator", AttrTag),
+                            SPAN({class: "nodeBracket"}, "&gt;"),
+                            FOR("attr", "$object|dataIterator", DataTag)
+                        )
+                    ),
+                    DIV({class: "nodeChildBox"},
+                        FOR("child", "$object|childIterator",
+                            TAG("$child|getNodeTag", {object: "$child"})
+                        )
+                    ),
+                    DIV({class: "nodeCloseLabel"},
+                        "&lt;/",
+                        SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                        "&gt;"
+                     )
+                ),
+
+            getNodeTag: function(node)
+            {
+                return getNodeTag(node, true);
+            },
+
+            childIterator: function(node)
+            {
+                if (node.contentDocument)
+                    return [node.contentDocument.documentElement];
+
+                if (Firebug.showWhitespaceNodes)
+                    return cloneArray(node.childNodes);
+                else
+                {
+                    var nodes = [];
+                    for (var child = node.firstChild; child; child = child.nextSibling)
+                    {
+                        if (child.nodeType != 3 || !isWhitespaceText(child))
+                            nodes.push(child);
+                    }
+                    return nodes;
+                }
+            }
+        });
+        
+        Firebug.HTMLPanel.EmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
+            tag:
+                DIV({class: "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object"},
+                    DIV({class: "nodeLabel"},
+                        SPAN({class: "nodeLabelBox repTarget"},
+                            "&lt;",
+                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            FOR("attr", "$object|attrIterator", AttrTag),
+                            SPAN({class: "nodeBracket editable insertBefore"}, "/&gt;"),
+                            FOR("attr", "$object|dataIterator", DataTag)
+                        )
+                    )
+                )
+        });
+        
+        Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement,
+        {
+            tag:
+                DIV({class: "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object"},
+                    DIV({class: "nodeLabel"},
+                        SPAN({class: "nodeLabelBox repTarget"},
+                            "&lt;",
+                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            FOR("attr", "$object|attrIterator", AttrTag),
+                            SPAN({class: "nodeBracket editable insertBefore"}, "&gt;"),
+                            SPAN({class: "nodeText editable"}, "$object|getNodeText"),
+                            "&lt;/",
+                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            "&gt;",
+                            FOR("attr", "$object|dataIterator", DataTag)
+                        )
+                    )
+                )
+        });
+        
+        ////////////////////////////////////////////////////////////////////////
+        // JSON-like displaing for objects
+        //
+        FirebugReps.Obj = domplate(FirebugReps.Obj, {
+            tag: OBJECTLINK(
+                "{",
+                FOR("prop", "$object|propIterator",
+                    " $prop.name=",
+                    SPAN({class: "objectPropValue"}, "$prop.value|cropString")
+                ), " }"
+            )
+        });
+        
         Firebug.registerModule(Firebug.FireQuery);
         Firebug.registerRep(Firebug.FireQuery.JQueryExpression);
+        Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to get this before old Element rep
+        Firebug.setDefaultRep(FirebugReps.Obj);
     }
 });
