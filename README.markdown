@@ -24,7 +24,6 @@ It should be simple, but make sure you have these tools on your paths:
 
 ## Build steps:
 
-    git clone git://github.com/darwin/firequery-addon.git
     git clone git://github.com/darwin/firequery.git
     cd firequery
     rake
