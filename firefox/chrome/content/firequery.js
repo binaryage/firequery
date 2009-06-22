@@ -15,10 +15,8 @@ FBL.ns(function() {
 
         const firequeryPrefs = firequeryPrefService.getService(nsIPrefBranch2);
         const firequeryURLs = {
-            main: "http://github.com/woid/firequery"
+            main: "http://github.com/darwin/firequery"
         };
-        const firequeryPrefDomain = "extensions.firequery";
-        var firequeryOptionUpdateMap = {};
 
         if (Firebug.TraceModule) {
             Firebug.TraceModule.DBG_FIREQUERY = false;
@@ -141,21 +139,16 @@ FBL.ns(function() {
         // Firebug.FireQuery
         //
         Firebug.FireQuery = extend(Firebug.Module, {
-            version: '0.1',
-            currentPanel: null,
+            version: '0.2',
 
-            /////////////////////////////////////////////////////////////////////////////////////////
-            getPrefDomain: function() {
-                return firequeryPrefDomain;
-            },
             /////////////////////////////////////////////////////////////////////////////////////////
             checkFirebugVersion: function() {
                 var version = Firebug.getVersion();
                 if (!version) return false;
                 var a = version.split('.');
                 if (a.length<2) return false;
-                // we want Firebug version 1.2+ (including alphas/betas and other weird stuff)
-                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=2;
+                // we want Firebug version 1.4+ (including alphas/betas and other weird stuff)
+                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=4;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             versionCheck: function(context) {
@@ -211,29 +204,25 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
-                dbg(">>>FireQuery.getPref: "+name);
-                var prefName = firequeryPrefDomain + "." + name;
-    
+                var prefName = this.getPrefDomain() + "." + name;
                 var type = firequeryPrefs.getPrefType(prefName);
                 if (type == nsIPrefBranch.PREF_STRING)
-                return firequeryPrefs.getCharPref(prefName);
+                return xrefreshPrefs.getCharPref(prefName);
                 else if (type == nsIPrefBranch.PREF_INT)
-                return firequeryPrefs.getIntPref(prefName);
+                return xrefreshPrefs.getIntPref(prefName);
                 else if (type == nsIPrefBranch.PREF_BOOL)
-                return firequeryPrefs.getBoolPref(prefName);
+                return xrefreshPrefs.getBoolPref(prefName);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             setPref: function(name, value) {
-                dbg(">>>FireQuery.setPref: "+name+"->"+value);
-                var prefName = firequeryPrefDomain + "." + name;
-    
+                var prefName = this.getPrefDomain() + "." + name;
                 var type = firequeryPrefs.getPrefType(prefName);
                 if (type == nsIPrefBranch.PREF_STRING)
-                firequeryPrefs.setCharPref(prefName, value);
+                xrefreshPrefs.setCharPref(prefName, value);
                 else if (type == nsIPrefBranch.PREF_INT)
-                firequeryPrefs.setIntPref(prefName, value);
+                xrefreshPrefs.setIntPref(prefName, value);
                 else if (type == nsIPrefBranch.PREF_BOOL)
-                firequeryPrefs.setBoolPref(prefName, value);
+                xrefreshPrefs.setBoolPref(prefName, value);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             applyPanelCSS: function(url, panel) {
@@ -275,9 +264,9 @@ FBL.ns(function() {
                 if (!element) return;
                 if (element instanceof XULElement) return;
 
-                var offset = getViewOffset(element, true);
-                var x = offset.x, y = offset.y;
-                var w = element.offsetWidth, h = element.offsetHeight;
+                var dims = getRectTRBLWH(element, context);
+                var x = dims.left, y = dims.top;
+                var w = dims.width, h = dims.height;
 
                 var wacked = isNaN(x) || isNaN(y) || isNaN(w) || isNaN(h);
                 if (wacked) return;
@@ -631,6 +620,6 @@ FBL.ns(function() {
         Firebug.registerModule(Firebug.FireQuery);
         Firebug.registerRep(Firebug.FireQuery.JQueryExpression);
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to get this before old Element rep
-        Firebug.setDefaultRep(FirebugReps.Obj);
+		Firebug.setDefaultReps(FirebugReps.Func, FirebugReps.Obj);
     }
 });
