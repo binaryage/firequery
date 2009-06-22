@@ -67,72 +67,15 @@ FBL.ns(function() {
                 addStyleSheet(body.ownerDocument, context.highlightStyle);
         }
         
-        function isAttached(win) {
-        	return win && win.wrappedJSObject && win.wrappedJSObject._FirebugCommandLine;
-        };
-
-        function attachConsoleOnFocus(context, win) {
-            // User has decided to use the command line, but the web page may not have the console if the page has no javascript
-            if (Firebug.Console.isReadyElsePreparing(FirebugContext, win))
-            {
-                Firebug.Console.injector.forceConsoleCompilationInPage(FirebugContext, win);
-
-                if (FBTrace.DBG_CONSOLE)
-                    FBTrace.sysout("onCommandLineFocus, attachConsole "+win.location+"\n");
-            }
-            else  // the page had _firebug so we know that consoleInjected.js compiled and ran. 
-            {
-                if (FBTrace.DBG_CONSOLE)
-                {
-                    if (FirebugContext)
-                        FBTrace.sysout("onCommandLineFocus: ");
-                    else
-                        FBTrace.sysout("onCommandLineFocus: No FirebugContext\n");
-                }
-            }
-        };
-        
-        function evalExpression(expr, context, thisObj, win) {
-            context = context || FirebugContext;
-            attachConsoleOnFocus(context, win);
-            if (!isAttached(win)) {
-                Firebug.CommandLine.isReadyElsePreparing(context, win);
-            }
-            var res = null;
-            Firebug.CommandLine.evaluate(expr, context, thisObj, win, function(result, context) {
-                res = result;
-            });
-            return res;
-        }
-        
         function evalJQueryCache(object, context) {
-            var fn = "(function (guid) {\
-                if (!jQuery) return null;\
-                try {\
-                    var result = jQuery('[firequeryselector='+guid+']');\
-                    var node = result.get(0);\
-                    if (!node) return;\
-                    var id = jQuery.data(node);\
-                    return jQuery.cache[id];\
-                } catch (exc) {}\
-                return null;\
-            })";
-           try {
-                var guid = generateGuid();
-                object.setAttribute("firequeryselector", guid);
-                // firebugIgnore seems to be broken in 1.4 branch with latest night build
-                object.firebugIgnore = true;
-                var res = evalExpression(fn+"(\""+guid+"\")", context, null, object.ownerDocument.defaultView);
-            } catch (e) {
-                return;
-            }
-            try {
-                object.firebugIgnore = undefined;
-                object.removeAttribute("firequeryselector");
-                return res;
-            } catch (e) {
-                
-            }
+			try {
+				var win = object.ownerDocument.defaultView;
+				var wrapper = win.wrappedJSObject;
+				var jQuery = wrapper.jQuery;
+				return jQuery.cache[jQuery.data(object.wrappedJSObject || object)];
+			} catch (ex) {
+				dbg(''+ex, object);
+			}
         }
         
         ////////////////////////////////////////////////////////////////////////
@@ -544,23 +487,19 @@ FBL.ns(function() {
                      )
                 ),
 
-            getNodeTag: function(node)
-            {
+            getNodeTag: function(node) {
                 return getNodeTag(node, true);
             },
 
-            childIterator: function(node)
-            {
+            childIterator: function(node) {
                 if (node.contentDocument)
                     return [node.contentDocument.documentElement];
 
                 if (Firebug.showWhitespaceNodes)
                     return cloneArray(node.childNodes);
-                else
-                {
+                else {
                     var nodes = [];
-                    for (var child = node.firstChild; child; child = child.nextSibling)
-                    {
+                    for (var child = node.firstChild; child; child = child.nextSibling) {
                         if (child.nodeType != 3 || !isWhitespaceText(child))
                             nodes.push(child);
                     }
@@ -584,8 +523,7 @@ FBL.ns(function() {
                 )
         });
         
-        Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement,
-        {
+        Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement, {
             tag:
                 DIV({class: "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object"},
                     DIV({class: "nodeLabel"},
