@@ -21,6 +21,8 @@ ADDON = File.expand_path(File.join(ROOT))
 FIREFOX = File.join(ADDON, 'firefox')
 DST = File.join(ROOT, 'build')
 TMP = File.join(ROOT, 'tmp')
+SUPPORT = File.join(ROOT, 'support')
+JQUERY_DIR = File.join(ROOT, 'jquery')
 
 # http://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
 begin
@@ -131,6 +133,11 @@ def check_if_addon_exists()
   die("firequery not found!\n  expected to be in #{ADDON}") unless File.exists?(ADDON)
 end
 
+def sys(cmd)
+    puts blue("> "+cmd)
+    system(cmd)
+end
+
 ################################################################################
 
 desc "Prepare XPI"
@@ -174,4 +181,24 @@ task :version do
     puts "  #{red("patching had no effect")}"
   end
   exit(0)
+end
+
+desc "Updates jquery in test project"
+task :update_jquery do
+    if File.exists? JQUERY_DIR then
+        Dir.chdir JQUERY_DIR do
+            sys("svn up")
+        end
+    else
+        Dir.chdir ROOT do
+            sys("svn co http://jqueryjs.googlecode.com/svn/trunk jquery")
+        end
+    end
+    Dir.chdir File.join(JQUERY_DIR, 'jquery') do
+        sys("make jquery")
+    end
+    
+    js = File.join(JQUERY_DIR, 'jquery', 'dist', 'jquery.js')
+    test = File.join(SUPPORT, 'test', 'jquery.js')
+    sys("cp \"#{js}\" \"#{test}\"")
 end
