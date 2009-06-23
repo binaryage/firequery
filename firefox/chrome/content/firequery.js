@@ -18,9 +18,9 @@ FBL.ns(function() {
             main: "http://github.com/darwin/firequery"
         };
 
-		const MODIFICATION = MutationEvent.MODIFICATION;
-		const ADDITION = MutationEvent.ADDITION;
-		const REMOVAL = MutationEvent.REMOVAL;
+        const MODIFICATION = MutationEvent.MODIFICATION;
+        const ADDITION = MutationEvent.ADDITION;
+        const REMOVAL = MutationEvent.REMOVAL;
 
         if (Firebug.TraceModule) {
             Firebug.TraceModule.DBG_FIREQUERY = false;
@@ -36,17 +36,17 @@ FBL.ns(function() {
             }
         }
         
-		var OBJECTBOX = this.OBJECTBOX =
-		    SPAN({class: "objectBox objectBox-$className"});
+        var OBJECTBOX = this.OBJECTBOX =
+            SPAN({class: "objectBox objectBox-$className"});
 
-		var OBJECTBLOCK = this.OBJECTBLOCK =
-		    DIV({class: "objectBox objectBox-$className"});
+        var OBJECTBLOCK = this.OBJECTBLOCK =
+            DIV({class: "objectBox objectBox-$className"});
 
-		var OBJECTLINK = this.OBJECTLINK =
-		    A({
-		        class: "objectLink objectLink-$className a11yFocus",
-		        _repObject: "$object"
-		    });
+        var OBJECTLINK = this.OBJECTLINK =
+            A({
+                class: "objectLink objectLink-$className a11yFocus",
+                _repObject: "$object"
+            });
 
         const edgeSize = 1;
 
@@ -72,102 +72,102 @@ FBL.ns(function() {
         }
         
         function evalJQueryCache(object, context) {
-			try {
-				var win = object.ownerDocument.defaultView;
-				var wrapper = win.wrappedJSObject;
-				var jQuery = wrapper.jQuery;
-				return jQuery.cache[jQuery.data(object.wrappedJSObject || object)];
-			} catch (ex) {
-				dbg(''+ex, object);
-			}
+            try {
+                var win = object.ownerDocument.defaultView;
+                var wrapper = win.wrappedJSObject;
+                var jQuery = wrapper.jQuery;
+                return jQuery.cache[jQuery.data(object.wrappedJSObject || object)];
+            } catch (ex) {
+                dbg(''+ex, object);
+            }
         }
 
         function hasJQueryCache(object, context) {
-			var cache = evalJQueryCache(object, context);
-			for (var x in cache) {
-				if (cache.hasOwnProperty(x)) return true;
-			}
-		}
+            var cache = evalJQueryCache(object, context);
+            for (var x in cache) {
+                if (cache.hasOwnProperty(x)) return true;
+            }
+        }
 
-		function findNodeDataBox(objectNodeBox, attrName)
-		{
-		    var child = objectNodeBox.firstChild.lastChild.firstChild;
-		    for (; child; child = child.nextSibling)
-		    {
-		        if (hasClass(child, "nodeData") && child.childNodes[0].firstChild && child.childNodes[0].firstChild.nodeValue == attrName)
-		        {
-		            return child;
-		        }
-		    }
-		}
+        function findNodeDataBox(objectNodeBox, attrName)
+        {
+            var child = objectNodeBox.firstChild.lastChild.firstChild;
+            for (; child; child = child.nextSibling)
+            {
+                if (hasClass(child, "nodeData") && child.childNodes[0].firstChild && child.childNodes[0].firstChild.nodeValue == attrName)
+                {
+                    return child;
+                }
+            }
+        }
 
-	    function mutateData(target, attrChange, attrName, attrValue)  {
-	        this.markChange();
+        function mutateData(target, attrChange, attrName, attrValue)  {
+            this.markChange();
 
-			var createBox = Firebug.scrollToMutations || Firebug.expandMutations;
-	        var objectNodeBox = createBox ? this.ioBox.createObjectBox(target) : this.ioBox.findObjectBox(target);
-	        if (!objectNodeBox) return;
+            var createBox = Firebug.scrollToMutations || Firebug.expandMutations;
+            var objectNodeBox = createBox ? this.ioBox.createObjectBox(target) : this.ioBox.findObjectBox(target);
+            if (!objectNodeBox) return;
 
-	        if (isVisible(objectNodeBox.repObject))
-	            removeClass(objectNodeBox, "nodeHidden");
-	        else
-	            setClass(objectNodeBox, "nodeHidden");
+            if (isVisible(objectNodeBox.repObject))
+                removeClass(objectNodeBox, "nodeHidden");
+            else
+                setClass(objectNodeBox, "nodeHidden");
 
-	        if (attrChange == MODIFICATION || attrChange == ADDITION) {
+            if (attrChange == MODIFICATION || attrChange == ADDITION) {
                 var rep = Firebug.getRep(attrValue);
                 var tag = rep.shortTag ? rep.shortTag : rep.tag;
                 var valRep = Firebug.HTMLPanel.DataNode.tag.replace({
-					attr: {
+                    attr: {
                         name: attrName,
                         data: attrValue,
                         tag: tag
-                	}
-				}, this.document);
+                    }
+                }, this.document);
 
-	            var nodeAttr = findNodeDataBox(objectNodeBox, attrName);
-	            if (nodeAttr) {
-					nodeAttr.parentNode.replaceChild(valRep, nodeAttr);
-	                this.highlightMutation(valRep, objectNodeBox, "mutated");
-	            } else {
+                var nodeAttr = findNodeDataBox(objectNodeBox, attrName);
+                if (nodeAttr) {
+                    nodeAttr.parentNode.replaceChild(valRep, nodeAttr);
+                    this.highlightMutation(valRep, objectNodeBox, "mutated");
+                } else {
                     var labelBox = objectNodeBox.firstChild.lastChild;
                     labelBox.insertBefore(valRep, null);
                     this.highlightMutation(valRep, objectNodeBox, "mutated");
-	            }
-	        } else if (attrChange == REMOVAL) {
-	            var nodeAttr = findNodeDataBox(objectNodeBox, attrName);
-	            if (nodeAttr) {
-	                nodeAttr.parentNode.removeChild(nodeAttr);
-	                this.highlightMutation(objectNodeBox, objectNodeBox, "mutated");
-	            }
-	        }
-	    }
-	
-		function patchJQuery(jQuery, context) {
-			if (jQuery.wrappedJSObject) jQuery = jQuery.wrappedJSObject;
-			if (jQuery._patchedByFireQuery) return;
-			jQuery._patchedByFireQuery = true;
-			var origDataFn = jQuery.data;
-			jQuery.data = function(elem, name, data) {
-				if (name && data!=undefined) {
-					mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
-				}
-				if (name && data===null) {
-					mutateData.call(context.getPanel('html'), elem, REMOVAL, name, data);
-				}
-				return origDataFn.call(jQuery, elem, name, data);
-			};
-		}
-		
-		function patchWindow(win, context) {
-			try {
-				var wrapper = win.wrappedJSObject;
-				var jQuery = wrapper.jQuery;
-				patchJQuery(jQuery, context);
+                }
+            } else if (attrChange == REMOVAL) {
+                var nodeAttr = findNodeDataBox(objectNodeBox, attrName);
+                if (nodeAttr) {
+                    nodeAttr.parentNode.removeChild(nodeAttr);
+                    this.highlightMutation(objectNodeBox, objectNodeBox, "mutated");
+                }
+            }
+        }
+    
+        function patchJQuery(jQuery, context) {
+            if (jQuery.wrappedJSObject) jQuery = jQuery.wrappedJSObject;
+            if (jQuery._patchedByFireQuery) return;
+            jQuery._patchedByFireQuery = true;
+            var origDataFn = jQuery.data;
+            jQuery.data = function(elem, name, data) {
+                if (name && data!=undefined) {
+                    mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
+                }
+                if (name && data===null) {
+                    mutateData.call(context.getPanel('html'), elem, REMOVAL, name, data);
+                }
+                return origDataFn.call(jQuery, elem, name, data);
+            };
+        }
+        
+        function patchWindow(win, context) {
+            try {
+                var wrapper = win.wrappedJSObject;
+                var jQuery = wrapper.jQuery;
+                patchJQuery(jQuery, context);
                 dbg(">>>FireQuery: successfully found and patched jQuery in the window ", win);
-			} catch (ex) {
-				dbg(''+ex, object);
-			}
-		}
+            } catch (ex) {
+                dbg(''+ex, object);
+            }
+        }
         
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery
@@ -237,10 +237,10 @@ FBL.ns(function() {
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-		    loadedContext: function(context) {
+            loadedContext: function(context) {
                 dbg(">>>FireQuery.loadedContext ", context);
-		        patchWindow(context.browser.contentWindow, context);
-		    },
+                patchWindow(context.browser.contentWindow, context);
+            },
             /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
                 var prefName = this.getPrefDomain() + "." + name;
@@ -445,7 +445,7 @@ FBL.ns(function() {
             className: "jquery-expression",
             /////////////////////////////////////////////////////////////////////////////////////////
             supportsObject: function(object) {
-				if (!object) return;
+                if (!object) return;
                 return !!object.jquery;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -534,10 +534,10 @@ FBL.ns(function() {
                 TAG("$attr.tag", {object: "$attr.data"})
             );
 
-		Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
-		    tag: DataTag
-		}),
-		
+        Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
+            tag: DataTag
+        }),
+        
         Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
             tag:
                 DIV({class: "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object"},
@@ -657,6 +657,6 @@ FBL.ns(function() {
         Firebug.registerModule(Firebug.FireQuery);
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryExpression); // need to get this before array rep (jQuery expression behaves like array from JQuery 1.3)
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to get this before old Element rep
-		Firebug.setDefaultReps(FirebugReps.Func, FirebugReps.Obj);
+        Firebug.setDefaultReps(FirebugReps.Func, FirebugReps.Obj);
     }
 });
