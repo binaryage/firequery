@@ -6,7 +6,8 @@
   <div id="header" class="box">
     <h1>FireQuery test page</h1>
     <p>Hello from header</p>
-    <button onclick="$('h1').data('added-data', 'this value should appear as a mutation event'); alert('well, doesn\'t work yet. needs quite a bit of work.')">Mutate H1</button>
+    <button onclick="$('h1').data('added-data', 'this value should appear as a mutation event '+new Date())">Mutate H1</button>
+    <button onclick="$('h1').data('added-data', null)">Remove H1 data</button>
   </div>
   <iframe src="frame1.html"></iframe>
   <iframe src="frame2.html"></iframe>
@@ -43,6 +44,13 @@
     console.log($('p'));
     console.log($('li'));
     console.log($('#nonsense'));
+    
+    $(function() {
+        var counter = 0;
+        setInterval(function() {
+            $('body').data('counter', counter++);
+        }, 1000);
+    });
   </script>                                                               
 </body>                                                                 
 </html>

@@ -11,7 +11,7 @@
     color: #4B0082;
 }
 
-.jquery-data-tag {
+.nodeData {
     font-size: 90%;
     color: #4B0082;
     background-color: #ddd;
@@ -22,4 +22,17 @@
     -moz-border-radius-bottomright: 2px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-topleft: 2px;
+}
+
+.nodeData.mutated
+{
+    background-color: #EFFF79;
+    color: #FF0000 !important;
+}
+
+.nodeBox.selected > .nodeLabel > .nodeLabelBox > .nodeData.mutated > *,
+.nodeBox.selected > .nodeLabel > .nodeLabelBox > .nodeData > .nodeValue.mutated {
+    background-color: #EFFF79;
+    border-color: #EFFF79;
+    color: #FF0000 !important;
 }
