@@ -25,12 +25,6 @@ Because I was sick of clicking on green object links to see what is contained in
 ![fqconsole][fqconsole]
 ![fqhtml][fqhtml]
 
-# Current status
-
-This extension is highly experimental. It worked with 06/01/09 night build of Minefield and trunk of firebug 1.4. Use at your own risk!
-
-Mutation effects have been not implemented yet. So, changing jQuery data on elements after they were rendered into HTML panel has no effect on the view.
-
 # Build instructions
 
 If you want to install latest addon from sources, you need to build it. 
@@ -52,9 +46,14 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
 
 # History
 
-* v0.1 (public preview)
+* v0.2 (July 2009)
+  * effective way how to retrieve jQuery data
+  * mutation events
+  * integrated jQuerify
+
+* v0.1 (Jan 2009)
   * support for jQuery expressions
-  * support for JQuery data
+  * support for jJQuery data
   * jQuery collections highlighter
 
 [fqconsole]: http://github.com/darwin/firequery/tree/master/support/fqconsole.png?raw=true "console panel with FireQuery"
