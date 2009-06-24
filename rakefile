@@ -200,5 +200,7 @@ task :update_jquery do
     
     js = File.join(JQUERY_DIR, 'jquery', 'dist', 'jquery.js')
     test = File.join(SUPPORT, 'test', 'jquery.js')
+    content = File.join(FIREFOX, 'chrome', 'resources', 'jquery.js')
     sys("cp \"#{js}\" \"#{test}\"")
+    sys("cp \"#{js}\" \"#{content}\"")
 end
