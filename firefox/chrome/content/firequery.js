@@ -421,7 +421,12 @@ FBL.ns(function() {
                 if (!element) return;
                 if (element instanceof XULElement) return;
                 
-                var dims = getRectTRBLWH(element, context);
+                try {
+                    var dims = getRectTRBLWH(element, context);
+                } catch (ex) {
+                    dbg(' getRectTRBLWH failed: '+ex, element);
+                    return;
+                }
                 var x = dims.left, y = dims.top;
                 var w = dims.width, h = dims.height;
 
@@ -518,6 +523,8 @@ FBL.ns(function() {
                 Firebug.Inspector.originalHighlightObject.call(this, null, context, highlightType, boxFrame);
             }
 
+            if (!element || !isElement(element) || !isVisible(element)) return;
+                
             if (context && context.window && context.window.document) {
                 this.jQueryHighlighterContext = context;
                 for (var i=0; i<element.length; i++) {
