@@ -1,3 +1,4 @@
-pref("extensions.firequery.enableLocalFiles", "");
-pref("extensions.firequery.enableSystemPages", "");
-pref("extensions.firequery.enableSites", false);
+pref("extensions.firebug.firequery.watcherInterval", 1000);
+
+// Enable/disable 
+pref("extensions.firebug.firequery.enableSites", false);

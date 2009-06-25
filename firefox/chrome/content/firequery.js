@@ -95,6 +95,19 @@ FBL.ns(function() {
         })();\
         ";
 
+        const jQueryWatcherCode = "\
+        (function() {\
+            var timerId = setInterval(function() {\
+                if (window.jQuery) {\
+                    clearInterval(timerId);\
+                    var event = document.createEvent('Events');\
+                    event.initEvent('jQueryDetected', true, false);\
+                    document.dispatchEvent(event);\
+                }\
+            }, 1000/*watcherInterval*/);\
+        })();\
+        ";
+
         if (Firebug.TraceModule) {
             Firebug.TraceModule.DBG_FIREQUERY = false;
             var type = firequeryPrefs.getPrefType('extensions.firebug.DBG_FIREQUERY');
@@ -150,9 +163,7 @@ FBL.ns(function() {
                 var wrapper = win.wrappedJSObject;
                 var jQuery = wrapper.jQuery;
                 return jQuery.cache[jQuery.data(object.wrappedJSObject || object)];
-            } catch (ex) {
-                dbg(''+ex, object);
-            }
+            } catch (ex) {}
         }
 
         function hasJQueryCache(object, context) {
@@ -221,14 +232,28 @@ FBL.ns(function() {
             jQuery._patchedByFireQuery = true;
             var origDataFn = jQuery.data;
             jQuery.data = function(elem, name, data) {
-                if (name && data!=undefined) {
-                    mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
+                var res = origDataFn.call(jQuery, elem, name, data);
+                try {
+                    if (name && data!=undefined) {
+                        mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
+                    }
+                    if (name && data===null) {
+                        mutateData.call(context.getPanel('html'), elem, REMOVAL, name, data);
+                    }
+                } catch (ex) {
+                    // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
                 }
-                if (name && data===null) {
-                    mutateData.call(context.getPanel('html'), elem, REMOVAL, name, data);
-                }
-                return origDataFn.call(jQuery, elem, name, data);
+                return res;
             };
+        }
+
+        function installJQueryWatcher(win, context) {
+            try {
+                var code = jQueryWatcherCode.replace(/1000\/\*watcherInterval\*\//, Firebug.FireQuery.getPref('watcherInterval'));
+                Firebug.CommandLine.evaluateInWebPage(code, context);
+            } catch (ex) {
+                dbg("   ! "+ex, context);
+            }
         }
         
         function patchWindow(win, context) {
@@ -238,14 +263,25 @@ FBL.ns(function() {
                 patchJQuery(jQuery, context);
                 dbg(">>>FireQuery: successfully found and patched jQuery in the window ", win);
             } catch (ex) {
-                dbg(''+ex, object);
+                dbg('>>>FireQuery: jQuery not found in the window, running watcher ...', win);
+                win.document.wrappedJSObject.addEventListener('jQueryDetected', function() {
+                    try {
+                        var wrapper = win.wrappedJSObject;
+                        var jQuery = wrapper.jQuery;
+                        patchJQuery(jQuery, context);
+                        dbg(">>>FireQuery: successfully notified and patched late jQuery in the window ", win);
+                    } catch (ex) {
+                        dbg(">>>FireQuery: fatal error patching late jQuery in the window ", win);
+                    }
+                }, true);
+                installJQueryWatcher(win, context);
             }
         }
         
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery
         //
-        Firebug.FireQuery = extend(Firebug.Module, {
+        Firebug.FireQuery = extend(Firebug.ActivableModule, {
             version: '0.2',
 
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -384,7 +420,7 @@ FBL.ns(function() {
             highlight: function(context, element) {
                 if (!element) return;
                 if (element instanceof XULElement) return;
-
+                
                 var dims = getRectTRBLWH(element, context);
                 var x = dims.left, y = dims.top;
                 var w = dims.width, h = dims.height;
