@@ -22,6 +22,7 @@ FIREFOX = File.join(ADDON, 'firefox')
 DST = File.join(ROOT, 'build')
 TMP = File.join(ROOT, 'tmp')
 SUPPORT = File.join(ROOT, 'support')
+TEST = File.join(ROOT, 'test')
 JQUERY_DIR = File.join(ROOT, 'jquery')
 
 # http://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
@@ -199,7 +200,7 @@ task :update_jquery do
     end
     
     js = File.join(JQUERY_DIR, 'jquery', 'dist', 'jquery.js')
-    test = File.join(SUPPORT, 'test', 'jquery.js')
+    test = File.join(TEST, 'jquery.js')
     content = File.join(FIREFOX, 'chrome', 'resources', 'jquery.js')
     sys("cp \"#{js}\" \"#{test}\"")
     sys("cp \"#{js}\" \"#{content}\"")
