@@ -4,7 +4,7 @@ layout: product
 logo: /shared/img/firequery-logo.png
 repo: http://github.com/darwin/firequery
 support: http://github.com/darwin/firequery/issues
-download: x
+download: https://addons.mozilla.org/en-US/firefox/addon/12632
 version: Version 0.2
 ---
 
@@ -14,13 +14,14 @@ Why? Because I was sick of clicking on green object links to see what is contain
 
 <a href="/img/intro.png"><img src="/img/intro-small.png" width="800" height="800" class="small-shadow"></a>
 
-Those screenshots were taken for [this test HTML file][testsource].
+Screenshots were taken for [this test HTML file][testsource].
 
 # Features
 
 * jQuery expressions are intelligently presented in Firebug Console and DOM inspector
 * attached jQuery data are first class citizens
 * elements in jQuery collections are highlighted on hover
+* jQuerify: enables you to inject jQuery into any web page
 
 # Status
 
@@ -63,6 +64,6 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
   * [[darwin][darwin]] highlighter for jQuery collections 
 
 [darwin]: http://github.com/darwin
-[download]: https://addons.mozilla.org/en-US/firefox/addon/1843
+[download]: https://addons.mozilla.org/en-US/firefox/addon/12632
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [testsource]: http://github.com/darwin/firequery/tree/master/test/index.html
