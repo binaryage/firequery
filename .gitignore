@@ -4,3 +4,6 @@ build
 Thumbs.db*
 tmtags
 jquery/
+_site
+shared
+_layouts
