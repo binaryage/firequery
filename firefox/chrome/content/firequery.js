@@ -184,6 +184,17 @@ FBL.ns(function() {
                 }
             }
         }
+        
+        function dataDescriptor(name, data, tag) {
+            var rep = {};
+            rep[name] = data;
+            return {
+                name: name,
+                data: data,
+                tag: tag,
+                rep: rep
+            };
+        }
 
         function mutateData(target, attrChange, attrName, attrValue)  {
             this.markChange();
@@ -201,11 +212,7 @@ FBL.ns(function() {
                 var rep = Firebug.getRep(attrValue);
                 var tag = rep.shortTag ? rep.shortTag : rep.tag;
                 var valRep = Firebug.HTMLPanel.DataNode.tag.replace({
-                    attr: {
-                        name: attrName,
-                        data: attrValue,
-                        tag: tag
-                    }
+                    attr: dataDescriptor(attrName, attrValue, tag)
                 }, this.document);
 
                 var nodeAttr = findNodeDataBox(objectNodeBox, attrName);
@@ -523,8 +530,6 @@ FBL.ns(function() {
                 Firebug.Inspector.originalHighlightObject.call(this, null, context, highlightType, boxFrame);
             }
 
-            if (!element || !isElement(element) || !isVisible(element)) return;
-                
             if (context && context.window && context.window.document) {
                 this.jQueryHighlighterContext = context;
                 for (var i=0; i<element.length; i++) {
@@ -628,11 +633,7 @@ FBL.ns(function() {
                     if (cache.hasOwnProperty(data)) {
                         var rep = Firebug.getRep(cache[data]);
                         var tag = rep.shortTag ? rep.shortTag : rep.tag;
-                        res.push({
-                            name: data,
-                            data: cache[data],
-                            tag: tag
-                        });
+                        res.push(dataDescriptor(data, cache[data], tag));
                     }
                 }
                 return res;
@@ -654,7 +655,7 @@ FBL.ns(function() {
             );
             
         var DataTag =
-            SPAN({class: "nodeData", _repObject: "$attr.data"},
+            SPAN({class: "nodeData", _repObject: "$attr.rep"},
                 SPAN({class: "nodeName"}, "$attr.name"), "=",
                 TAG("$attr.tag", {object: "$attr.data"})
             );
