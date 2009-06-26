@@ -27,6 +27,14 @@ Screenshots were taken for [this test HTML file][testsource].
 
 * v0.2 works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)
 
+# Note about security
+
+<b>This extension may be insecure</b>, so please don't browse porn sites with this enabled. 
+I still don't fully understand Firefox extension security model.
+The reality is that I'm interacting with naked HTML page from privileged code which may be insecure.
+
+Good solution is to have dedicated [Firefox profile](http://support.mozilla.com/en-US/kb/Profiles) for development and use it only for safe sites.
+
 # Install 
 
 The best way is to [install the addon][download] from [addons.mozilla.org](http://addons.mozilla.org) or you can go wild and build this on your own.
