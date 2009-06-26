@@ -16,7 +16,7 @@
     <em:name>FireQuery</em:name>
     <em:description>jQuery enhancements for Firebug</em:description>
     <em:creator>Antonin Hildebrand</em:creator>
-    <em:homepageURL>http://github.com/darwin/firequery</em:homepageURL>
+    <em:homepageURL>http://firequery.binaryage.com</em:homepageURL>
     <em:iconURL>chrome://firequery/skin/icon.png</em:iconURL>
   </Description>
 </RDF>
