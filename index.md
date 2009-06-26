@@ -1,6 +1,7 @@
 ---
 title: FireQuery
 layout: product
+logo: /shared/img/firequery-logo.png
 repo: http://github.com/darwin/firequery
 support: http://github.com/darwin/firequery/issues
 download: x
