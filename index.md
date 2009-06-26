@@ -11,7 +11,7 @@ version: Version 0.2
 
 Why? Because I was sick of clicking on green object links to see what is contained in jQuery expressions.
 
-<img src="/images/welcome.png" width="540" height="184">
+<a href="/img/intro.png"><img src="/img/intro-small.png" width="800" height="800" class="small-shadow"></a>
 
 Those screenshots were taken for [this test HTML file][testsource].
 
