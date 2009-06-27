@@ -67,6 +67,7 @@ FBL.ns(function() {
             el.style.padding = '5px 10px 5px 10px';\
             el.style.margin = '0';\
             el.style.zIndex = 1001;\
+            el.style.lineHeight = '46px';\
             el.style.fontSize = '40px';\
             el.style.fontWeight = 'bold';\
             el.style.color = '#444';\
