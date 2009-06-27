@@ -1,6 +1,39 @@
 // This source contains copy&pasted various bits from Firebug sources.
 FBL.ns(function() {
     with(FBL) {
+        
+        function checkFirebugVersion(minMajor, minMinor) {
+            var version = Firebug.getVersion();
+            if (!version) return false;
+            var a = version.split('.');
+            if (a.length<2) return false;
+            // we want Firebug version 1.3+ (including alphas/betas and other weird stuff)
+            var major = parseInt(a[0], 10);
+            var minor = parseInt(a[1], 10);
+            return major>=minMajor && minor>=minMinor;
+        };
+
+        if (!checkFirebugVersion(1,3)) {
+            alert('FireQuery works with Firebug 1.3 and later.\nPlease upgrade Firebug to the latest version.');
+            try { // to hide UI elements
+                var hide = function(x) {x.setAttribute('style', 'display:none');};
+                hide($("fbFireQueryfySeparator"));
+                hide($("fbFireQueryfy"));
+            } catch (ex) {}
+            return;
+        }
+        
+        if (!Firebug.CommandLine.evaluateInWebPage) {
+            // backport from FB1.4
+            Firebug.CommandLine.evaluateInWebPage = function(expr, context, targetWindow) {
+                var win = targetWindow ? targetWindow : context.window;
+                var doc = (win.wrappedJSObject ? win.wrappedJSObject.document : win.document);
+                var element = addScript(doc, "_firebugInWebPage", expr);
+                element.parentNode.removeChild(element);  // we don't need the script element, result is in DOM object
+                return "true";
+            };
+        }
+
         const Cc = Components.classes;
         const Ci = Components.interfaces;
 
@@ -289,24 +322,7 @@ FBL.ns(function() {
         // Firebug.FireQuery
         //
         Firebug.FireQuery = extend(Firebug.ActivableModule, {
-            version: '0.2',
-
-            /////////////////////////////////////////////////////////////////////////////////////////
-            checkFirebugVersion: function() {
-                var version = Firebug.getVersion();
-                if (!version) return false;
-                var a = version.split('.');
-                if (a.length<2) return false;
-                // we want Firebug version 1.4+ (including alphas/betas and other weird stuff)
-                return parseInt(a[0], 10)>=1 && parseInt(a[1], 10)>=4;
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            versionCheck: function(context) {
-                if (!this.checkFirebugVersion() && !context.fireQueryVersionWarningShown) {
-                    // this.showMessage(context, "FireQuery Firefox extension works with Firebug 1.2 or higher (you have "+Firebug.getVersion()+"). Please upgrade Firebug to the latest version.", "sys-warning");
-                    context.fireQueryVersionWarningShown = true;
-                }
-            },
+            version: '0.3',
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
                 dbg(">>>FireQuery.start");
@@ -427,15 +443,22 @@ FBL.ns(function() {
             highlight: function(context, element) {
                 if (!element) return;
                 if (element instanceof XULElement) return;
-                
                 try {
-                    var dims = getRectTRBLWH(element, context);
+                    // Firebug 1.3 path
+                    var dims = getViewOffset(element, true);
+                    var x = dims.x, y = dims.y;
+                    var w = element.offsetWidth, h = element.offsetHeight;                
                 } catch (ex) {
-                    dbg(' getRectTRBLWH failed: '+ex, element);
-                    return;
+                    try {
+                        // Firebug 1.4+ path
+                        var dims = getRectTRBLWH(element, context);
+                        var x = dims.left, y = dims.top;
+                        var w = dims.width, h = dims.height;
+                    } catch (ex) {
+                        dbg(' getRectTRBLWH failed: '+ex, element);
+                        return;
+                    }
                 }
-                var x = dims.left, y = dims.top;
-                var w = dims.width, h = dims.height;
 
                 var wacked = isNaN(x) || isNaN(y) || isNaN(w) || isNaN(h);
                 if (wacked) return;
@@ -783,6 +806,9 @@ FBL.ns(function() {
         Firebug.registerModule(Firebug.FireQuery);
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryExpression); // need to get this before array rep (jQuery expression behaves like array from JQuery 1.3)
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to get this before old Element rep
-        Firebug.setDefaultReps(FirebugReps.Func, FirebugReps.Obj);
+        if (Firebug.setDefaultReps)
+            Firebug.setDefaultReps(FirebugReps.Func, FirebugReps.Obj); // Firebug 1.4+
+        else
+            Firebug.setDefaultRep(FirebugReps.Obj); // older Firebugs
     }
 });

@@ -12,7 +12,7 @@
         <toolbar id="fbToolbar" align="center" role="toolbar">
             <hbox id="fbToolbarInner" class="innerToolbar" insertbefore="fbDetachButton" flex="1" align="center">
                 <hbox id="fbConsoleButtons" collapsed="true">
-                    <toolbarseparator/>
+                    <toolbarseparator id="fbFireQueryfySeparator" />
                     <toolbarbutton id="fbFireQueryfy" label="jQuerify" class="toolbar-text-button" tooltiptext="Applies latest jQuery to the current page" command="cmd_JQuerify"/>
                 </hbox>
             </hbox>
