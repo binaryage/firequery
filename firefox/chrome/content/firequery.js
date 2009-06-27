@@ -275,11 +275,20 @@ FBL.ns(function() {
             jQuery.data = function(elem, name, data) {
                 var res = origDataFn.call(jQuery, elem, name, data);
                 try {
-                    if (name && data!=undefined) {
+                    if (name && data!==undefined) {
                         mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
                     }
-                    if (name && data===null) {
-                        mutateData.call(context.getPanel('html'), elem, REMOVAL, name, data);
+                } catch (ex) {
+                    // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
+                }
+                return res;
+            };
+            var origRemoveDataFn = jQuery.removeData;
+            jQuery.removeData = function(elem, name) {
+                var res = origRemoveDataFn.call(jQuery, elem, name);
+                try {
+                    if (name) {
+                        mutateData.call(context.getPanel('html'), elem, REMOVAL, name);
                     }
                 } catch (ex) {
                     // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
