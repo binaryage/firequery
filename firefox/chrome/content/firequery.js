@@ -5,9 +5,9 @@ FBL.ns(function() {
         function checkFirebugVersion(minMajor, minMinor) {
             var version = Firebug.getVersion();
             if (!version) return false;
+            // parse Firebug version (including alphas/betas and other weird stuff)
             var a = version.split('.');
             if (a.length<2) return false;
-            // we want Firebug version 1.3+ (including alphas/betas and other weird stuff)
             var major = parseInt(a[0], 10);
             var minor = parseInt(a[1], 10);
             return major>=minMajor && minor>=minMinor;
@@ -44,12 +44,7 @@ FBL.ns(function() {
         const highlightCSS = "chrome://firebug/content/highlighter.css";
 
         const firequeryPrefService = Cc["@mozilla.org/preferences-service;1"];
-        const observerService = CCSV("@mozilla.org/observer-service;1", "nsIObserverService");
-
         const firequeryPrefs = firequeryPrefService.getService(nsIPrefBranch2);
-        const firequeryURLs = {
-            main: "http://github.com/darwin/firequery"
-        };
 
         const MODIFICATION = MutationEvent.MODIFICATION;
         const ADDITION = MutationEvent.ADDITION;
@@ -434,10 +429,6 @@ FBL.ns(function() {
                 var heads = doc.getElementsByTagName("head");
                 if (heads.length == 0) return doc.documentElement;
                 return heads[0];
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
-            onVisitWebsite: function(which) {
-                openNewTab(firequeryURLs[which]);
             }
         });
     
