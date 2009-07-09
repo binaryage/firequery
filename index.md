@@ -76,6 +76,7 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
   * [[darwin][darwin]] support for jQuery data
   * [[darwin][darwin]] highlighter for jQuery collections 
 
+
 [darwin]: http://github.com/darwin
 [download]: https://addons.mozilla.org/en-US/firefox/addon/12632
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
