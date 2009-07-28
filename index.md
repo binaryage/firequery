@@ -14,6 +14,10 @@ subdownload:
 subdownloadlink:
 mainshot: /shared/img/firequery-mainshot.png
 mainshotfull: /shared/img/firequery-mainshot-full.png
+overlaysx: 880px
+overlaysy: 608px
+overlaycx: 25px
+overlaycy: 10px
 ---
 
 <div class="advertisement">
