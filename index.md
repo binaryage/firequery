@@ -1,5 +1,6 @@
 ---
-title: FireQuery
+title: FireQuery = Firebug enhancements for jQuery
+product_title: FireQuery
 subtitle: a collection of Firebug enhancements for jQuery
 layout: product
 logo: /shared/img/firequery-logo.png
@@ -8,8 +9,6 @@ repo: http://github.com/darwin/firequery
 support: http://github.com/darwin/firequery/issues
 downloadtitle: Install v0.3
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
-downloadboxwidth: 210px
-donate: https://addons.mozilla.org/en-US/firefox/addons/contribute/12632?source=addon-detail
 subdownload: 
 subdownloadlink:
 mainshot: /shared/img/firequery-mainshot.png
@@ -18,21 +17,10 @@ overlaysx: 880px
 overlaysy: 608px
 overlaycx: 25px
 overlaycy: 10px
+digg: 1
+facebook: 1
+retweet: 1
 ---
-
-<div class="advertisement">
-	<div class="plug">Recommended reading:</div>
-	<a href="http://www.amazon.com/gp/product/1933988355?ie=UTF8&tag=firequery-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1933988355">
-		<img border="0" src="/shared/img/amazon/51REisyoeoL._SL110_.jpg">
-	</a>
-	<img src="http://www.assoc-amazon.com/e/ir?t=firequery-20&l=as2&o=1&a=1933988355" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-	<a href="http://www.amazon.com/gp/product/1847196705?ie=UTF8&tag=firequery-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1847196705"><img border="0" src="/shared/img/amazon/516jRKk0ykL._SL110_.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=firequery-20&l=as2&o=1&a=1847196705" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-	<a href="http://www.amazon.com/gp/product/0596101996?ie=UTF8&tag=firequery-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596101996"><img border="0" src="/shared/img/amazon/41IVmVYhRNL._SL110_.jpg"></a><img src="http://www.assoc-amazon.com/e/ir?t=firequery-20&l=as2&o=1&a=0596101996" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-	
-	<div class="offer"><a href="mailto:antonin@binaryage.com">advertise here</a></div>
-</div>
-<script type="text/javascript" src="http://www.assoc-amazon.com/s/link-enhancer?tag=firequery-20&o=1">
-</script>
 
 ## Features
 
