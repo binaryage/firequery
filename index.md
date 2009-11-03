@@ -1,7 +1,7 @@
 ---
-title: FireQuery = Firebug enhancements for jQuery
+title: FireQuery = Firebug extension for jQuery development
 product_title: FireQuery
-subtitle: a collection of Firebug enhancements for jQuery
+subtitle: Firebug extension for jQuery development
 layout: product
 logo: /shared/img/firequery-logo.png
 icon: /shared/img/firequery-icon.png
@@ -24,7 +24,7 @@ retweet: 1
 
 ## Features
 
-### FireQuery is a Firefox addon integrated with Firebug
+### FireQuery is a Firefox extension integrated with Firebug
 
 * jQuery expressions are intelligently presented in Firebug Console and DOM inspector
 * attached jQuery datas are first class citizens
