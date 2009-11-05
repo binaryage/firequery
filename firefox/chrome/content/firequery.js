@@ -10,7 +10,7 @@ FBL.ns(function() {
             if (a.length<2) return false;
             var major = parseInt(a[0], 10);
             var minor = parseInt(a[1], 10);
-            return major>=minMajor && minor>=minMinor;
+            return (major==minMajor && minor>=minMinor) || (major>minMajor);
         };
 
         if (!checkFirebugVersion(1,3)) {
