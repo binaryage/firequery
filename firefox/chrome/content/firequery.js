@@ -651,15 +651,13 @@ FBL.ns(function() {
         ////////////////////////////////////////////////////////////////////////
         // patch Firebug.HTMLPanel.*Element
         //
-        var AttrTag =
-            SPAN({class: "nodeAttr editGroup"},
-                "&nbsp;", SPAN({class: "nodeName editable"}, "$attr.nodeName"), "=&quot;",
-                SPAN({class: "nodeValue editable"}, "$attr.nodeValue"), "&quot;"
-            );
+        var AttrTag = Firebug.HTMLPanel.AttrTag;
+
+        var TextTag = Firebug.HTMLPanel.TextTag;
             
         var DataTag =
-            SPAN({class: "nodeData", _repObject: "$attr.rep"},
-                SPAN({class: "nodeName"}, "$attr.name"), "=",
+            SPAN({"class": "nodeData", _repObject: "$attr.rep"},
+                SPAN({"class": "nodeName"}, "$attr.name"), "=",
                 TAG("$attr.tag", {object: "$attr.data"})
             );
 
@@ -669,82 +667,81 @@ FBL.ns(function() {
         
         Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
             tag:
-                DIV({class: "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object"},
-                    DIV({class: "nodeLabel"},
-                        IMG({class: "twisty"}),
-                        SPAN({class: "nodeLabelBox repTarget"},
+                DIV({"class": "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object", role :"presentation"},
+                    DIV({"class": "nodeLabel", role: "presentation"},
+                        IMG({"class": "twisty", role: "presentation"}),
+                        SPAN({"class": "nodeLabelBox repTarget", role : 'treeitem', 'aria-expanded' : 'false'},
                             "&lt;",
-                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            SPAN({"class": "nodeTag"}, "$object.nodeName|toLowerCase"),
                             FOR("attr", "$object|attrIterator", AttrTag),
-                            SPAN({class: "nodeBracket editable insertBefore"}, "&gt;"),
+                            SPAN({"class": "nodeBracket editable insertBefore"}, "&gt;"),
                             FOR("attr", "$object|dataIterator", DataTag)
                         )
                     ),
-                    DIV({class: "nodeChildBox"}),
-                    DIV({class: "nodeCloseLabel"},
-                        SPAN({class: "nodeCloseLabelBox repTarget"},
+                    DIV({"class": "nodeChildBox", role :"group"}), /* nodeChildBox is special signal in insideOutBox */
+                    DIV({"class": "nodeCloseLabel", role : "presentation"},
+                        SPAN({"class": "nodeCloseLabelBox repTarget"},
                             "&lt;/",
-                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            SPAN({"class": "nodeTag"}, "$object.nodeName|toLowerCase"),
                             "&gt;"
                         )
-                     )
+                    )
                 )
         });
         
         Firebug.HTMLPanel.CompleteElement = domplate(Firebug.FireQuery.JQueryElement, {
             tag:
-                DIV({class: "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
-                    DIV({class: "nodeLabel"},
-                        SPAN({class: "nodeLabelBox repTarget repTarget"},
+                DIV({"class": "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
+                    DIV({"class": "nodeLabel"},
+                        SPAN({"class": "nodeLabelBox repTarget repTarget"},
                             "&lt;",
-                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            SPAN({"class": "nodeTag"}, "$object.localName|toLowerCase"),
                             FOR("attr", "$object|attrIterator", AttrTag),
-                            SPAN({class: "nodeBracket"}, "&gt;"),
+                            SPAN({"class": "nodeBracket"}, "&gt;"),
                             FOR("attr", "$object|dataIterator", DataTag)
                         )
                     ),
-                    DIV({class: "nodeChildBox"},
+                    DIV({"class": "nodeChildBox"},
                         FOR("child", "$object|childIterator",
                             TAG("$child|getNodeTag", {object: "$child"})
                         )
                     ),
-                    DIV({class: "nodeCloseLabel"},
+                    DIV({"class": "nodeCloseLabel"},
                         "&lt;/",
-                        SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                        SPAN({"class": "nodeTag"}, "$object.localName|toLowerCase"),
                         "&gt;"
                      )
                 ),
 
-            getNodeTag: function(node) {
-                return getNodeTag(node, true);
-            },
+            getNodeTag: Firebug.HTMLPanel.CompleteElement.getNodeTag,
 
-            childIterator: function(node) {
-                if (node.contentDocument)
-                    return [node.contentDocument.documentElement];
-
-                if (Firebug.showWhitespaceNodes)
-                    return cloneArray(node.childNodes);
-                else {
-                    var nodes = [];
-                    for (var child = node.firstChild; child; child = child.nextSibling) {
-                        if (child.nodeType != 3 || !isWhitespaceText(child))
-                            nodes.push(child);
-                    }
-                    return nodes;
-                }
-            }
+            childIterator: Firebug.HTMLPanel.CompleteElement.childIterator
         });
         
         Firebug.HTMLPanel.EmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
             tag:
-                DIV({class: "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object"},
-                    DIV({class: "nodeLabel"},
-                        SPAN({class: "nodeLabelBox repTarget"},
+                DIV({"class": "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
+                    DIV({"class": "nodeLabel", role: "presentation"},
+                        SPAN({"class": "nodeLabelBox repTarget", role : 'treeitem'},
                             "&lt;",
-                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            SPAN({"class": "nodeTag"}, "$object.nodeName|toLowerCase"),
                             FOR("attr", "$object|attrIterator", AttrTag),
-                            SPAN({class: "nodeBracket editable insertBefore"}, "/&gt;"),
+                            SPAN({"class": "nodeBracket editable insertBefore"}, "&gt;"),
+                            FOR("attr", "$object|dataIterator", DataTag)
+                        )
+                    )
+                )
+        });
+        
+        Firebug.HTMLPanel.XEmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
+            tag:
+                DIV({"class": "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
+                    DIV({"class": "nodeLabel", role: "presentation"},
+                        SPAN({"class": "nodeLabelBox repTarget", role : 'treeitem'},
+                            "&lt;",
+                            SPAN({"class": "nodeTag"}, "$object.nodeName|toLowerCase"),
+                            FOR("attr", "$object|attrIterator", AttrTag),
+                            SPAN({"class": "nodeBracket editable insertBefore"}, "/&gt;"),
                             FOR("attr", "$object|dataIterator", DataTag)
                         )
                     )
@@ -753,16 +750,16 @@ FBL.ns(function() {
         
         Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement, {
             tag:
-                DIV({class: "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object"},
-                    DIV({class: "nodeLabel"},
-                        SPAN({class: "nodeLabelBox repTarget"},
+                DIV({"class": "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
+                    DIV({"class": "nodeLabel", role: "presentation"},
+                        SPAN({"class": "nodeLabelBox repTarget", role : 'treeitem'},
                             "&lt;",
-                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            SPAN({"class": "nodeTag"}, "$object.nodeName|toLowerCase"),
                             FOR("attr", "$object|attrIterator", AttrTag),
-                            SPAN({class: "nodeBracket editable insertBefore"}, "&gt;"),
-                            SPAN({class: "nodeText editable"}, "$object|getNodeText"),
+                            SPAN({"class": "nodeBracket editable insertBefore"}, "&gt;"),
+                            TextTag,
                             "&lt;/",
-                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            SPAN({"class": "nodeTag"}, "$object.nodeName|toLowerCase"),
                             "&gt;",
                             FOR("attr", "$object|dataIterator", DataTag)
                         )
@@ -778,7 +775,7 @@ FBL.ns(function() {
                 "{",
                 FOR("prop", "$object|propIterator",
                     " $prop.name=",
-                    SPAN({class: "objectPropValue"}, "$prop.value|cropString")
+                    SPAN({"class": "objectPropValue"}, "$prop.value|cropString")
                 ), " }"
             )
         });
