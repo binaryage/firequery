@@ -41,6 +41,8 @@ retweet: 1
 
 The best way is to **[install the addon][download]** from [addons.mozilla.org](http://addons.mozilla.org) or you can go wild and build this on your own.
 
+After you restart Firefox, you can visit [FireQuery test page][testpage] to make sure all is working correctly.
+
 ### Security
 
 <span style="color: #a00">This extension may be insecure!</span>
@@ -89,4 +91,5 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
 [darwin]: http://github.com/darwin
 [download]: https://addons.mozilla.org/en-US/firefox/addon/12632
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
-[testsource]: http://github.com/darwin/firequery/tree/master/test/index.html
+[testsource]: http://github.com/darwin/firequery/tree/gh-pages/test/index.html
+[testpage]: /test/index.html
