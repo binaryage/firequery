@@ -2,27 +2,6 @@
 FBL.ns(function() {
     with(FBL) {
         
-        function checkFirebugVersion(minMajor, minMinor) {
-            var version = Firebug.getVersion();
-            if (!version) return false;
-            // parse Firebug version (including alphas/betas and other weird stuff)
-            var a = version.split('.');
-            if (a.length<2) return false;
-            var major = parseInt(a[0], 10);
-            var minor = parseInt(a[1], 10);
-            return (major==minMajor && minor>=minMinor) || (major>minMajor);
-        };
-
-        if (!checkFirebugVersion(1,3)) {
-            alert('FireQuery works with Firebug 1.3 and later.\nPlease upgrade Firebug to the latest version.');
-            try { // to hide UI elements
-                var hide = function(x) {x.setAttribute('style', 'display:none');};
-                hide($("fbFireQueryfySeparator"));
-                hide($("fbFireQueryfy"));
-            } catch (ex) {}
-            return;
-        }
-        
         if (!Firebug.CommandLine.evaluateInWebPage) {
             // backport from FB1.4
             Firebug.CommandLine.evaluateInWebPage = function(expr, context, targetWindow) {
