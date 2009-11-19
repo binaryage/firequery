@@ -451,13 +451,20 @@ FBL.ns(function() {
                     var w = element.offsetWidth, h = element.offsetHeight;                
                 } catch (ex) {
                     try {
-                        // Firebug 1.4+ path
+                        // Firebug 1.4 path
                         var dims = getRectTRBLWH(element, context);
                         var x = dims.left, y = dims.top;
                         var w = dims.width, h = dims.height;
                     } catch (ex) {
-                        dbg(' getRectTRBLWH failed: '+ex, element);
-                        return;
+                        try {
+                            // Firebug 1.5+ path
+                            var dims = getLTRBWH(element, context);
+                            var x = dims.left, y = dims.top;
+                            var w = dims.width, h = dims.height;
+                        } catch (ex) {
+                            dbg(' getLTRBWH failed: '+ex, element);
+                            return;
+                        }
                     }
                 }
 
