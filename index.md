@@ -17,7 +17,6 @@ overlaysx: 880px
 overlaysy: 608px
 overlaycx: 25px
 overlaycy: 10px
-digg: 1
 facebook: 1
 retweet: 1
 ---
