@@ -168,7 +168,7 @@ FBL.ns(function() {
         function evalJQueryCache(object, context) {
             try {
                 var win = object.ownerDocument.defaultView;
-                var wrapper = win.wrappedJSObject;
+                var wrapper = win.wrappedJSObject || win;
                 var jQuery = wrapper.jQuery;
                 return jQuery.cache[jQuery.data(object.wrappedJSObject || object)];
             } catch (ex) {}
