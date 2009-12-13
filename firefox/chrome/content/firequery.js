@@ -58,20 +58,22 @@ FBL.ns(function() {
             } else if (typeof $ == 'function') {\
                 otherlib = true;\
             }\
-            function getScript(url, success) {\
+            function getScript(url, success, failure) {\
                 var script = document.createElement('script');\
                 script.src = url;\
                 var head = document.getElementsByTagName('head')[0],\
                 done = false;\
+                var timeout = setTimeout(function() { failure(); }, {{jQueryURLTimeout}});\
                 script.onload = script.onreadystatechange = function() {\
                     if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {\
                         done = true;\
+                        clearTimeout(timeout);\
                         success();\
                     }\
                 };\
                 head.appendChild(script);\
             }\
-            getScript('chrome://firequery-resources/content/jquery.js', \
+            getScript('{{jQueryURL}}', \
             function() {\
                 if (typeof jQuery == 'undefined') {\
                     msg = 'Sorry, but jQuery wasn\\'t able to load';\
@@ -82,9 +84,13 @@ FBL.ns(function() {
                     }\
                 }\
                 return showMsg();\
+            }, function() {\
+                msg = 'Unable to load jQuery from:<br/>{{jQueryURL}}';\
+                return showMsg(true);\
             });\
-            function showMsg() {\
+            function showMsg(isError) {\
                 el.innerHTML = msg;\
+                if (isError) el.style.backgroundColor = '#FF4444';\
                 b.appendChild(el);\
                 el.style.left = Math.floor((window.innerWidth - el.clientWidth) / 2) + 'px';\
                 el.style.top = Math.floor((window.innerHeight - el.clientHeight) / 2) + 'px';\
@@ -112,7 +118,7 @@ FBL.ns(function() {
                     event.initEvent('jQueryDetected', true, false);\
                     document.dispatchEvent(event);\
                 }\
-            }, 1000/*watcherInterval*/);\
+            }, {{watcherInterval}});\
         })();\
         ";
 
@@ -273,7 +279,7 @@ FBL.ns(function() {
 
         function installJQueryWatcher(win, context) {
             try {
-                var code = jQueryWatcherCode.replace(/1000\/\*watcherInterval\*\//, Firebug.FireQuery.getPref('watcherInterval'));
+                var code = jQueryWatcherCode.replace(/\{\{watcherInterval\}\}/g, Firebug.FireQuery.getPref('watcherInterval'));
                 Firebug.CommandLine.evaluateInWebPage(code, context);
             } catch (ex) {
                 dbg("   ! "+ex, context);
@@ -358,35 +364,46 @@ FBL.ns(function() {
                 patchWindow(context.browser.contentWindow, context);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
+            prepareJQuerifyCode: function() {
+                var jQueryURL = this.getPref('jQueryURL') || 'chrome://firequery-resources/content/jquery.js';
+                var jQueryURLTimeout = this.getPref('jQueryURLTimeout') || 5000;
+
+                var code = jQuerifyCode;
+                code = code.replace(/\{\{jQueryURL\}\}/g, jQueryURL.replace("'", "\\'"));
+                code = code.replace(/\{\{jQueryURLTimeout\}\}/g, jQueryURLTimeout+'');
+                return code;
+            },
+            /////////////////////////////////////////////////////////////////////////////////////////
             buttonJQuerify: function(context) {
                 dbg(">>>FireQuery.buttonJQuerify ", context);
                 try {
-                    Firebug.CommandLine.evaluateInWebPage(jQuerifyCode, context);
+                    var code = this.prepareJQuerifyCode();
+                    Firebug.CommandLine.evaluateInWebPage(code, context);
                 } catch (ex) {
                     dbg("   ! "+ex, context);
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
-                var prefName = this.getPrefDomain() + "." + name;
+                var prefName = this.getPrefDomain().toLowerCase() + "." + name;
                 var type = firequeryPrefs.getPrefType(prefName);
                 if (type == nsIPrefBranch.PREF_STRING)
-                return xrefreshPrefs.getCharPref(prefName);
+                return firequeryPrefs.getCharPref(prefName);
                 else if (type == nsIPrefBranch.PREF_INT)
-                return xrefreshPrefs.getIntPref(prefName);
+                return firequeryPrefs.getIntPref(prefName);
                 else if (type == nsIPrefBranch.PREF_BOOL)
-                return xrefreshPrefs.getBoolPref(prefName);
+                return firequeryPrefs.getBoolPref(prefName);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             setPref: function(name, value) {
-                var prefName = this.getPrefDomain() + "." + name;
+                var prefName = this.getPrefDomain().toLowerCase() + "." + name;
                 var type = firequeryPrefs.getPrefType(prefName);
                 if (type == nsIPrefBranch.PREF_STRING)
-                xrefreshPrefs.setCharPref(prefName, value);
+                firequeryPrefs.setCharPref(prefName, value);
                 else if (type == nsIPrefBranch.PREF_INT)
-                xrefreshPrefs.setIntPref(prefName, value);
+                firequeryPrefs.setIntPref(prefName, value);
                 else if (type == nsIPrefBranch.PREF_BOOL)
-                xrefreshPrefs.setBoolPref(prefName, value);
+                firequeryPrefs.setBoolPref(prefName, value);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             applyPanelCSS: function(url, panel) {

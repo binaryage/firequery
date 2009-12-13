@@ -1,4 +1,3 @@
 pref("extensions.firebug.firequery.watcherInterval", 1000);
-
-// Enable/disable 
-pref("extensions.firebug.firequery.enableSites", false);
+pref("extensions.firebug.firequery.jQueryURL", 'chrome://firequery-resources/content/jquery.js');
+pref("extensions.firebug.firequery.jQueryURLTimeout", 5000);
