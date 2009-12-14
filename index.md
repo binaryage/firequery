@@ -81,8 +81,6 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
 #### How can I use my own jQuery when pressing jQuerify button?
 > You can specify your own URL in `about:config` for the key `extensions.firebug.firequery.jQueryURL`.<br>For example you can use Google's jQuery urls [http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery](http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery)
 
-
-
 ## History
 
 * **v0.4** (13.12.2009)
