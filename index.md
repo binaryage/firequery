@@ -7,7 +7,7 @@ logo: /shared/img/firequery-logo.png
 icon: /shared/img/firequery-icon.png
 repo: http://github.com/darwin/firequery
 support: http://github.com/darwin/firequery/issues
-downloadtitle: Install v0.3
+downloadtitle: Install v0.4
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 subdownload: 
 subdownloadlink:
@@ -21,6 +21,11 @@ facebook: 1
 retweet: 1
 ---
 
+<div class="more-box more-box-align">
+    <div class="tf-ad-2">Hint: after installation and Firefox restart</div>
+    <div class="tf-ad-2">you may visit <a href="/test/index.html">FireQuery test page</a></div>
+</div>
+
 ## Features
 
 ### FireQuery is a Firefox extension integrated with Firebug
@@ -33,8 +38,9 @@ retweet: 1
 
 ### Compatibility
 
-* v0.3 works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
-* v0.2 works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)
+* **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6)
+* **v0.3** works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
+* **v0.2** works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)
 
 ## Installation
 
@@ -70,7 +76,20 @@ After that your XPI should be available in ``build/firequery-X.Y.xpi``.
 
 You should be able to install XPI file into Firefox: ``File -> Open File`` ... and browse for ``firequery-X.Y.xpi``.
 
+## FAQ
+
+#### How can I use my own jQuery when pressing jQuerify button?
+> You can specify your own URL in `about:config` for the key `extensions.firebug.firequery.jQueryURL`.<br>For example you can use Google's jQuery urls [http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery](http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery)
+
+
+
 ## History
+
+* **v0.4** (13.12.2009)
+  * [[sroussey][sroussey]] Firebug 1.5 compatibility
+  * [[darwin][darwin]] Firefox 3.6 compatibility
+  * [[darwin][darwin]] SeaMonkey 2.0 support
+  * [[darwin][darwin]] It is possible to specify your own jQuery URL (see [FAQ](#faq))
 
 * **v0.3** (27.06.2009)
   * [[darwin][darwin]] Firebug 1.3 compatibility
@@ -88,6 +107,7 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
   * [[darwin][darwin]] highlighter for jQuery collections 
 
 [darwin]: http://github.com/darwin
+[sroussey]: http://github.com/sroussey
 [download]: https://addons.mozilla.org/en-US/firefox/addon/12632
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
 [testsource]: http://github.com/darwin/firequery/tree/gh-pages/test/index.html
