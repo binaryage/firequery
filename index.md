@@ -7,7 +7,7 @@ logo: /shared/img/firequery-logo.png
 icon: /shared/img/firequery-icon.png
 repo: http://github.com/darwin/firequery
 support: http://github.com/darwin/firequery/issues
-downloadtitle: Install v0.4
+downloadtitle: Install v0.4.1
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 subdownload: 
 subdownloadlink:
@@ -35,10 +35,10 @@ retweet: 1
 * elements in jQuery collections are highlighted on hover
 * jQuerify: enables you to inject jQuery into any web page
 
-
 ### Compatibility
 
-* **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6)
+* **v0.4.1** works with official Firebug 1.3.3, 1.4.5 and betas of Firebug 1.5 (Firefox 3.0 - 3.6)
+* **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6) - BROKEN with Firebug 1.4!
 * **v0.3** works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
 * **v0.2** works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)
 
@@ -78,10 +78,16 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
 
 ## FAQ
 
-#### How can I use my own jQuery when pressing jQuerify button?
+#### How can I specify my own jQuery when pressing jQuerify button?
 > You can specify your own URL in `about:config` for the key `extensions.firebug.firequery.jQueryURL`.<br>For example you can use Google's jQuery urls [http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery](http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery)
 
+#### When I update values via $.data() I don't see changes in HTML panel. What is wrong?
+> You have to enable Console panel for this feature to work
+
 ## History
+
+* **v0.4.1** (24.12.2009)
+  * [[darwin][darwin]] Fixed broken compatibility with Firebug 1.4
 
 * **v0.4** (13.12.2009)
   * [[sroussey][sroussey]] Firebug 1.5 compatibility
