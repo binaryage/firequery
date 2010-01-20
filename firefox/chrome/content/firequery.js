@@ -266,9 +266,9 @@ FBL.ns(function() {
             if (jQuery.wrappedJSObject) jQuery = jQuery.wrappedJSObject;
             if (jQuery._patchedByFireQuery) return;
             jQuery._patchedByFireQuery = true;
-            var origDataFn = jQuery.data;
+            jQuery.data_originalReplacedByFireQuery = jQuery.data;
             jQuery.data = function(elem, name, data) {
-                var res = origDataFn.call(jQuery, elem, name, data);
+                var res = this.data_originalReplacedByFireQuery.apply(this, arguments);
                 try {
                     if (name && data!==undefined) {
                         mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
@@ -278,9 +278,9 @@ FBL.ns(function() {
                 }
                 return res;
             };
-            var origRemoveDataFn = jQuery.removeData;
+            jQuery.removeData_originalReplacedByFireQuery = jQuery.removeData;
             jQuery.removeData = function(elem, name) {
-                var res = origRemoveDataFn.call(jQuery, elem, name);
+                var res = this.removeData_originalReplacedByFireQuery.apply(this, arguments);
                 try {
                     if (name) {
                         mutateData.call(context.getPanel('html'), elem, REMOVAL, name);
