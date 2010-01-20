@@ -7,7 +7,7 @@ logo: /shared/img/firequery-logo.png
 icon: /shared/img/firequery-icon.png
 repo: http://github.com/darwin/firequery
 support: http://github.com/darwin/firequery/issues
-downloadtitle: Install v0.4.1
+downloadtitle: Install v0.5
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 subdownload: 
 subdownloadlink:
@@ -37,6 +37,7 @@ retweet: 1
 
 ### Compatibility
 
+* **v0.5** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
 * **v0.4.1** works with official Firebug 1.3.3, 1.4.5 and betas of Firebug 1.5 (Firefox 3.0 - 3.6)
 * **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6) - BROKEN with Firebug 1.4!
 * **v0.3** works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
@@ -85,6 +86,11 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
 > You have to enable Console panel for this feature to work
 
 ## History
+
+* **v0.5** (20.01.2010)
+  * [[darwin][darwin]] jQuerify script upgraded to jQuery 1.4
+  * [[sroussey][sroussey]] Firebug 1.5 compatibility (thanks to Steven Roussey)
+  * [[darwin][darwin]] fixed mysterious bug with jQueryUI and it's datepicker (<a href="http://getsatisfaction.com/binaryage/topics/breaks_the_jquery_ui_datepicker">more info</a>)
 
 * **v0.4.1** (24.12.2009)
   * [[darwin][darwin]] Fixed broken compatibility with Firebug 1.4
