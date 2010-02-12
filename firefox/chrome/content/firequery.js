@@ -152,14 +152,14 @@ FBL.ns(function() {
         }
         
         var OBJECTBOX = this.OBJECTBOX =
-            SPAN({class: "objectBox objectBox-$className"});
+            SPAN({'class': "objectBox objectBox-$className"});
 
         var OBJECTBLOCK = this.OBJECTBLOCK =
-            DIV({class: "objectBox objectBox-$className"});
+            DIV({'class': "objectBox objectBox-$className"});
 
         var OBJECTLINK = this.OBJECTLINK =
             A({
-                class: "objectLink objectLink-$className a11yFocus",
+                'class': "objectLink objectLink-$className a11yFocus",
                 _repObject: "$object"
             });
 
@@ -236,7 +236,7 @@ FBL.ns(function() {
                 removeClass(objectNodeBox, "nodeHidden");
             else
                 setClass(objectNodeBox, "nodeHidden");
-
+            var nodeAttr;
             if (attrChange == MODIFICATION || attrChange == ADDITION) {
                 var rep = Firebug.getRep(attrValue);
                 var tag = rep.shortTag ? rep.shortTag : rep.tag;
@@ -244,7 +244,7 @@ FBL.ns(function() {
                     attr: dataDescriptor(attrName, attrValue, tag)
                 }, this.document);
 
-                var nodeAttr = findNodeDataBox(objectNodeBox, attrName);
+                nodeAttr = findNodeDataBox(objectNodeBox, attrName);
                 if (nodeAttr) {
                     nodeAttr.parentNode.replaceChild(valRep, nodeAttr);
                     this.highlightMutation(valRep, objectNodeBox, "mutated");
@@ -254,7 +254,7 @@ FBL.ns(function() {
                     this.highlightMutation(valRep, objectNodeBox, "mutated");
                 }
             } else if (attrChange == REMOVAL) {
-                var nodeAttr = findNodeDataBox(objectNodeBox, attrName);
+                nodeAttr = findNodeDataBox(objectNodeBox, attrName);
                 if (nodeAttr) {
                     nodeAttr.parentNode.removeChild(nodeAttr);
                     this.highlightMutation(objectNodeBox, objectNodeBox, "mutated");
@@ -455,23 +455,24 @@ FBL.ns(function() {
             highlight: function(context, element) {
                 if (!element) return;
                 if (element instanceof XULElement) return;
+                var dims, x, y, w, h;
                 try {
                     // Firebug 1.3 path
-                    var dims = getViewOffset(element, true);
-                    var x = dims.x, y = dims.y;
-                    var w = element.offsetWidth, h = element.offsetHeight;                
+                    dims = getViewOffset(element, true);
+                    x = dims.x; y = dims.y;
+                    w = element.offsetWidth; h = element.offsetHeight;                
                 } catch (ex) {
                     try {
                         // Firebug 1.4 path
-                        var dims = getRectTRBLWH(element, context);
-                        var x = dims.left, y = dims.top;
-                        var w = dims.width, h = dims.height;
+                        dims = getRectTRBLWH(element, context);
+                        x = dims.left; y = dims.top;
+                        w = dims.width; h = dims.height;
                     } catch (ex) {
                         try {
                             // Firebug 1.5+ path
-                            var dims = getLTRBWH(element, context);
-                            var x = dims.left, y = dims.top;
-                            var w = dims.width, h = dims.height;
+                            dims = getLTRBWH(element, context);
+                            x = dims.left; y = dims.top;
+                            w = dims.width; h = dims.height;
                         } catch (ex) {
                             dbg(' getLTRBWH failed: '+ex, element);
                             return;
@@ -560,8 +561,9 @@ FBL.ns(function() {
         Firebug.Inspector.originalHighlightObject = Firebug.Inspector.highlightObject;
         Firebug.Inspector.highlightObject = function(element, context, highlightType, boxFrame) {
             if (!this.jQueryHighlighters) this.jQueryHighlighters = [];
-            for (var i=0; i<this.jQueryHighlighters.length; i++) {
-                var highlighter = this.jQueryHighlighters[i];
+            var i, highlighter;
+            for (i=0; i<this.jQueryHighlighters.length; i++) {
+                highlighter = this.jQueryHighlighters[i];
                 highlighter.unhighlight(this.jQueryHighlighterContext);
             }
             this.jQueryHighlighters = [];
@@ -574,8 +576,8 @@ FBL.ns(function() {
 
             if (context && context.window && context.window.document) {
                 this.jQueryHighlighterContext = context;
-                for (var i=0; i<element.length; i++) {
-                    var highlighter = new Firebug.FireQuery.JQueryHighlighter();
+                for (i=0; i<element.length; i++) {
+                    highlighter = new Firebug.FireQuery.JQueryHighlighter();
                     highlighter.highlight(context, element[i]);
                     this.jQueryHighlighters.push(highlighter);
                 }
@@ -590,15 +592,15 @@ FBL.ns(function() {
             tag:
                 OBJECTBOX({},
                     A({
-                        class: "objectLink objectLink-jquery-sign",
+                        'class': "objectLink objectLink-jquery-sign",
                         _repObject: "$object"
                     }, "jQuery"),
-                    SPAN({class: "arrayLeftBracket"}, "("),
+                    SPAN({'class': "arrayLeftBracket"}, "("),
                     FOR("item", "$object|arrayIterator",
                         TAG("$item.tag", {object: "$item.object"}),
-                        SPAN({class: "arrayComma"}, "$item.delim")
+                        SPAN({'class': "arrayComma"}, "$item.delim")
                     ),
-                    SPAN({class: "arrayRightBracket"}, ")")
+                    SPAN({'class': "arrayRightBracket"}, ")")
                 ),
             /////////////////////////////////////////////////////////////////////////////////////////
             arrayIterator: function(array) {
@@ -638,9 +640,9 @@ FBL.ns(function() {
             tag:
                 OBJECTLINK(
                     "&lt;",
-                    SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                    SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                     FOR("attr", "$object|attrIterator",
-                        "&nbsp;$attr.localName=&quot;", SPAN({class: "nodeValue"}, "$attr.nodeValue"), "&quot;"
+                        "&nbsp;$attr.localName=&quot;", SPAN({'class': "nodeValue"}, "$attr.nodeValue"), "&quot;"
                     ),
                     "&gt;"
                  ),
@@ -648,14 +650,14 @@ FBL.ns(function() {
             shortTag:
                 SPAN(
                     OBJECTLINK(
-                        SPAN({class: "$object|getVisible"},
-                            SPAN({class: "selectorTag"}, "$object|getSelectorTag"),
-                            SPAN({class: "selectorId"}, "$object|getSelectorId"),
-                            SPAN({class: "selectorClass"}, "$object|getSelectorClass"),
-                            SPAN({class: "selectorValue"}, "$object|getValue")
+                        SPAN({'class': "$object|getVisible"},
+                            SPAN({'class': "selectorTag"}, "$object|getSelectorTag"),
+                            SPAN({'class': "selectorId"}, "$object|getSelectorId"),
+                            SPAN({'class': "selectorClass"}, "$object|getSelectorClass"),
+                            SPAN({'class': "selectorValue"}, "$object|getValue")
                         )
                      ),
-                     A({class: "objectLink objectLink-jquery-data", onclick: "$onDataClick", _objData: "$object" }, "&#9993;") // envelope sign
+                     A({'class': "objectLink objectLink-jquery-data", onclick: "$onDataClick", _objData: "$object" }, "&#9993;") // envelope sign
                 ),
             ///////////////////////////////////////////////////////////////////////////////////////////
             onDataClick: function(event) {
@@ -704,7 +706,7 @@ FBL.ns(function() {
 
             Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
                 tag: DataTag
-            }),
+            });
 
             Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
@@ -809,40 +811,40 @@ FBL.ns(function() {
             });
         } else {
             // Firebug 1.4 and older
-            var AttrTag =
-                SPAN({class: "nodeAttr editGroup"},
-                    "&nbsp;", SPAN({class: "nodeName editable"}, "$attr.nodeName"), "=&quot;",
-                    SPAN({class: "nodeValue editable"}, "$attr.nodeValue"), "&quot;"
+            AttrTag =
+                SPAN({'class': "nodeAttr editGroup"},
+                    "&nbsp;", SPAN({'class': "nodeName editable"}, "$attr.nodeName"), "=&quot;",
+                    SPAN({'class': "nodeValue editable"}, "$attr.nodeValue"), "&quot;"
                 );
 
-            var DataTag =
-                SPAN({class: "nodeData", _repObject: "$attr.rep"},
-                    SPAN({class: "nodeName"}, "$attr.name"), "=",
+            DataTag =
+                SPAN({'class': "nodeData", _repObject: "$attr.rep"},
+                    SPAN({'class': "nodeName"}, "$attr.name"), "=",
                     TAG("$attr.tag", {object: "$attr.data"})
                 );
 
             Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
                 tag: DataTag
-            }),
+            });
 
             Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
-                    DIV({class: "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object"},
-                        DIV({class: "nodeLabel"},
-                            IMG({class: "twisty"}),
-                            SPAN({class: "nodeLabelBox repTarget"},
+                    DIV({'class': "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object"},
+                        DIV({'class': "nodeLabel"},
+                            IMG({'class': "twisty"}),
+                            SPAN({'class': "nodeLabelBox repTarget"},
                                 "&lt;",
-                                SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                                SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                                 FOR("attr", "$object|attrIterator", AttrTag),
-                                SPAN({class: "nodeBracket editable insertBefore"}, "&gt;"),
+                                SPAN({'class': "nodeBracket editable insertBefore"}, "&gt;"),
                                 FOR("attr", "$object|dataIterator", DataTag)
                             )
                         ),
-                        DIV({class: "nodeChildBox"}),
-                        DIV({class: "nodeCloseLabel"},
-                            SPAN({class: "nodeCloseLabelBox repTarget"},
+                        DIV({'class': "nodeChildBox"}),
+                        DIV({'class': "nodeCloseLabel"},
+                            SPAN({'class': "nodeCloseLabelBox repTarget"},
                                 "&lt;/",
-                                SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                                SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                                 "&gt;"
                             )
                          )
@@ -851,24 +853,24 @@ FBL.ns(function() {
 
             Firebug.HTMLPanel.CompleteElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
-                    DIV({class: "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
-                        DIV({class: "nodeLabel"},
-                            SPAN({class: "nodeLabelBox repTarget repTarget"},
+                    DIV({'class': "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
+                        DIV({'class': "nodeLabel"},
+                            SPAN({'class': "nodeLabelBox repTarget repTarget"},
                                 "&lt;",
-                                SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                                SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                                 FOR("attr", "$object|attrIterator", AttrTag),
-                                SPAN({class: "nodeBracket"}, "&gt;"),
+                                SPAN({'class': "nodeBracket"}, "&gt;"),
                                 FOR("attr", "$object|dataIterator", DataTag)
                             )
                         ),
-                        DIV({class: "nodeChildBox"},
+                        DIV({'class': "nodeChildBox"},
                             FOR("child", "$object|childIterator",
                                 TAG("$child|getNodeTag", {object: "$child"})
                             )
                         ),
-                        DIV({class: "nodeCloseLabel"},
+                        DIV({'class': "nodeCloseLabel"},
                             "&lt;/",
-                            SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                            SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                             "&gt;"
                          )
                     ),
@@ -896,13 +898,13 @@ FBL.ns(function() {
 
             Firebug.HTMLPanel.EmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
-                    DIV({class: "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object"},
-                        DIV({class: "nodeLabel"},
-                            SPAN({class: "nodeLabelBox repTarget"},
+                    DIV({'class': "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object"},
+                        DIV({'class': "nodeLabel"},
+                            SPAN({'class': "nodeLabelBox repTarget"},
                                 "&lt;",
-                                SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                                SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                                 FOR("attr", "$object|attrIterator", AttrTag),
-                                SPAN({class: "nodeBracket editable insertBefore"}, "/&gt;"),
+                                SPAN({'class': "nodeBracket editable insertBefore"}, "/&gt;"),
                                 FOR("attr", "$object|dataIterator", DataTag)
                             )
                         )
@@ -911,16 +913,16 @@ FBL.ns(function() {
 
             Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
-                    DIV({class: "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object"},
-                        DIV({class: "nodeLabel"},
-                            SPAN({class: "nodeLabelBox repTarget"},
+                    DIV({'class': "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object"},
+                        DIV({'class': "nodeLabel"},
+                            SPAN({'class': "nodeLabelBox repTarget"},
                                 "&lt;",
-                                SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                                SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                                 FOR("attr", "$object|attrIterator", AttrTag),
-                                SPAN({class: "nodeBracket editable insertBefore"}, "&gt;"),
-                                SPAN({class: "nodeText editable"}, "$object|getNodeText"),
+                                SPAN({'class': "nodeBracket editable insertBefore"}, "&gt;"),
+                                SPAN({'class': "nodeText editable"}, "$object|getNodeText"),
                                 "&lt;/",
-                                SPAN({class: "nodeTag"}, "$object.localName|toLowerCase"),
+                                SPAN({'class': "nodeTag"}, "$object.localName|toLowerCase"),
                                 "&gt;",
                                 FOR("attr", "$object|dataIterator", DataTag)
                             )
