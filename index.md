@@ -6,7 +6,6 @@ layout: product
 logo: /shared/img/firequery-logo.png
 icon: /shared/img/firequery-icon.png
 repo: http://github.com/darwin/firequery
-support: http://github.com/darwin/firequery/issues
 downloadtitle: Install v0.5
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 subdownload: 
