@@ -6,7 +6,7 @@ layout: product
 logo: /shared/img/firequery-logo.png
 icon: /shared/img/firequery-icon.png
 repo: http://github.com/darwin/firequery
-downloadtitle: Install v0.5
+downloadtitle: Install v0.6
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 subdownload: 
 subdownloadlink:
@@ -42,6 +42,7 @@ retweet: 1
 
 ### Compatibility
 
+* **v0.6** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
 * **v0.5** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
 * **v0.4.1** works with official Firebug 1.3.3, 1.4.5 and betas of Firebug 1.5 (Firefox 3.0 - 3.6)
 * **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6) - BROKEN with Firebug 1.4!
@@ -91,6 +92,11 @@ You should be able to install XPI file into Firefox: ``File -> Open File`` ... a
 > You have to enable Console panel for this feature to work
 
 ## Changelog
+
+* **v0.6** (20.02.2010)
+  * [[darwin][darwin]] fix retrieval of jQuery.data with jQuery 1.4+ (missing data in HTML panel and missing small envelope icons)
+  * [[darwin][darwin]] extended test page to enable testing historical jQuery versions
+  * [[darwin][darwin]] jQuerify script upgraded to jQuery 1.4.2
 
 * **v0.5** (20.01.2010)
   * [[darwin][darwin]] jQuerify script upgraded to jQuery 1.4
