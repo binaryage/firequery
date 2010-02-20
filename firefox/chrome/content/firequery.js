@@ -191,7 +191,11 @@ FBL.ns(function() {
                 var win = object.ownerDocument.defaultView;
                 var wrapper = win.wrappedJSObject || win;
                 var jQuery = wrapper.jQuery;
-                return jQuery.cache[jQuery.data(object.wrappedJSObject || object)];
+                // jQuery 1.4 breaking changes (http://jquery14.com/day-01/jquery-14):
+                // jQuery.data(elem) no longer returns an id, it returns the element’s object cache instead.
+                var idOrCache = jQuery.data(object.wrappedJSObject || object);
+                if (typeof idOrCache == "object") return idOrCache; // jQuery 1.4+ path
+                return jQuery.cache[idOrCache]; // jQuery 1.3- path 
             } catch (ex) {}
         }
 
