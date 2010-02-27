@@ -6,7 +6,7 @@ layout: product
 logo: /shared/img/firequery-logo.png
 icon: /shared/img/firequery-icon.png
 repo: http://github.com/darwin/firequery
-downloadtitle: Install v0.6
+downloadtitle: Install v0.7
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 subdownload: 
 subdownloadlink:
@@ -33,15 +33,11 @@ retweet: 1
 * attached jQuery datas are first class citizens
 * elements in jQuery collections are highlighted on hover
 * jQuerify: enables you to inject jQuery into any web page
-
-### Intro ScreenCast by [**the Changelog**](http://thechangelog.com/post/383855879/firequery-jquery-love-for-firebug), which brings fresh news about open-source
-
-<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='560' height='345'><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' ></param><param name='flashvars' value='i=46448' ></param><param name='allowFullScreen' value='true' ></param><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=46448' allowFullScreen='true' width='928' height='560' pluginspage='http://www.macromedia.com/go/getflashplayer' ></embed></object>
-<a style="position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;" href="http://wynnnetherland.com/">this screencast was produced by Wynn Netherland</a>
-<br style="clear:both">
+* jQuery Lint: enables you to inject jQuery Lint into page being loaded automatically (great for ad-hoc code validation)
 
 ### Compatibility
 
+* **v0.7** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
 * **v0.6** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
 * **v0.5** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
 * **v0.4.1** works with official Firebug 1.3.3, 1.4.5 and betas of Firebug 1.5 (Firefox 3.0 - 3.6)
@@ -49,20 +45,19 @@ retweet: 1
 * **v0.3** works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
 * **v0.2** works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)
 
+## Screencast
+
+### Intro ScreenCast by [**the Changelog**](http://thechangelog.com/post/383855879/firequery-jquery-love-for-firebug), which brings fresh news about open-source
+
+<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='560' height='345'><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' ></param><param name='flashvars' value='i=46448' ></param><param name='allowFullScreen' value='true' ></param><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=46448' allowFullScreen='true' width='928' height='560' pluginspage='http://www.macromedia.com/go/getflashplayer' ></embed></object>
+<a style="position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;" href="http://wynnnetherland.com/">this screencast was produced by Wynn Netherland</a>
+<br style="clear:both">
+
 ## Installation
 
 The best way is to **[install the addon][download]** from [addons.mozilla.org](http://addons.mozilla.org) or you can go wild and build this on your own.
 
 After you restart Firefox, you can visit [FireQuery test page][testpage] to make sure all is working correctly.
-
-### Security
-
-<span style="color: #a00">This extension may be insecure!</span>
-
-So please don't browse porn sites with this enabled. I still don't fully understand Firefox extension security model. The reality is that I'm interacting with naked HTML page from privileged code which may be insecure. 
-
-Good solution is to have dedicated [Firefox profile](http://support.mozilla.com/en-US/kb/Profiles) for development and use it only for safe sites.
-
 
 ### Build instructions
 
@@ -83,15 +78,34 @@ After that your XPI should be available in ``build/firequery-X.Y.xpi``.
 
 You should be able to install XPI file into Firefox: ``File -> Open File`` ... and browse for ``firequery-X.Y.xpi``.
 
+### Security
+
+<span style="color: #a00">This extension may be insecure!</span>
+
+So please don't browse porn sites with this enabled. I still don't fully understand Firefox extension security model. The reality is that I'm interacting with naked HTML page from privileged code which may be insecure. 
+
+Good solution is to have dedicated [Firefox profile](http://support.mozilla.com/en-US/kb/Profiles) for development and use it only for safe sites.
+
 ## FAQ
 
 #### How can I specify my own jQuery when pressing jQuerify button?
 > You can specify your own URL in `about:config` for the key `extensions.firebug.firequery.jQueryURL`.<br>For example you can use Google's jQuery urls [http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery](http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery)
 
+#### How can I use jQuery Lint with FireQuery?
+<a target="_blank" href="/img/firequery-with-lint.png"><img src="/img/firequery-with-lint.png" width="600"></a>
+
+#### How can I specify my own jQuery Lint version?
+> You can specify your own URL in `about:config` for the key `extensions.firebug.firequery.jQueryLintURL`.
+
 #### When I update values via $.data() I don't see changes in HTML panel. What is wrong?
 > You have to enable Console panel for this feature to work
 
 ## Changelog
+
+* **v0.7** (28.02.2010)
+  * [[darwin][darwin]] added jQuery Lint support, see: <a href="http://github.com/jamespadolsey/jQuery-Lint">http://github.com/jamespadolsey/jQuery-Lint</a>
+  * [[darwin][darwin]] fixed Firebug version check bug
+  * [[darwin][darwin]] fixed incorrect object representation in console (<a href="http://github.com/darwin/firequery/issues/closed#issue/10">issue #10</a>)
 
 * **v0.6** (20.02.2010)
   * [[darwin][darwin]] fix retrieval of jQuery.data with jQuery 1.4+ (missing data in HTML panel and missing small envelope icons)
