@@ -13,8 +13,11 @@ FBL.ns(function() {
             // we want Firebug version 1.3+ (including alphas/betas and other weird stuff)
             var major = parseInt(a[0], 10);
             var minor = parseInt(a[1], 10);
+            if (!a[2]) a[2] = "0";
             var patch = parseInt(a[2], 10);
-            return major>=minMajor && minor>=minMinor && patch>=minPatch;
+            return (major>minMajor) ||
+                   (major==minMajor && minor>minMinor) ||
+                   (major==minMajor && minor==minMinor && patch>=minPatch);
         };
         
         if (!Firebug.CommandLine.evaluateInWebPage) {
