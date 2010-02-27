@@ -1084,25 +1084,8 @@ FBL.ns(function() {
             });
         }
         
-        ////////////////////////////////////////////////////////////////////////
-        // JSON-like displaing for objects
-        //
-        FirebugReps.Obj = domplate(FirebugReps.Obj, {
-            tag: OBJECTLINK(
-                "{",
-                FOR("prop", "$object|propIterator",
-                    " $prop.name=",
-                    SPAN({"class": "objectPropValue"}, "$prop.value|cropString")
-                ), " }"
-            )
-        });
-        
         Firebug.registerModule(Firebug.FireQuery);
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryExpression); // need to get this before array rep (jQuery expression behaves like array from JQuery 1.3)
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to get this before old Element rep
-        if (Firebug.setDefaultReps)
-            Firebug.setDefaultReps(FirebugReps.Func, FirebugReps.Obj); // Firebug 1.4+
-        else
-            Firebug.setDefaultRep(FirebugReps.Obj); // older Firebugs
     }
 });
