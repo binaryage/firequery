@@ -8,8 +8,7 @@ icon: /shared/img/firequery-icon.png
 repo: http://github.com/darwin/firequery
 downloadtitle: Install v0.7
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
-subdownload: 
-subdownloadlink:
+subdownload: Not seeing the latest there?<br/>Check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>
 mainshot: /shared/img/firequery-mainshot.png
 mainshotfull: /shared/img/firequery-mainshot-full.png
 overlaysx: 880px
@@ -33,7 +32,7 @@ retweet: 1
 * attached jQuery datas are first class citizens
 * elements in jQuery collections are highlighted on hover
 * jQuerify: enables you to inject jQuery into any web page
-* jQuery Lint: enables you to inject jQuery Lint into page being loaded automatically (great for ad-hoc code validation)
+* [jQuery Lint](http://github.com/jamespadolsey/jQuery-Lint): enables you to inject jQuery Lint into page being loaded automatically (great for ad-hoc code validation)
 
 ### Compatibility
 
