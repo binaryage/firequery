@@ -58,10 +58,12 @@
             }
         </script>
     </div>
-    <button onclick="exercise()">Exercise!</button>
-    <button onclick="$('h1').data('added-data', 'this value should appear as a mutation event '+new Date())">Add H1 data</button>
-    <button onclick="$('h1').data('added-data', null)">Nullify H1 data</button>
-    <button onclick="$('h1').removeData('added-data')">Remove H1 data</button>
+    <div class="buttons-bar">
+        <button onclick="exercise()">Exercise!</button>
+        <button onclick="$('h1').data('added-data', 'this value should appear as a mutation event '+new Date())">Add H1 data</button>
+        <button onclick="$('h1').data('added-data', null)">Nullify H1 data</button>
+        <button onclick="$('h1').removeData('added-data')">Remove H1 data</button>
+    </div>
 
   <h1>FireQuery test page</h1>
   <div id="header" class="box">
