@@ -1,28 +1,22 @@
 ---
-title: FireQuery = Firebug extension for jQuery development
-product_title: FireQuery
-subtitle: Firebug extension for jQuery development
 layout: product
-logo: /shared/img/firequery-logo.png
-icon: /shared/img/firequery-icon.png
-repo: http://github.com/darwin/firequery
-downloadtitle: Install v0.7
+title: FireQuery is a Firebug extension for jQuery development
+product_title: FireQuery
+product_subtitle: a Firebug extension for jQuery development
+note: Not seeing the latest there? Check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
-subdownload: Not seeing the latest there?<br/>Check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>
-mainshot: /shared/img/firequery-mainshot.png
-mainshotfull: /shared/img/firequery-mainshot-full.png
-overlaysx: 880px
-overlaysy: 608px
-overlaycx: 25px
-overlaycy: 10px
+downloadtitle: Install 0.7
+repo: http://github.com/darwin/firequery
+advert: After installation and Firefox restart you may visit <a href="/test/index.html">FireQuery test page</a>
 facebook: 1
 retweet: 1
+nothumbs: 1
+shots: [{
+    title: "FireQuery in action! Please note inlined datas in the HTML Panel",
+    thumb: "/shared/img/firequery-mainshot.png",
+    full: "/shared/img/firequery-mainshot-full.png"
+}]
 ---
-
-<div class="more-box more-box-align">
-    <div class="tf-ad-2">Hint: after installation and Firefox restart</div>
-    <div class="tf-ad-2">you may visit <a href="/test/index.html">FireQuery test page</a></div>
-</div>
 
 ## Features
 
@@ -48,8 +42,8 @@ retweet: 1
 
 ### Intro ScreenCast by [**the Changelog**](http://thechangelog.com/post/383855879/firequery-jquery-love-for-firebug), which brings fresh news about open-source
 
-<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='560' height='345'><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' ></param><param name='flashvars' value='i=46448' ></param><param name='allowFullScreen' value='true' ></param><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=46448' allowFullScreen='true' width='928' height='560' pluginspage='http://www.macromedia.com/go/getflashplayer' ></embed></object>
-<a style="position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;" href="http://wynnnetherland.com/">this screencast was produced by Wynn Netherland</a>
+<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='100%' height="600"><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' ></param><param name='flashvars' value='i=46448' ></param><param name='allowFullScreen' value='true' ></param><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=46448' allowFullScreen='true' width='100%' height="600" pluginspage='http://www.macromedia.com/go/getflashplayer' ></embed></object>
+<a style="display:block; position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;" href="http://wynnnetherland.com/">the screencast was produced by Wynn Netherland, thanks!</a>
 <br style="clear:both">
 
 ## Installation
