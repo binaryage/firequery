@@ -11,6 +11,17 @@ advert: After installation and Firefox restart you may visit <a href="/test/inde
 facebook: 1
 retweet: 1
 nothumbs: 1
+buzz: 1
+fbsdk: 1
+ogmeta: {
+    site_name: "BinaryAge website",
+    description: "FireQuery is a Firebug extension for jQuery development",
+    email: "antonin@binaryage.com",
+    type: "product",
+    title: "FireQuery",
+    url: "http://firequery.binaryage.com",
+    image: "http://www.binaryage.com/shared/img/icons/firequery-64.png"
+}
 shots: [{
     title: "FireQuery in action! Please note inlined datas in the HTML Panel",
     thumb: "/shared/img/firequery-mainshot.png",
