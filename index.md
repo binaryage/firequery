@@ -20,7 +20,7 @@ ogmeta: {
     type: "product",
     title: "FireQuery",
     url: "http://firequery.binaryage.com",
-    image: "http://www.binaryage.com/shared/img/icons/firequery-128.png"
+    image: "http://www.binaryage.com/shared/img/icons/firequery-256.png"
 }
 shots: [{
     title: "FireQuery in action! Please note inlined datas in the HTML Panel",
