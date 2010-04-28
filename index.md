@@ -8,6 +8,10 @@ download: https://addons.mozilla.org/en-US/firefox/addon/12632
 downloadtitle: Install 0.7
 repo: http://github.com/darwin/firequery
 advert: After installation and Firefox restart you may visit <a href="/test/index.html">FireQuery test page</a>
+meta_title: FireQuery is a Firebug extension for jQuery development
+meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development
+meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
+meta_image: http://www.binaryage.com/shared/img/icons/firequery-256.png
 facebook: 1
 retweet: 1
 nothumbs: 1
