@@ -12,9 +12,10 @@ meta_title: FireQuery is a Firebug extension for jQuery development
 meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development
 meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
 meta_image: http://www.binaryage.com/shared/img/icons/firequery-256.png
+leftshift: 70px
+likeshift: 68px
 facebook: 1
 retweet: 1
-nothumbs: 1
 buzz: 1
 fbsdk: 1
 ogmeta: {
