@@ -10,7 +10,7 @@
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>2.0</em:minVersion>
-        <em:maxVersion>3.7a1pre</em:maxVersion>
+        <em:maxVersion>4.0b8pre</em:maxVersion>
       </Description>
     </em:targetApplication>
     <!-- SeaMonkey -->
@@ -26,11 +26,11 @@
       <Description>
         <em:id>firebug@software.joehewitt.com</em:id>
         <em:minVersion>1.3</em:minVersion>
-        <em:maxVersion>1.6</em:maxVersion>
+        <em:maxVersion>1.7</em:maxVersion>
       </Description>
     </em:requires>
     <em:name>FireQuery</em:name>
-    <em:description>jQuery enhancements for Firebug</em:description>
+    <em:description>Firebug extension for jQuery development</em:description>
     <em:creator>Antonin Hildebrand</em:creator>
     <em:homepageURL>http://firequery.binaryage.com</em:homepageURL>
     <em:iconURL>chrome://firequery/skin/icon.png</em:iconURL>
