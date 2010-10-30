@@ -3,14 +3,14 @@ layout: product
 title: FireQuery is a Firebug extension for jQuery development
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
-note: Not seeing the latest version on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
-downloadtitle: Install 0.7
+downloadtitle: Install 0.8
+note: Not seeing the latest version 0.8 on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
 buttons: <a href="/test" class="button button-300 product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your FireQuery installation works</div></div></div></a>
 repo: http://github.com/darwin/firequery
 advert: After installation and Firefox restart you may visit <a href="/test/index.html">FireQuery test page</a>
 meta_title: FireQuery is a Firebug extension for jQuery development
-meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development
+meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development,antonin hildebrand
 meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
 meta_image: http://www.binaryage.com/shared/img/icons/firequery-256.png
 leftshift: 30px
@@ -36,7 +36,6 @@ shots: [{
 }]
 ---
 
-
 ## Features
 
 ### FireQuery is a Firefox extension integrated with Firebug
@@ -49,9 +48,12 @@ shots: [{
 
 ### Compatibility
 
-* **v0.7** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
-* **v0.6** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
-* **v0.5** works with official Firebug 1.3.3, 1.4.5 and 1.5, also works for me with early beta of Firebug 1.6 (Firefox 3.0 - 3.6)
+Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
+
+* **v0.8** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)
+* **v0.7** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
+* **v0.6** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
+* **v0.5** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
 * **v0.4.1** works with official Firebug 1.3.3, 1.4.5 and betas of Firebug 1.5 (Firefox 3.0 - 3.6)
 * **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6) - BROKEN with Firebug 1.4!
 * **v0.3** works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
@@ -59,28 +61,29 @@ shots: [{
 
 ## Screencast
 
-### Intro ScreenCast by [**the Changelog**](http://thechangelog.com/post/383855879/firequery-jquery-love-for-firebug), which brings fresh news about open-source
+### Intro ScreenCast by [**the Changelog**](http://thechangelog.com/post/383855879/firequery-jquery-love-for-firebug), which brings fresh news about open-source.
 
-<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='100%' height="600"><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' ></param><param name='flashvars' value='i=46448' ></param><param name='allowFullScreen' value='true' ></param><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=46448' allowFullScreen='true' width='100%' height="600" pluginspage='http://www.macromedia.com/go/getflashplayer' ></embed></object>
-<a style="display:block; position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;" href="http://wynnnetherland.com/">the screencast was produced by Wynn Netherland, thanks!</a>
+<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='100%' height="600"><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf' ></param><param name='flashvars' value='i=46448' ></param><param name='allowFullScreen' value='true' ></param><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=46448' allowFullScreen='true' width='100%' height="600" pluginspage='http://www.macromedia.com/go/getflashplayer'></embed></object>
+<div style="position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;">the screencast was produced by <a href="http://wynnnetherland.com/">Wynn Netherland</a>, thanks!</div>
 <br style="clear:both">
 
 ## Installation
 
-The best way is to **[install the addon][download]** from [addons.mozilla.org](http://addons.mozilla.org) or you can go wild and build this on your own.
+### **[Install the addon][download]** from addons.mozilla.org.
 
-After you restart Firefox, you can visit [FireQuery test page][testpage] to make sure all is working correctly.
+After you restart Firefox, you should visit [FireQuery Test Page][testpage] to make sure all is working correctly.
 
-### Build instructions
+---
 
-If you want to install latest addon from sources, you need to build it. 
-It should be simple, but make sure you have these tools on your paths:
+### How to build FireQuery from sources
+
+If you want to install latest addon from sources, you need to build it. It should be simple, but make sure you have these tools on your paths:
 
 * git
 * zip
 * ruby and rake
 
-Build steps:
+#### Build steps:
 
     git clone git://github.com/darwin/firequery.git
     cd firequery
@@ -90,9 +93,9 @@ After that your XPI should be available in ``build/firequery-X.Y.xpi``.
 
 You should be able to install XPI file into Firefox: ``File -> Open File`` ... and browse for ``firequery-X.Y.xpi``.
 
-### Security
+### Security Note
 
-<span style="color: #a00">This extension may be insecure!</span>
+**<span style="color: #a00">This extension may be insecure!</span>**
 
 So please don't browse porn sites with this enabled. I still don't fully understand Firefox extension security model. The reality is that I'm interacting with naked HTML page from privileged code which may be insecure. 
 
