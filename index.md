@@ -3,16 +3,17 @@ layout: product
 title: FireQuery is a Firebug extension for jQuery development
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
-note: Not seeing the latest there? Check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>
+note: Not seeing the latest version on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 downloadtitle: Install 0.7
+buttons: <a href="/test" class="button button-300 product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your FireQuery installation works</div></div></div></a>
 repo: http://github.com/darwin/firequery
 advert: After installation and Firefox restart you may visit <a href="/test/index.html">FireQuery test page</a>
 meta_title: FireQuery is a Firebug extension for jQuery development
 meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development
 meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
 meta_image: http://www.binaryage.com/shared/img/icons/firequery-256.png
-leftshift: 70px
+leftshift: 30px
 likeshift: 68px
 facebook: 1
 retweet: 1
