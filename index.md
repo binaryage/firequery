@@ -113,6 +113,11 @@ Good solution is to have dedicated [Firefox profile](http://support.mozilla.com/
 
 ## Changelog
 
+* **v0.8** (30.10.2010)
+  * [[darwin][darwin]] fixed compatibility with Firebug 1.6 and early Firebug 1.7 alpha
+  * [[darwin][darwin]] upgraded jQuerify to inject jQuery v1.4.3
+  * [[darwin][darwin]] upgraded jQuery Lint to v1.01
+
 * **v0.7** (28.02.2010)
   * [[darwin][darwin]] added jQuery Lint support, see: <a href="http://github.com/jamespadolsey/jQuery-Lint">http://github.com/jamespadolsey/jQuery-Lint</a>
   * [[darwin][darwin]] fixed Firebug version check bug
