@@ -2,7 +2,7 @@
 FBL.ns(function() {
     with(FBL) {
         
-        function checkFirebugVersion(minMajor, minMinor, minPatch) {
+        var checkFirebugVersion = function(minMajor, minMinor, minPatch) {
             if (!minPatch) minPatch = 0;
             if (!minMinor) minMinor = 0;
             if (!minMajor) minMajor = 0;
@@ -220,11 +220,11 @@ FBL.ns(function() {
             } catch(e) {}
         }
     
-        function dbg() {
+        var dbg = function() {
             if (FBTrace && FBTrace.DBG_FIREQUERY) { 
                 FBTrace.sysout.apply(this, arguments);
             }
-        }
+        };
         
         var OBJECTBOX = this.OBJECTBOX =
             SPAN({'class': "objectBox objectBox-$className"});
@@ -247,21 +247,21 @@ FBL.ns(function() {
             return S4()+S4();
         };
 
-        function getNonFrameBody(elt) {
+        var getNonFrameBody = function(elt) {
             var body = getBody(elt.ownerDocument);
             return body.localName.toUpperCase() == "FRAMESET" ? null : body;
-        }
+        };
 
-        function attachStyles(context, body) {
+        var attachStyles = function(context, body) {
             var doc = body.ownerDocument;
             if (!context.highlightStyle)
                 context.highlightStyle = createStyleSheet(doc, highlightCSS);
 
             if (!context.highlightStyle.parentNode || context.highlightStyle.ownerDocument != doc)
                 addStyleSheet(body.ownerDocument, context.highlightStyle);
-        }
+        };
         
-        function evalJQueryCache(object, context) {
+        var evalJQueryCache = function(object, context) {
             try {
                 var win = object.ownerDocument.defaultView;
                 var wrapper = win.wrappedJSObject || win;
@@ -272,17 +272,16 @@ FBL.ns(function() {
                 if (typeof idOrCache == "object") return idOrCache; // jQuery 1.4+ path
                 return jQuery.cache[idOrCache]; // jQuery 1.3- path 
             } catch (ex) {}
-        }
+        };
 
-        function hasJQueryCache(object, context) {
+        var hasJQueryCache = function(object, context) {
             var cache = evalJQueryCache(object, context);
             for (var x in cache) {
                 if (cache.hasOwnProperty(x)) return true;
             }
-        }
+        };
 
-        function findNodeDataBox(objectNodeBox, attrName)
-        {
+        var findNodeDataBox = function(objectNodeBox, attrName) {
             var child = objectNodeBox.firstChild.lastChild.firstChild;
             for (; child; child = child.nextSibling)
             {
@@ -291,9 +290,9 @@ FBL.ns(function() {
                     return child;
                 }
             }
-        }
+        };
         
-        function dataDescriptor(name, data, tag) {
+        var dataDescriptor = function(name, data, tag) {
             var rep = {};
             rep[name] = data;
             return {
@@ -302,9 +301,9 @@ FBL.ns(function() {
                 tag: tag,
                 rep: rep
             };
-        }
+        };
 
-        function mutateData(target, attrChange, attrName, attrValue)  {
+        var mutateData = function(target, attrChange, attrName, attrValue)  {
             this.markChange();
 
             var createBox = Firebug.scrollToMutations || Firebug.expandMutations;
@@ -339,9 +338,9 @@ FBL.ns(function() {
                     this.highlightMutation(objectNodeBox, objectNodeBox, "mutated");
                 }
             }
-        }
+        };
     
-        function patchJQuery(jQuery, context) {
+        var patchJQuery = function(jQuery, context) {
             if (jQuery.wrappedJSObject) jQuery = jQuery.wrappedJSObject;
             if (jQuery._patchedByFireQuery) return;
             jQuery._patchedByFireQuery = true;
@@ -379,18 +378,18 @@ FBL.ns(function() {
                     dbg("   ! "+ex, context);
                 }
             }
-        }
+        };
 
-        function installJQueryWatcher(win, context) {
+        var installJQueryWatcher = function(win, context) {
             try {
                 var code = jQueryWatcherCode.replace(/\{\{watcherInterval\}\}/g, Firebug.FireQuery.getPref('watcherInterval'));
                 Firebug.CommandLine.evaluateInWebPage(code, context);
             } catch (ex) {
                 dbg("   ! "+ex, context);
             }
-        }
+        };
         
-        function patchWindow(win, context) {
+        var patchWindow = function(win, context) {
             try {
                 var wrapper = win.wrappedJSObject;
                 var jQuery = wrapper.jQuery;
@@ -410,7 +409,7 @@ FBL.ns(function() {
                 }, true);
                 installJQueryWatcher(win, context);
             }
-        }
+        };
         
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery
@@ -453,11 +452,6 @@ FBL.ns(function() {
                 }
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            initializeUI: function() {
-                dbg(">>>FireQuery.initializeUI");
-                Firebug.Module.initializeUI.apply(this, arguments);
-            },
-            /////////////////////////////////////////////////////////////////////////////////////////
             onSuspendFirebug: function(context) {
                 dbg(">>>FireQuery.onSuspendFirebug");
                 this.stop();
@@ -485,7 +479,7 @@ FBL.ns(function() {
             prepareJQuerifyCode: function() {
                 var jQueryURL = this.getPref('jQueryURL') || 'chrome://firequery-resources/content/jquery.js';
                 var jQueryURLTimeout = this.getPref('jQueryURLTimeout') || 5000;
-
+        
                 var code = jQuerifyCode;
                 code = code.replace(/\{\{jQueryURL\}\}/g, jQueryURL.replace("'", "\\'"));
                 code = code.replace(/\{\{jQueryURLTimeout\}\}/g, jQueryURLTimeout+'');
@@ -495,7 +489,7 @@ FBL.ns(function() {
             prepareJQueryLintCode: function() {
                 var jQueryLintURL = this.getPref('jQueryLintURL') || 'chrome://firequery-resources/content/jquery.lint.js';
                 var jQueryLintURLTimeout = this.getPref('jQueryLintURLTimeout') || 5000;
-
+        
                 var code = jQueryLintInjectorCode;
                 code = code.replace(/\{\{jQueryLintURL\}\}/g, jQueryLintURL.replace("'", "\\'"));
                 code = code.replace(/\{\{jQueryLintURLTimeout\}\}/g, jQueryLintURLTimeout+'');
@@ -511,6 +505,10 @@ FBL.ns(function() {
                     dbg("   ! "+ex, context);
                 }
             },
+            /////////////////////////////////////////////////////////////////////////////////////////
+            getPrefDomain: function() {
+                return Firebug.prefDomain + "." + this.panelName;
+            },            
             /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
                 var prefName = this.getPrefDomain().toLowerCase() + "." + name;
@@ -598,14 +596,14 @@ FBL.ns(function() {
                 return heads[0];
             }
         });
-    
+            
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery.JQueryHighlighter
         //
         Firebug.FireQuery.JQueryHighlighter = function() {
             this.seed = "highlighter-"+generateGuid();
         };
-
+        
         Firebug.FireQuery.JQueryHighlighter.prototype = {
             /////////////////////////////////////////////////////////////////////////////////////////
             highlight: function(context, element) {
@@ -635,21 +633,21 @@ FBL.ns(function() {
                         }
                     }
                 }
-
+        
                 var wacked = isNaN(x) || isNaN(y) || isNaN(w) || isNaN(h);
                 if (wacked) return;
-
+        
                 var nodes = this.getNodes(context, element);
-
+        
                 move(nodes.top, x, y-edgeSize);
                 resize(nodes.top, w, edgeSize);
-
+        
                 move(nodes.right, x+w, y-edgeSize);
                 resize(nodes.right, edgeSize, h+edgeSize*2);
-
+        
                 move(nodes.bottom, x, y+h);
                 resize(nodes.bottom, w, edgeSize);
-
+        
                 move(nodes.left, x-edgeSize, y-edgeSize);
                 resize(nodes.left, edgeSize, h+edgeSize*2);
                 
@@ -659,7 +657,7 @@ FBL.ns(function() {
                 var body = getNonFrameBody(element);
                 if (!body)
                     return this.unhighlight(context);
-
+        
                 var needsAppend = !nodes.top.parentNode || nodes.top.ownerDocument != body.ownerDocument;
                 if (needsAppend) {
                     attachStyles(context, body);
@@ -710,36 +708,79 @@ FBL.ns(function() {
                 return context[this.seed];
             }
         };
-
+        
         ////////////////////////////////////////////////////////////////////////
         // monkey-patching of Firebug.Inspector.highlightObject
-        //
-        Firebug.Inspector.originalHighlightObject = Firebug.Inspector.highlightObject;
-        Firebug.Inspector.highlightObject = function(element, context, highlightType, boxFrame) {
-            if (!this.jQueryHighlighters) this.jQueryHighlighters = [];
-            var i, highlighter;
-            for (i=0; i<this.jQueryHighlighters.length; i++) {
-                highlighter = this.jQueryHighlighters[i];
-                highlighter.unhighlight(this.jQueryHighlighterContext);
-            }
-            this.jQueryHighlighters = [];
-            
-            if (!element || !element.length) {
-                return Firebug.Inspector.originalHighlightObject.call(this, element, context, highlightType, boxFrame);
-            } else {
-                Firebug.Inspector.originalHighlightObject.call(this, null, context, highlightType, boxFrame);
-            }
-
-            if (context && context.window && context.window.document) {
-                this.jQueryHighlighterContext = context;
-                for (i=0; i<element.length; i++) {
-                    highlighter = new Firebug.FireQuery.JQueryHighlighter();
-                    highlighter.highlight(context, element[i]);
-                    this.jQueryHighlighters.push(highlighter);
-                }
-            }
+        // related discussion: http://code.google.com/p/fbug/issues/detail?id=3462 
+        var hasExposedBoxModelHighlighter = function() {
+            // BoxModelHighlighter has been exposed in FB1.6 or in early FB1.7 alpha => use it if available
+            // http://code.google.com/p/fbug/issues/detail?id=3462 
+            return !!Firebug.Inspector.BoxModelHighlighter;
         };
 
+        if (!hasExposedBoxModelHighlighter()) {
+            // old path for Firebug 1.5 (and alphas of Firebug 1.6)
+            Firebug.Inspector.originalHighlightObject = Firebug.Inspector.highlightObject;
+            Firebug.Inspector.highlightObject = function(element, context, highlightType, boxFrame) {
+                if (!this.jQueryHighlighters) {
+                    this.jQueryHighlighters = [];
+                }
+                var i, highlighter;
+                for (i=0; i<this.jQueryHighlighters.length; i++) {
+                    highlighter = this.jQueryHighlighters[i];
+                    highlighter.unhighlight(this.jQueryHighlighterContext);
+                }
+                this.jQueryHighlighters = [];
+
+                if (!element || !element.length) {
+                    return Firebug.Inspector.originalHighlightObject.call(this, element, context, highlightType, boxFrame);
+                }
+
+                Firebug.Inspector.originalHighlightObject.call(this, null, context, highlightType, boxFrame);
+                if (context && context.window && context.window.document) {
+                    this.jQueryHighlighterContext = context;
+                    for (i=0; i<element.length; i++) {
+                        highlighter = new Firebug.FireQuery.JQueryHighlighter();
+                        highlighter.highlight(context, element[i]);
+                        this.jQueryHighlighters.push(highlighter);
+                    }
+                }
+            };
+        } else {
+            // new path for Firebug 1.6+
+            Firebug.Inspector.originalHighlightObject = Firebug.Inspector.highlightObject;
+            Firebug.Inspector.highlightObject = function(element, context, highlightType, boxFrame) {
+                if (!this.multiHighlighters) {
+                    this.multiHighlighters = [];
+                }
+                var i, highlighter = new Firebug.Inspector.BoxModelHighlighter();
+                if (this.multiHighlighters.length) {
+                    for (i = 0; i < this.multiHighlighters.length; i++) {
+                        this.ffHighlighterContext.boxModelHighlighter = this.multiHighlighters[i];
+                        highlighter.unhighlight(this.ffHighlighterContext);
+                        delete this.multiHighlighters[i];
+                    }
+                }
+                this.multiHighlighters = [];
+        
+                if (!element || !FirebugReps.Arr.isArray(element)) {
+                    return Firebug.Inspector.originalHighlightObject.call(this, element, context, highlightType, boxFrame);
+                } else {
+                    Firebug.Inspector.originalHighlightObject.call(this, null, context, highlightType, boxFrame);
+                    if (context && context.window && context.window.document) {
+                        this.ffHighlighterContext = context;
+                        this.multiHighlighters.push(context.boxModelHighlighter);
+                        for (i = 0; i < element.length; i++) {
+                            context.boxModelHighlighter = null;
+                            highlighter.highlight(context, element[i]);
+                            this.multiHighlighters.push(context.boxModelHighlighter);
+                        }
+                        this.ffHighlighterContext.boxModelHighlighter = null;
+                    }
+                }
+            };
+        }
+        
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery.JQueryExpression
         //
@@ -766,7 +807,7 @@ FBL.ns(function() {
                     var rep = Firebug.getRep(value);
                     var tag = rep.shortTag ? rep.shortTag : rep.tag;
                     var delim = (i == array.length-1 ? "" : ", ");
-
+        
                     items.push({object: value, tag: tag, delim: delim});
                 }
                 return items;
@@ -779,15 +820,15 @@ FBL.ns(function() {
                 return !!object.jquery;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            getRealObject: function(event, context) {
-                return null;
+            getRealObject: function(object, context) {
+                return object;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             getContextMenuItems: function(event) {
                 return null;
             }
         });
-    
+            
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery.JQueryElement
         //
@@ -848,7 +889,7 @@ FBL.ns(function() {
         ////////////////////////////////////////////////////////////////////////
         // patch Firebug.HTMLPanel.*Element
         //
-        
+
         if (checkFirebugVersion(1, 5)) {
             // Firebug 1.5 and later
             
@@ -859,11 +900,11 @@ FBL.ns(function() {
                     SPAN({"class": "nodeName"}, "$attr.name"), "=",
                     TAG("$attr.tag", {object: "$attr.data"})
                 );
-
+        
             Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
                 tag: DataTag
             });
-
+        
             Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object", role :"presentation"},
@@ -887,7 +928,7 @@ FBL.ns(function() {
                         )
                     )
             });
-
+        
             Firebug.HTMLPanel.CompleteElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
@@ -911,12 +952,12 @@ FBL.ns(function() {
                             "&gt;"
                          )
                     ),
-
+        
                 getNodeTag: Firebug.HTMLPanel.CompleteElement.getNodeTag,
-
+        
                 childIterator: Firebug.HTMLPanel.CompleteElement.childIterator
             });
-
+        
             Firebug.HTMLPanel.EmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
@@ -931,7 +972,7 @@ FBL.ns(function() {
                         )
                     )
             });
-
+        
             Firebug.HTMLPanel.XEmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
@@ -946,7 +987,7 @@ FBL.ns(function() {
                         )
                     )
             });
-
+        
             Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
@@ -972,17 +1013,17 @@ FBL.ns(function() {
                     "&nbsp;", SPAN({'class': "nodeName editable"}, "$attr.nodeName"), "=&quot;",
                     SPAN({'class': "nodeValue editable"}, "$attr.nodeValue"), "&quot;"
                 );
-
+        
             DataTag =
                 SPAN({'class': "nodeData", _repObject: "$attr.rep"},
                     SPAN({'class': "nodeName"}, "$attr.name"), "=",
                     TAG("$attr.tag", {object: "$attr.data"})
                 );
-
+        
             Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
                 tag: DataTag
             });
-
+        
             Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object"},
@@ -1006,7 +1047,7 @@ FBL.ns(function() {
                          )
                     )
             });
-
+        
             Firebug.HTMLPanel.CompleteElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
@@ -1030,15 +1071,15 @@ FBL.ns(function() {
                             "&gt;"
                          )
                     ),
-
+        
                 getNodeTag: function(node) {
                     return getNodeTag(node, true);
                 },
-
+        
                 childIterator: function(node) {
                     if (node.contentDocument)
                         return [node.contentDocument.documentElement];
-
+        
                     if (Firebug.showWhitespaceNodes)
                         return cloneArray(node.childNodes);
                     else {
@@ -1051,7 +1092,7 @@ FBL.ns(function() {
                     }
                 }
             });
-
+        
             Firebug.HTMLPanel.EmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object"},
@@ -1066,7 +1107,7 @@ FBL.ns(function() {
                         )
                     )
             });
-
+        
             Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object"},
