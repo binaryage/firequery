@@ -5,7 +5,7 @@ product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 downloadtitle: Install 0.8
-note: Not seeing the latest version 0.8 on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
+#note: Not seeing the latest version 0.8 on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
 buttons: <a href="/test" class="button button-300 product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your  installation works well</div></div></div></a>
 repo: http://github.com/darwin/firequery
 advert: After installation and Firefox restart you may visit <a href="/test/index.html">FireQuery test page</a>
