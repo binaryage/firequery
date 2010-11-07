@@ -6,9 +6,9 @@ product_subtitle: a Firebug extension for jQuery development
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 downloadtitle: Install 0.8
 #note: Not seeing the latest version 0.8 on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
-buttons: <a href="/test" class="button button-300 product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your  installation works well</div></div></div></a>
+buttons: <a href="/test" class="button button-300 product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
 repo: http://github.com/darwin/firequery
-advert: After installation and Firefox restart you may visit <a href="/test/index.html">FireQuery test page</a>
+advert: After installation and Firefox restart you can visit the <a href="/test/index.html">FireQuery test page</a>
 meta_title: FireQuery is a Firebug extension for jQuery development
 meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development,antonin hildebrand
 meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
@@ -41,14 +41,14 @@ shots: [{
 ### FireQuery is a Firefox extension integrated with Firebug
 
 * jQuery expressions are intelligently presented in Firebug Console and DOM inspector
-* attached jQuery datas are first class citizens
+* attached jQuery data are first class citizens
 * elements in jQuery collections are highlighted on hover
 * jQuerify: enables you to inject jQuery into any web page
-* [jQuery Lint](http://github.com/jamespadolsey/jQuery-Lint): enables you to inject jQuery Lint into page being loaded automatically (great for ad-hoc code validation)
+* [jQuery Lint](http://github.com/jamespadolsey/jQuery-Lint): enables you to automatically inject jQuery Lint into the page as it is loaded (great for ad-hoc code validation)
 
 ### Compatibility
 
-Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
+Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
 * **v0.8** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)
 * **v0.7** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
@@ -75,9 +75,9 @@ After you restart Firefox, you should visit [FireQuery Test Page][testpage] to m
 
 ---
 
-### How to build FireQuery from sources
+### How to build FireQuery from source
 
-If you want to install latest addon from sources, you need to build it. It should be simple, but make sure you have these tools on your paths:
+If you want to install the addon from the latest source, you need to build it. It should be simple, but make sure you have these tools in your path:
 
 * git
 * zip
@@ -91,15 +91,15 @@ If you want to install latest addon from sources, you need to build it. It shoul
   
 After that your XPI should be available in ``build/firequery-X.Y.xpi``.
 
-You should be able to install XPI file into Firefox: ``File -> Open File`` ... and browse for ``firequery-X.Y.xpi``.
+You should now be able to install the XPI file in Firefox: ``File -> Open File`` ... and browse for ``firequery-X.Y.xpi``.
 
 ### Security Note
 
 **<span style="color: #a00">This extension may be insecure!</span>**
 
-So please don't browse porn sites with this enabled. I still don't fully understand Firefox extension security model. The reality is that I'm interacting with naked HTML page from privileged code which may be insecure. 
+So please don't browse porn sites with this enabled. I still don't fully understand the Firefox extension security model. The reality is that I'm interacting with naked HTML page from privileged code which may be insecure. 
 
-Good solution is to have dedicated [Firefox profile](http://support.mozilla.com/en-US/kb/Profiles) for development and use it only for safe sites.
+A good solution is to have dedicated [Firefox profile](http://support.mozilla.com/en-US/kb/Profiles) for development and use it only for safe sites.
 
 ## FAQ
 
@@ -112,7 +112,7 @@ Good solution is to have dedicated [Firefox profile](http://support.mozilla.com/
 #### How can I specify my own jQuery Lint version?
 > You can specify your own URL in `about:config` for the key `extensions.firebug.firequery.jQueryLintURL`.
 
-#### When I update values via $.data() I don't see changes in HTML panel. What is wrong?
+#### When I update values via $.data() I don't see changes in HTML panel. What's wrong?
 > You have to enable Console panel for this feature to work
 
 ## Changelog
@@ -135,7 +135,7 @@ Good solution is to have dedicated [Firefox profile](http://support.mozilla.com/
 * **v0.5** (20.01.2010)
   * [[darwin][darwin]] jQuerify script upgraded to jQuery 1.4
   * [[sroussey][sroussey]] Firebug 1.5 compatibility (thanks to Steven Roussey)
-  * [[darwin][darwin]] fixed mysterious bug with jQueryUI and it's datepicker (<a href="http://getsatisfaction.com/binaryage/topics/breaks_the_jquery_ui_datepicker">more info</a>)
+  * [[darwin][darwin]] fixed mysterious bug with jQueryUI and its datepicker (<a href="http://getsatisfaction.com/binaryage/topics/breaks_the_jquery_ui_datepicker">more info</a>)
 
 * **v0.4.1** (24.12.2009)
   * [[darwin][darwin]] Fixed broken compatibility with Firebug 1.4
