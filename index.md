@@ -21,7 +21,7 @@ flattr: "http://firequery.binaryage.com"
 ogmeta: {
     site_name: "BinaryAge website",
     description: "FireQuery is a Firebug extension for jQuery development",
-    email: "antonin@binaryage.com",
+    email: "support@binaryage.com",
     type: "product",
     title: "FireQuery",
     url: "http://firequery.binaryage.com",
