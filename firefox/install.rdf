@@ -3,14 +3,14 @@
          xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>firequery@binaryage.com</em:id>
-    <em:version>0.8</em:version>
+    <em:version>0.9</em:version>
     <em:type>2</em:type>
     <!-- Firefox -->
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>2.0</em:minVersion>
-        <em:maxVersion>4.0b8pre</em:maxVersion>
+        <em:maxVersion>4.0.*</em:maxVersion>
       </Description>
     </em:targetApplication>
     <!-- SeaMonkey -->
