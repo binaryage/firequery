@@ -5,26 +5,55 @@
 <head>
     <script src="http://www.google.com/jsapi?key=ABQIAAAAp75QxaSG2hYrKPlrN4oyExRL7r778YToGivmW4U3sJ82H6qhdhTg84MQzC17sJ_XGmyyadVhMs3J8g" type="text/javascript"></script>
     <script type="text/javascript" charset="utf-8">
-        // http://stackoverflow.com/questions/979975/how-to-get-the-value-from-url-parameter
-        function getQueryParams(qs) {
-            qs = qs.split("+").join(" ");
-            var params = {}, tokens;
-            while (tokens = /[?&]?([^=]+)=([^&]*)/g.exec(qs)) {
-                params[decodeURIComponent(tokens[1])]
-                    = decodeURIComponent(tokens[2]);
+        (function() {
+            // parseUri 1.2.2
+            // (c) Steven Levithan <stevenlevithan.com>
+            // MIT License
+            function parseUri (str) {
+                var o   = parseUri.options,
+                    m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+                    uri = {},
+                    i   = 14;
+
+                while (i--) uri[o.key[i]] = m[i] || "";
+
+                uri[o.q.name] = {};
+                uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+                    if ($1) uri[o.q.name][$1] = $2;
+                });
+
+                return uri;
+            };
+
+            parseUri.options = {
+                strictMode: false,
+                key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+                q:   {
+                    name:   "queryKey",
+                    parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+                },
+                parser: {
+                    strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+                    loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+                }
+            };
+
+            var query = parseUri(location+"");
+            var v = '1.5';
+            if (query && query.queryKey && query.queryKey['v']) {
+                v = query.queryKey['v'];
             }
-            return params;
-        }
-        var query = getQueryParams(location.search);
-        if (query.v!='none') {
-            google.load("jquery", query.v||"1.4.3");
-            google.setOnLoadCallback(function() {
-                var version = $.fn.jquery;
-                if (version.length==3) version += ".0";
-                $('.version-switcher a.selected-version').removeClass('selected-version');
-                $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
-            });
-        }
+            if (v!='none') {
+                google.load("jquery", v);
+                google.setOnLoadCallback(function() {
+                    var version = $.fn.jquery;
+                    if (version.length==3) version += ".0";
+                    $('.version-switcher a.selected-version').removeClass('selected-version');
+                    $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
+                });
+            }
+            window.selectedVersion = v;
+        })();
     </script>
     <style type="text/css" media="screen">
         html{font-family:arial;}
@@ -50,10 +79,12 @@
             <a href="?v=1.4.0">1.4.0</a> | 
             <a href="?v=1.4.1">1.4.1</a> | 
             <a href="?v=1.4.2">1.4.2</a> | 
-            <a href="?v=1.4.3">1.4.3</a> or 
+            <a href="?v=1.4.3">1.4.3</a> | 
+            <a href="?v=1.4.4">1.4.4</a> | 
+            <a href="?v=1.5.0">1.5.0</a> or 
             <a href="?v=none">none</a>
             <script type="text/javascript" charset="utf-8">
-                if (query.v=='none') {
+                if (window.selectedVersion=='none') {
                     var a = document.getElementsByClassName('version-switcher')[0].children;
                     var last = a[a.length-2]; // last one is this <script>
                     last.className = 'selected-version';
@@ -91,6 +122,7 @@
     </div>
     <script type="text/javascript">
         function exercise() {
+            $('h1').append(' - jQuery ' + $.fn.jquery);
             console.warn('Simon says: "Do some exercise with jQuery v' + $.fn.jquery + '"');
             $('body').data('Firebug', 'makes it possible').data('jQuery', "is pretty damn cool!").data('FireQuery', 'is just a cherry');
             
@@ -123,7 +155,7 @@
             });
         }
 
-        if (query.v != 'none') {
+        if (window.selectedVersion != 'none') {
             exercise();
         }
     </script>
