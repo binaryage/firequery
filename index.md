@@ -4,8 +4,8 @@ title: FireQuery is a Firebug extension for jQuery development
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
-downloadtitle: Install 0.8
-#note: Not seeing the latest version 0.8 on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
+downloadtitle: Install 0.9
+#note: Not seeing the latest version 0.9 on AMO?<br>It is probably waiting for review, check <a href="https://addons.mozilla.org/en-US/firefox/addons/versions/12632">experimental versions</a>.
 buttons: <a href="/test" class="button button-300 product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
 repo: http://github.com/darwin/firequery
 advert: After installation and Firefox restart you can visit the <a href="/test/index.html">FireQuery test page</a>
@@ -48,6 +48,7 @@ shots: [{
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
+* **v0.9** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 4.0)
 * **v0.8** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)
 * **v0.7** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
 * **v0.6** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
@@ -114,6 +115,9 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 > You have to enable Console panel for this feature to work
 
 ## Changelog
+
+* **v0.9** (07.02.2011)
+  * [[darwin][darwin]] upgraded jQuery to v1.5 for jQuerify
 
 * **v0.8** (30.10.2010)
   * [[darwin][darwin]] fixed compatibility with Firebug 1.6 and early Firebug 1.7 alpha
