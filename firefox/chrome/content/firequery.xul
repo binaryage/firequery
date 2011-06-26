@@ -6,7 +6,7 @@
     </stringbundleset>
     <script type="application/x-javascript" src="chrome://firequery/content/firequery.js"/>
     <commandset id="mainCommandSet">
-        <command id="cmd_JQuerify" oncommand="Firebug.FireQuery.buttonJQuerify(FirebugContext)"/>
+        <command id="cmd_JQuerify" oncommand="Firebug.FireQuery.buttonJQuerify()"/>
     </commandset>
     <toolbox id="fbToolbox">
         <toolbar id="fbToolbar" align="center" role="toolbar">

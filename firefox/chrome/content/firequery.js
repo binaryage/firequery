@@ -1,6 +1,12 @@
 // This source contains copy&pasted various bits from Firebug sources.
 FBL.ns(function() {
     with(FBL) {
+        var getFirebugContext = function() {
+            if (typeof FirebugContext !== "undefined") {
+                return FirebugContext; // provide compatibility for Firebugs prior 1.8
+            }
+            return Firebug.currentContext; // Firebug 1.8+
+        };
         
         var checkFirebugVersion = function(minMajor, minMinor, minPatch) {
             if (!minPatch) minPatch = 0;
@@ -496,7 +502,8 @@ FBL.ns(function() {
                 return code;
             },
             /////////////////////////////////////////////////////////////////////////////////////////
-            buttonJQuerify: function(context) {
+            buttonJQuerify: function() {
+                context = getFirebugContext();
                 dbg(">>>FireQuery.buttonJQuerify ", context);
                 try {
                     var code = this.prepareJQuerifyCode();
@@ -556,9 +563,9 @@ FBL.ns(function() {
                 dbg(">>>FireQuery.updateOption: "+name+" -> "+value);
                 if (name=='firequery.useLint') {
                     if (value) {
-                        Firebug.Console.logFormatted(["jQuery Lint will be available after next refresh"], FirebugContext, "info");
+                        Firebug.Console.logFormatted(["jQuery Lint will be available after next refresh"], getFirebugContext(), "info");
                     } else {
-                        Firebug.Console.logFormatted(["jQuery Lint won't be loaded after next refresh"], FirebugContext, "info");
+                        Firebug.Console.logFormatted(["jQuery Lint won't be loaded after next refresh"], getFirebugContext(), "info");
                     }
                 }
             },
@@ -862,7 +869,7 @@ FBL.ns(function() {
                 var cache = evalJQueryCache(object);
                 if (!cache) return;
                 var rep = Firebug.getRep(cache);
-                rep.inspectObject(cache, FirebugContext);
+                rep.inspectObject(cache, getFirebugContext());
             },
             ///////////////////////////////////////////////////////////////////////////////////////////
             dataIterator: function(object) {
@@ -1129,7 +1136,7 @@ FBL.ns(function() {
         }
         
         Firebug.registerModule(Firebug.FireQuery);
-        Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryExpression); // need to get this before array rep (jQuery expression behaves like array from JQuery 1.3)
-        Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to get this before old Element rep
+        Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryExpression); // need to insert this before array rep (jQuery expression behaves like array since JQuery 1.3)
+        Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to insert this before old Element rep
     }
 });
