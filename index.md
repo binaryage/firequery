@@ -6,7 +6,8 @@ product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
 download: https://addons.mozilla.org/en-US/firefox/addon/12632
 ##download: https://addons.mozilla.org/en-US/firefox/addons/versions/12632
-downloadtitle: Install 1.0
+downloadtitle: Install v1.0
+downloadsubtitle: and boost your jQuery skills
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
 repo: http://github.com/darwin/firequery
 advert: After installation and Firefox restart you can visit the <a href="/test/index.html">FireQuery test page</a>
