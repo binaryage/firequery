@@ -353,6 +353,14 @@ FBL.ns(function() {
             jQuery.data_originalReplacedByFireQuery = jQuery.data;
             jQuery.data = function(elem, name, data) {
                 var res = this.data_originalReplacedByFireQuery.apply(this, arguments);
+            	if (!(res instanceof jQuery) && (jQuery.type(res) == 'object') && !name) {
+        			if (parseFloat(jQuery.fn.jquery) >= 1.7) {
+                        var events = this.data_originalReplacedByFireQuery.call(this, elem, 'events');
+                        if (events) {
+                            res = jQuery.extend({}, res, {events: events});
+                        }
+                    }
+        		}
                 try {
                     if (name && data!==undefined) {
                         mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
