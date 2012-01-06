@@ -4,9 +4,9 @@ title: FireQuery is a Firebug extension for jQuery development
 product: firequery
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
-download: https://addons.mozilla.org/en-US/firefox/addon/12632
-##download: https://addons.mozilla.org/en-US/firefox/addons/versions/12632
-downloadtitle: Install v1.0
+##download: https://addons.mozilla.org/en-US/firefox/addon/12632
+download: https://addons.mozilla.org/en-US/firefox/addons/versions/12632
+downloadtitle: Install v1.1
 downloadsubtitle: and boost your jQuery skills
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
 repo: http://github.com/darwin/firequery
@@ -50,6 +50,7 @@ shots: [{
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
+* **v1.1** works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 9.0)
 * **v1.0** works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7 also worked for me with a beta of Firebug 1.8 (Firefox 3.0 - 5.0)
 * **v0.9** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 4.0)
 * **v0.8** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)
@@ -108,6 +109,11 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 #### How can I specify my own jQuery when pressing jQuerify button?
 > You can specify your own URL in `about:config` for the key `extensions.firebug.firequery.jQueryURL`.<br>For example you can use Google's jQuery urls [http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery](http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery)
 
+#### How can I show internal jQuery data (e.g. 'events')?
+> Since jQuery 1.7.1 data() function does not return internal jQuery data structures.  You may switch FireQuery into original behavior using this option:
+
+<a target="_blank" href="/img/firequery-internal-data.png"><img src="/img/firequery-internal-data.png" width="600"></a>
+
 #### How can I use jQuery Lint with FireQuery?
 <a target="_blank" href="/img/firequery-with-lint.png"><img src="/img/firequery-with-lint.png" width="600"></a>
 
@@ -119,6 +125,11 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 
 ## Changelog
 
+* **v1.1** (06.01.2012)
+  * [[darwin][darwin]] jQuery 1.7.1 does not present internal jQuery data structures in .data() call anymore, see <a href="http://firequery.binaryage.com#faq">FAQ</a>
+  * [[darwin][darwin]] marked as compatible with Firefox 9.*
+  * [[darwin][darwin]] fixed compatibility with Firebug 1.9
+  * [[darwin][darwin]] updated jQuery to 1.7.1 (jQuerify feature)
 
 * **v1.0** (26.06.2011)
   * [[darwin][darwin]] marked as compatible with Firefox 5.*
