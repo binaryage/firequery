@@ -350,24 +350,122 @@ FBL.ns(function() {
             if (jQuery.wrappedJSObject) jQuery = jQuery.wrappedJSObject;
             if (jQuery._patchedByFireQuery) return;
             jQuery._patchedByFireQuery = true;
+			
+			// thanks Jeremy, taken from:
+			//     Underscore.js 1.2.4
+			//     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
+		    var eq = function(a, b, stack) {
+		      // Identical objects are equal. `0 === -0`, but they aren't identical.
+		      // See the Harmony `egal` proposal: http://wiki.ecmascript.org/doku.php?id=harmony:egal.
+		      if (a === b) return a !== 0 || 1 / a == 1 / b;
+		      // A strict comparison is necessary because `null == undefined`.
+		      if (a == null || b == null) return a === b;
+		      // Compare `[[Class]]` names.
+		      var className = toString.call(a);
+		      if (className != toString.call(b)) return false;
+		      switch (className) {
+		        // Strings, numbers, dates, and booleans are compared by value.
+		        case '[object String]':
+		          // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
+		          // equivalent to `new String("5")`.
+		          return a == String(b);
+		        case '[object Number]':
+		          // `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
+		          // other numeric values.
+		          return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
+		        case '[object Date]':
+		        case '[object Boolean]':
+		          // Coerce dates and booleans to numeric primitive values. Dates are compared by their
+		          // millisecond representations. Note that invalid dates with millisecond representations
+		          // of `NaN` are not equivalent.
+		          return +a == +b;
+		        // RegExps are compared by their source patterns and flags.
+		        case '[object RegExp]':
+		          return a.source == b.source &&
+		                 a.global == b.global &&
+		                 a.multiline == b.multiline &&
+		                 a.ignoreCase == b.ignoreCase;
+		      }
+		      if (typeof a != 'object' || typeof b != 'object') return false;
+		      // Assume equality for cyclic structures. The algorithm for detecting cyclic
+		      // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
+		      var length = stack.length;
+		      while (length--) {
+		        // Linear search. Performance is inversely proportional to the number of
+		        // unique nested structures.
+		        if (stack[length] == a) return true;
+		      }
+		      // Add the first object to the stack of traversed objects.
+		      stack.push(a);
+		      var size = 0, result = true;
+		      // Recursively compare objects and arrays.
+		      if (className == '[object Array]') {
+		        // Compare array lengths to determine if a deep comparison is necessary.
+		        size = a.length;
+		        result = size == b.length;
+		        if (result) {
+		          // Deep compare the contents, ignoring non-numeric properties.
+		          while (size--) {
+		            // Ensure commutative equality for sparse arrays.
+		            if (!(result = size in a == size in b && eq(a[size], b[size], stack))) break;
+		          }
+		        }
+		      } else {
+		        // Objects with different constructors are not equivalent.
+		        if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) return false;
+		        // Deep compare objects.
+		        for (var key in a) {
+		          if (hasOwnProperty.call(a, key)) {
+		            // Count the expected number of properties.
+		            size++;
+		            // Deep compare each member.
+		            if (!(result = hasOwnProperty.call(b, key) && eq(a[key], b[key], stack))) break;
+		          }
+		        }
+		        // Ensure that both objects contain the same number of properties.
+		        if (result) {
+		          for (key in b) {
+		            if (hasOwnProperty.call(b, key) && !(size--)) break;
+		          }
+		          result = !size;
+		        }
+		      }
+		      // Remove the first object from the stack of traversed objects.
+		      stack.pop();
+		      return result;
+		    };
+			
             jQuery.data_originalReplacedByFireQuery = jQuery.data;
-            jQuery.data = function(elem, name, data) {
-                var res = this.data_originalReplacedByFireQuery.apply(this, arguments);
-            	if (!(res instanceof jQuery) && (res instanceof Object) && !name) {
-        			if (parseFloat(jQuery.fn.jquery) >= 1.7) {
-                        var events = this.data_originalReplacedByFireQuery.call(this, elem, 'events');
-                        if (events) {
-                            res = jQuery.extend({}, res, {events: events});
-                        }
-                    }
-        		}
-                try {
-                    if (name && data!==undefined) {
-                        mutateData.call(context.getPanel('html'), elem, MODIFICATION, name, data);
-                    }
-                } catch (ex) {
-                    // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
-                }
+            jQuery.data = function(elem, name, data, showInternals) {
+				// since jQuery 1.7, jQuery.data() does not show internal jQuery data structures like 'events'
+				// there is a 4th optional private parameter on jQuery.data() which enables original behavior
+				// https://github.com/darwin/firequery/issues/24
+				var reading = (data===undefined && !(typeof name === "object" || typeof name === "function")); // when reading values
+				var writing = !reading;
+				var forceInternals = Firebug.FireQuery.getPref('showInternalData')?true:undefined;
+				if (reading && forceInternals) {
+					showInternals = true;
+				}
+				if (writing) {
+					var snapshot = this.data_originalReplacedByFireQuery.apply(this, [elem, undefined, undefined, forceInternals]);
+					var oldData = this.extend(true, {}, snapshot); // need to do a deep copy of whole structur
+				}
+                var res = this.data_originalReplacedByFireQuery.apply(this, [elem, name, data, showInternals]);
+				if (writing) {
+	                try {
+						var newData = this.data_originalReplacedByFireQuery.apply(this, [elem, undefined, undefined, forceInternals]);
+						for (var item in newData) {
+							if (newData.hasOwnProperty(item)) {
+								if (!eq(oldData[item], newData[item], [])) { // highlight only modified items
+									mutateData.call(context.getPanel('html'), elem, MODIFICATION, item, newData[item]);
+								}
+							}
+						}
+	                } catch (ex) {
+	                    // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
+	                    dbg("   ! "+ex);
+	                }
+				}
                 return res;
             };
             jQuery.removeData_originalReplacedByFireQuery = jQuery.removeData;
@@ -379,6 +477,7 @@ FBL.ns(function() {
                     }
                 } catch (ex) {
                     // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
+                    dbg("   ! "+ex);
                 }
                 return res;
             };
@@ -429,7 +528,7 @@ FBL.ns(function() {
         // Firebug.FireQuery
         //
         Firebug.FireQuery = extend(Firebug.ActivableModule, {
-            version: '0.9',
+            version: '1.1',
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
                 dbg(">>>FireQuery.start");
@@ -595,6 +694,7 @@ FBL.ns(function() {
                 return [
                     '-',
                     optionMenu("Use jQuery Lint", "useLint"),
+                    optionMenu("Show internal jQuery data", "showInternalData"),
                     {
                         label: "Visit FireQuery Website...",
                         nol10n: true,
@@ -762,38 +862,40 @@ FBL.ns(function() {
                 }
             };
         } else {
-            // new path for Firebug 1.6+
-            Firebug.Inspector.originalHighlightObject = Firebug.Inspector.highlightObject;
-            Firebug.Inspector.highlightObject = function(element, context, highlightType, boxFrame) {
-                if (!this.multiHighlighters) {
-                    this.multiHighlighters = [];
-                }
-                var i, highlighter = new Firebug.Inspector.BoxModelHighlighter();
-                if (this.multiHighlighters.length) {
-                    for (i = 0; i < this.multiHighlighters.length; i++) {
-                        this.ffHighlighterContext.boxModelHighlighter = this.multiHighlighters[i];
-                        highlighter.unhighlight(this.ffHighlighterContext);
-                        delete this.multiHighlighters[i];
-                    }
-                }
-                this.multiHighlighters = [];
+			if (!checkFirebugVersion(1, 9)) { // since FB1.9 we implement highlightObject method on JQueryExpression rep 
+	            // path for Firebug 1.6-1.8
+	            Firebug.Inspector.originalHighlightObject = Firebug.Inspector.highlightObject;
+	            Firebug.Inspector.highlightObject = function(element, context, highlightType, boxFrame) {
+	                if (!this.multiHighlighters) {
+	                    this.multiHighlighters = [];
+	                }
+	                var i, highlighter = new Firebug.Inspector.BoxModelHighlighter();
+	                if (this.multiHighlighters.length) {
+	                    for (i = 0; i < this.multiHighlighters.length; i++) {
+	                        this.ffHighlighterContext.boxModelHighlighter = this.multiHighlighters[i];
+	                        highlighter.unhighlight(this.ffHighlighterContext);
+	                        delete this.multiHighlighters[i];
+	                    }
+	                }
+	                this.multiHighlighters = [];
         
-                if (!element || !FirebugReps.Arr.isArray(element)) {
-                    return Firebug.Inspector.originalHighlightObject.call(this, element, context, highlightType, boxFrame);
-                } else {
-                    Firebug.Inspector.originalHighlightObject.call(this, null, context, highlightType, boxFrame);
-                    if (context && context.window && context.window.document) {
-                        this.ffHighlighterContext = context;
-                        this.multiHighlighters.push(context.boxModelHighlighter);
-                        for (i = 0; i < element.length; i++) {
-                            context.boxModelHighlighter = null;
-                            highlighter.highlight(context, element[i]);
-                            this.multiHighlighters.push(context.boxModelHighlighter);
-                        }
-                        this.ffHighlighterContext.boxModelHighlighter = null;
-                    }
-                }
-            };
+	                if (!element || !FirebugReps.Arr.isArray(element)) {
+	                    return Firebug.Inspector.originalHighlightObject.call(this, element, context, highlightType, boxFrame);
+	                } else {
+	                    Firebug.Inspector.originalHighlightObject.call(this, null, context, highlightType, boxFrame);
+	                    if (context && context.window && context.window.document) {
+	                        this.ffHighlighterContext = context;
+	                        this.multiHighlighters.push(context.boxModelHighlighter);
+	                        for (i = 0; i < element.length; i++) {
+	                            context.boxModelHighlighter = null;
+	                            highlighter.highlight(context, element[i]);
+	                            this.multiHighlighters.push(context.boxModelHighlighter);
+	                        }
+	                        this.ffHighlighterContext.boxModelHighlighter = null;
+	                    }
+	                }
+	            }
+			}
         }
         
         ////////////////////////////////////////////////////////////////////////
@@ -829,6 +931,11 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             className: "jquery-expression",
+            /////////////////////////////////////////////////////////////////////////////////////////
+		    highlightObject: function(object, context, target) { // FB1.9+
+				// treat jQuery object as an array 
+		        FirebugReps.Arr.highlightObject(object, context, target);
+		    },
             /////////////////////////////////////////////////////////////////////////////////////////
             supportsObject: function(object) {
                 if (!object) return;
