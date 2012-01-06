@@ -7,31 +7,16 @@ SUPPORT = File.join(ROOT, 'support')
 TEST = File.join(ROOT, 'test')
 JQUERY_DIR = File.join(ROOT, 'jquery')
 
-unless defined? OSX then
-  OSX = PLATFORM =~ /darwin/
-  WIN = PLATFORM =~ /win32/
-  NIX = !(OSX || WIN)
-end
-
+require 'rubygems'
 begin
-  require 'term/ansicolor'
-  include Term::ANSIColor
+    require 'colored'
 rescue LoadError
-  raise 'Run "gem install term-ansicolor"'
-end
-# http://kpumuk.info/ruby-on-rails/colorizing-console-ruby-script-output/
-if WIN then
-  begin
-    require 'win32console'
-    include Win32::Console::ANSI
-  rescue LoadError
-    raise 'Run "gem install win32console" to use terminal colors on Windows'
-  end
+    raise 'You must "gem install colored" to use terminal colors'
 end
 
-def file_color(text); yellow(text); end
-def dir_color(text); blue(text); end
-def cmd_color(text); green(text); end
+def file_color(text); text.yellow; end
+def dir_color(text); text.blue; end
+def cmd_color(text); text.magenta; end
 
 #
 # you can use FileUtils: http://corelib.rubyonrails.org/classes/FileUtils.html
@@ -87,19 +72,19 @@ def parse_version()
   f = File.new(File.join(FIREFOX, 'install.rdf'))
   text = f.read
   unless text=~/<em:version>([^<]*)<\/em:version>/
-    puts "#{red('Version not found')}"
+    puts "#{'Version not found'.red}"
     exit
   end
   $1
 end
 
 def die(s)
-  puts(red(s))
+  puts(s.red)
   exit(1)
 end
 
 def patch(filepath, matcher, replacer)
-  puts "Patching #{blue(filepath[ROOT.size+1..-1])} with #{yellow(replacer.to_s)}"
+  puts "Patching #{filepath[ROOT.size+1..-1].blue} with #{replacer.to_s.yellow}"
   applied = false
   lines = []
   File.open(filepath, 'r') do |f|
@@ -119,7 +104,7 @@ def check_if_addon_exists()
 end
 
 def sys(cmd)
-    puts blue("> "+cmd)
+    puts ("> "+cmd).blue
     system(cmd)
 end
 
@@ -146,11 +131,11 @@ task :default do
   File.unlink(res) if File.exists?(res)
   puts "#{cmd_color('zipping')} #{file_color(res)}"
   Dir.chdir(TMP) do
-    puts red('need zip on command line (download http://www.info-zip.org/Zip.html)') unless system("zip -r \"#{res}\" *");
+    puts ('need zip on command line (download http://www.info-zip.org/Zip.html)').red unless system("zip -r \"#{res}\" *");
   end
   remove_dir(TMP) if File.exist?(TMP) # recursive!
   
-  puts "\ninstaller is in #{yellow(res)}, enjoy!"
+  puts "\ninstaller is in #{res.yellow}, enjoy!"
 end
 
 desc "Resets version in all relevant sources"
@@ -159,11 +144,11 @@ task :version do
   version = ARGV[1] or die("Please specify a version as first parameter")
   firequery_js_path = File.join(FIREFOX, 'chrome', 'content', 'firequery.js')
   if not patch(firequery_js_path, /version: '([0-9\.])+'/, "version: '#{version}'")
-    puts "  #{red("patching had no effect")}"
+    puts "  #{"patching had no effect".red}"
   end
   install_rdf_path = File.join(FIREFOX, 'install.rdf')
   if not patch(install_rdf_path, /<em:version>([0-9\.])+<\/em:version>/, "<em:version>#{version}</em:version>")
-    puts "  #{red("patching had no effect")}"
+    puts "  #{"patching had no effect".red}"
   end
   exit(0)
 end
