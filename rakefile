@@ -94,7 +94,7 @@ def patch(filepath, matcher, replacer)
     end
   end
   File.open(filepath, "w") do |f|
-    f << lines
+    f << lines.join
   end
   applied
 end
