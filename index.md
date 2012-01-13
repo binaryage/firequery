@@ -5,7 +5,7 @@ product: firequery
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
 download: https://addons.mozilla.org/firefox/addon/firequery
-#download: https://addons.mozilla.org/en-US/firefox/addons/versions/12632
+#download: https://addons.mozilla.org/firefox/addons/versions/12632
 downloadtitle: Install v1.1
 downloadsubtitle: and boost your jQuery skills
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after restart</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
@@ -126,63 +126,63 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 ## Changelog
 
 * **v1.1** (06.01.2012)
-  * [[darwin][darwin]] jQuery 1.7.1 does not present internal jQuery data structures in .data() call anymore, see <a href="http://firequery.binaryage.com#faq">FAQ</a>
-  * [[darwin][darwin]] marked as compatible with Firefox 9.*
-  * [[darwin][darwin]] fixed compatibility with Firebug 1.9
-  * [[darwin][darwin]] updated jQuery to 1.7.1 (jQuerify feature)
+  * jQuery 1.7.1 does not present internal jQuery data structures in .data() call anymore, see <a href="http://firequery.binaryage.com#faq">FAQ</a>
+  * marked as compatible with Firefox 9.*
+  * fixed compatibility with Firebug 1.9
+  * updated jQuery to 1.7.1 (jQuerify feature)
 
 * **v1.0** (26.06.2011)
-  * [[darwin][darwin]] marked as compatible with Firefox 5.*
-  * [[darwin][darwin]] fixed broken compatibility with Firebug 1.8
-  * [[darwin][darwin]] updated jQuery to 1.6.1 (jQuerify feature)
-  * [[darwin][darwin]] updated jQueryLint to 1.1
+  * marked as compatible with Firefox 5.*
+  * fixed broken compatibility with Firebug 1.8
+  * updated jQuery to 1.6.1 (jQuerify feature)
+  * updated jQueryLint to 1.1
 
 * **v0.9** (07.02.2011)
-  * [[darwin][darwin]] upgraded jQuery to 1.5 (jQuerify feature)
+  * upgraded jQuery to 1.5 (jQuerify feature)
 
 * **v0.8** (30.10.2010)
-  * [[darwin][darwin]] fixed compatibility with Firebug 1.6 and early Firebug 1.7 alpha
-  * [[darwin][darwin]] upgraded jQuerify to inject jQuery 1.4.3
-  * [[darwin][darwin]] upgraded jQuery Lint to 1.01
+  * fixed compatibility with Firebug 1.6 and early Firebug 1.7 alpha
+  * upgraded jQuerify to inject jQuery 1.4.3
+  * upgraded jQuery Lint to 1.01
 
 * **v0.7** (28.02.2010)
-  * [[darwin][darwin]] added jQuery Lint support, see: <a href="http://github.com/jamespadolsey/jQuery-Lint">http://github.com/jamespadolsey/jQuery-Lint</a>
-  * [[darwin][darwin]] fixed Firebug version check bug
-  * [[darwin][darwin]] fixed incorrect object representation in console (<a href="http://github.com/darwin/firequery/issues/closed#issue/10">issue #10</a>)
+  * added jQuery Lint support, see: <a href="http://github.com/jamespadolsey/jQuery-Lint">http://github.com/jamespadolsey/jQuery-Lint</a>
+  * fixed Firebug version check bug
+  * fixed incorrect object representation in console (<a href="http://github.com/darwin/firequery/issues/closed#issue/10">issue #10</a>)
 
 * **v0.6** (20.02.2010)
-  * [[darwin][darwin]] fix retrieval of jQuery.data with jQuery 1.4+ (missing data in HTML panel and missing small envelope icons)
-  * [[darwin][darwin]] extended test page to enable testing historical jQuery versions
-  * [[darwin][darwin]] jQuerify script upgraded to jQuery 1.4.2
+  * fix retrieval of jQuery.data with jQuery 1.4+ (missing data in HTML panel and missing small envelope icons)
+  * extended test page to enable testing historical jQuery versions
+  * jQuerify script upgraded to jQuery 1.4.2
 
 * **v0.5** (20.01.2010)
-  * [[darwin][darwin]] jQuerify script upgraded to jQuery 1.4
-  * [[sroussey][sroussey]] Firebug 1.5 compatibility (thanks to Steven Roussey)
-  * [[darwin][darwin]] fixed mysterious bug with jQueryUI and its datepicker (<a href="http://getsatisfaction.com/binaryage/topics/breaks_the_jquery_ui_datepicker">more info</a>)
+  * jQuerify script upgraded to jQuery 1.4
+  * Firebug 1.5 compatibility (thanks to Steven Roussey) [[sroussey][sroussey]]
+  * fixed mysterious bug with jQueryUI and its datepicker (<a href="http://getsatisfaction.com/binaryage/topics/breaks_the_jquery_ui_datepicker">more info</a>)
 
 * **v0.4.1** (24.12.2009)
-  * [[darwin][darwin]] Fixed broken compatibility with Firebug 1.4
+  * Fixed broken compatibility with Firebug 1.4
 
 * **v0.4** (13.12.2009)
-  * [[sroussey][sroussey]] Firebug 1.5 compatibility
-  * [[darwin][darwin]] Firefox 3.6 compatibility
-  * [[darwin][darwin]] SeaMonkey 2.0 support
-  * [[darwin][darwin]] It is possible to specify your own jQuery URL (see [FAQ](#faq))
+  * Firebug 1.5 compatibility [[sroussey][sroussey]]
+  * Firefox 3.6 compatibility
+  * SeaMonkey 2.0 support
+  * It is possible to specify your own jQuery URL (see [FAQ](#faq))
 
 * **v0.3** (27.06.2009)
-  * [[darwin][darwin]] Firebug 1.3 compatibility
-  * [[darwin][darwin]] correct support for jQuery.removeData
+  * Firebug 1.3 compatibility
+  * correct support for jQuery.removeData
 
 * **v0.2** (26.06.2009)
-  * [[darwin][darwin]] effective way how to retrieve jQuery data
-  * [[darwin][darwin]] mutation events
-  * [[darwin][darwin]] integrated jQuerify
-  * [[darwin][darwin]] works with jQuery loaded dynamically (late binding)
+  * effective way how to retrieve jQuery data
+  * mutation events
+  * integrated jQuerify
+  * works with jQuery loaded dynamically (late binding)
 
 * **v0.1** (07.01.2009)
-  * [[darwin][darwin]] support for jQuery expressions
-  * [[darwin][darwin]] support for jQuery data
-  * [[darwin][darwin]] highlighter for jQuery collections 
+  * support for jQuery expressions
+  * support for jQuery data
+  * highlighter for jQuery collections 
 
 [darwin]: http://github.com/darwin
 [sroussey]: http://github.com/sroussey
