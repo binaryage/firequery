@@ -100,7 +100,7 @@ You should now be able to install the XPI file in Firefox: ``File -> Open File``
 
 **<span style="color: #a00">This extension may be insecure!</span>**
 
-So please don't browse porn sites with this enabled. I still don't fully understand the Firefox extension security model. The reality is that I'm interacting with naked HTML page from privileged code which may be insecure. 
+So please don't browse porn sites with this enabled. I still don't fully understand the Firefox extension security model. The reality is that I interact with naked HTML page from privileged code which may be insecure. 
 
 A good solution is to have dedicated [Firefox profile](http://support.mozilla.com/en-US/kb/Profiles) for development and use it only for safe sites.
 
