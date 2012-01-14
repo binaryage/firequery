@@ -49,21 +49,22 @@ shots: [{
 ### Compatibility
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
-
-* **v1.1** works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 9.0)
-<br><a href="javascript:$('.older-compatibility').toggle()">show compatibility table for older versions</a>
-<div class="older-compatibility" style="display:none">
-* **v1.0** works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7 also worked for me with a beta of Firebug 1.8 (Firefox 3.0 - 5.0)
-* **v0.9** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 4.0)
-* **v0.8** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)
-* **v0.7** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
-* **v0.6** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
-* **v0.5** works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)
-* **v0.4.1** works with official Firebug 1.3.3, 1.4.5 and betas of Firebug 1.5 (Firefox 3.0 - 3.6)
-* **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6) - BROKEN with Firebug 1.4!
-* **v0.3** works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
-* **v0.2** works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)
-</div>
+<ul style="margin-bottom: 0px !important">
+<li><b>v1.1</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 11.0)</li>
+</ul>
+<a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions &darr;</a>
+<ul class="older-compatibility" style="display:none">
+<li><b>v1.0</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7 also worked for me with a beta of Firebug 1.8 (Firefox 3.0 - 5.0)</li>
+<li><b>v0.9</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 4.0)</li>
+<li><b>v0.8</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)</li>
+<li><b>v0.7</b> works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)</li>
+<li><b>v0.6</b> works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)</li>
+<li><b>v0.5</b> works with official Firebug 1.3.3, 1.4.5 and 1.5 (Firefox 3.0 - 3.6)</li>
+<li><b>v0.4.1</b> works with official Firebug 1.3.3, 1.4.5 and betas of Firebug 1.5 (Firefox 3.0 - 3.6)</li>
+<li><b>v0.4</b> works with beta Firebug 1.5 (Firefox 3.5 - 3.6) - BROKEN with Firebug 1.4!</li>
+<li><b>v0.3</b> works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)</li>
+<li><b>v0.2</b> works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)</li>
+</ul>
 
 ## Screencast
 
