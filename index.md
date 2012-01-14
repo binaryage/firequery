@@ -51,6 +51,8 @@ shots: [{
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 
 * **v1.1** works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 9.0)
+<br><a href="javascript:$('.older-compatibility').toggle()">show compatibility table for older versions</a>
+<div class="older-compatibility" style="display:none">
 * **v1.0** works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7 also worked for me with a beta of Firebug 1.8 (Firefox 3.0 - 5.0)
 * **v0.9** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 4.0)
 * **v0.8** works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)
@@ -61,6 +63,7 @@ Both Firefox and Firebug are moving targets. Please make sure you use compatible
 * **v0.4** works with beta Firebug 1.5 (Firefox 3.5 - 3.6) - BROKEN with Firebug 1.4!
 * **v0.3** works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)
 * **v0.2** works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)
+</div>
 
 ## Screencast
 
