@@ -4,10 +4,10 @@ title: FireQuery is a Firebug extension for jQuery development
 product: firequery
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
-download: https://addons.mozilla.org/firefox/addon/firequery
-#download: https://addons.mozilla.org/firefox/addons/versions/12632
-downloadtitle: Install v1.1
-downloadsubtitle: and boost your jQuery skills
+#download: https://addons.mozilla.org/firefox/addon/firequery
+download: https://addons.mozilla.org/firefox/addons/versions/12632
+downloadtitle: Install v1.2
+downloadsubtitle: and become jQuery Jedi
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after install</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
 repo: http://github.com/darwin/firequery
 advert: After installation and Firefox restart you can visit the <a href="/test/index.html">FireQuery test page</a>
@@ -50,10 +50,11 @@ shots: [{
 
 Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.
 <ul style="margin-bottom: 0px !important">
-<li><b>v1.1</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 11.0)</li>
+<li><b>v1.2</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 13.0)</li>
 </ul>
 <a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions &darr;</a>
 <ul class="older-compatibility" style="display:none">
+<li><b>v1.1</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 11.0)</li>
 <li><b>v1.0</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7 also worked for me with a beta of Firebug 1.8 (Firefox 3.0 - 5.0)</li>
 <li><b>v0.9</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 4.0)</li>
 <li><b>v0.8</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4 and 1.6, also worked for me with early beta of Firebug 1.7 (Firefox 3.0 - 3.7)</li>
@@ -128,6 +129,9 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 > You have to enable Console panel for this feature to work
 
 ## Changelog
+
+* **v1.2** (17.04.2012)
+  * fixed broken jQuery.data when using "Show internal jQuery data", introduced in v1.1 (<a href="https://github.com/darwin/firequery/issues/28">issue #28</a>)
 
 * **v1.1** (06.01.2012)
   * jQuery 1.7.1 does not present internal jQuery data structures in .data() call anymore, see <a href="http://firequery.binaryage.com#faq">FAQ</a>
