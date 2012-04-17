@@ -44,15 +44,21 @@
                 v = query.queryKey['v'];
             }
             if (v!='none') {
-                google.load("jquery", v);
                 google.setOnLoadCallback(function() {
-                    var version = $.fn.jquery;
-                    if (version.length==3) version += ".0";
-                    $('.version-switcher a.selected-version').removeClass('selected-version');
-                    $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
+					try { // when there is an error in google.load, this callback still gets called without $ defined
+	                    var version = $.fn.jquery;
+	                    if (version.length==3) version += ".0";
+	                    $('.version-switcher a.selected-version').removeClass('selected-version');
+	                    $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
+					} catch(e) {}
                 });
+				try {
+	                google.load("jquery", v);
+		            window.selectedVersion = v;
+				} catch (e) {
+					console.log("Unable to load jQuery version %o using Google AJAX library: %o", v, e.message);
+				}
             }
-            window.selectedVersion = v;
         })();
     </script>
     <style type="text/css" media="screen">
@@ -94,7 +100,7 @@
             <a href="?v=1.7.2">1.7.2</a> or
             <a href="?v=none">none</a>
             <script type="text/javascript" charset="utf-8">
-                if (window.selectedVersion=='none') {
+                if (!window.selectedVersion) {
                     var a = document.getElementsByClassName('version-switcher')[0].children;
                     var last = a[a.length-2]; // last one is this <script>
                     last.className = 'selected-version';
@@ -165,7 +171,7 @@
             });
         }
 
-        if (window.selectedVersion != 'none') {
+        if (window.selectedVersion) {
             exercise();
         }
     </script>
