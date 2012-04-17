@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>jQuery breaks internal data</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js" type="text/javascript"></script> 
+</head>
+<body>
+    
+    <h1>FireQuery breaks when showing internal data is enabled</h1>
+    <h2>Enable "Show internal jQuery data" in Console panel dropdown in Firebug</h2>
+    <ul>
+        <li><a href="https://getsatisfaction.com/binaryage/topics/firequery_breaking_jquery?utm_content=topic_link&utm_medium=email&utm_source=reply_notification">https://getsatisfaction.com/binaryage/topics/firequery_breaking_jquery?utm_content=topic_link&utm_medium=email&utm_source=reply_notification</a></li>
+    </ul>
+    
+    <div class="test">
+    </div>
+    
+    <button id="btn1">test</button>
+    
+    <script type="text/javascript" charset="utf-8">
+        $(function () { 
+            $('body').data('hello', 'world'); 
+            console.log("xxx", $('body').data('hello')); 
+            setTimeout(function () { 
+                console.log("timeout0", $('body').data('hello')); 
+            }, 0); 
+            setTimeout(function () { 
+                console.log("timeout100", $('body').data('hello')); 
+            }, 100); 
+            $('#btn1').click(function() {
+                console.log("test btn1", $('body').data('hello')); 
+            });
+            console.log("yyy", $('body').data('hello')); 
+        });    
+    
+        // $(".test").data("a", 1);
+        // console.log($(".test").data("a"));
+    </script>
+
+</body>
+</html>
