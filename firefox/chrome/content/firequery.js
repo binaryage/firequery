@@ -526,7 +526,7 @@ FBL.ns(function() {
         // Firebug.FireQuery
         //
         Firebug.FireQuery = extend(Firebug.ActivableModule, {
-            version: '1.1',
+            version: '1.2',
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
                 dbg(">>>FireQuery.start");
