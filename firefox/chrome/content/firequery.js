@@ -269,12 +269,13 @@ FBL.ns(function() {
         
         var evalJQueryCache = function(object, context) {
             try {
+				var forceInternals = Firebug.FireQuery.getPref('showInternalData')?true:undefined;
                 var win = object.ownerDocument.defaultView;
                 var wrapper = win.wrappedJSObject || win;
                 var jQuery = wrapper.jQuery;
                 // jQuery 1.4 breaking changes (http://jquery14.com/day-01/jquery-14):
                 // jQuery.data(elem) no longer returns an id, it returns the element’s object cache instead.
-                var idOrCache = jQuery.data(object.wrappedJSObject || object);
+                var idOrCache = jQuery.data(object.wrappedJSObject || object, undefined, undefined, forceInternals);
                 if (typeof idOrCache == "object") return idOrCache; // jQuery 1.4+ path
                 return jQuery.cache[idOrCache]; // jQuery 1.3- path 
             } catch (ex) {}
@@ -443,12 +444,9 @@ FBL.ns(function() {
 				var reading = (data===undefined && !(typeof name === "object" || typeof name === "function")); // when reading values
 				var writing = !reading;
 				var forceInternals = Firebug.FireQuery.getPref('showInternalData')?true:undefined;
-				if (reading && forceInternals) {
-					showInternals = true;
-				}
 				if (writing) {
 					var snapshot = this.data_originalReplacedByFireQuery.apply(this, [elem, undefined, undefined, forceInternals]);
-					var oldData = this.extend(true, {}, snapshot); // need to do a deep copy of whole structur
+					var oldData = this.extend(true, {}, snapshot); // need to do a deep copy of the whole structure
 				}
                 var res = this.data_originalReplacedByFireQuery.apply(this, [elem, name, data, showInternals]);
 				if (writing) {
