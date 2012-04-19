@@ -4,8 +4,8 @@ title: FireQuery is a Firebug extension for jQuery development
 product: firequery
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
-#download: https://addons.mozilla.org/firefox/addon/firequery
-download: https://addons.mozilla.org/firefox/addons/versions/12632
+download: https://addons.mozilla.org/firefox/addon/firequery
+#download: https://addons.mozilla.org/firefox/addons/versions/12632
 downloadtitle: Install v1.2
 downloadsubtitle: and become jQuery Jedi
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after install</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
