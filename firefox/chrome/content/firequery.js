@@ -323,6 +323,7 @@ FBL.ns(function() {
                 setClass(objectNodeBox, "nodeHidden");
             var nodeAttr;
             if (attrChange == MODIFICATION || attrChange == ADDITION) {
+                dbg("MODIFIED "+attrChange+" "+attrName, objectNodeBox);
                 var rep = Firebug.getRep(attrValue);
                 var tag = rep.shortTag ? rep.shortTag : rep.tag;
                 var valRep = Firebug.HTMLPanel.DataNode.tag.replace({
@@ -339,6 +340,7 @@ FBL.ns(function() {
                     this.highlightMutation(valRep, objectNodeBox, "mutated");
                 }
             } else if (attrChange == REMOVAL) {
+                dbg("REMOVAL "+attrName, objectNodeBox);
                 nodeAttr = findNodeDataBox(objectNodeBox, attrName);
                 if (nodeAttr) {
                     nodeAttr.parentNode.removeChild(nodeAttr);
@@ -353,110 +355,212 @@ FBL.ns(function() {
             jQuery._patchedByFireQuery = true;
             
             // thanks Jeremy, taken from:
-            //     Underscore.js 1.2.4
+            //     Underscore.js 1.3.3
             //     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
-            var eq = function(a, b, stack) {
-              // Identical objects are equal. `0 === -0`, but they aren't identical.
-              // See the Harmony `egal` proposal: http://wiki.ecmascript.org/doku.php?id=harmony:egal.
-              if (a === b) return a !== 0 || 1 / a == 1 / b;
-              // A strict comparison is necessary because `null == undefined`.
-              if (a == null || b == null) return a === b;
-              // Compare `[[Class]]` names.
-              var className = toString.call(a);
-              if (className != toString.call(b)) return false;
-              switch (className) {
-                // Strings, numbers, dates, and booleans are compared by value.
-                case '[object String]':
-                  // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
-                  // equivalent to `new String("5")`.
-                  return a == String(b);
-                case '[object Number]':
-                  // `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
-                  // other numeric values.
-                  return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
-                case '[object Date]':
-                case '[object Boolean]':
-                  // Coerce dates and booleans to numeric primitive values. Dates are compared by their
-                  // millisecond representations. Note that invalid dates with millisecond representations
-                  // of `NaN` are not equivalent.
-                  return +a == +b;
-                // RegExps are compared by their source patterns and flags.
-                case '[object RegExp]':
-                  return a.source == b.source &&
-                         a.global == b.global &&
-                         a.multiline == b.multiline &&
-                         a.ignoreCase == b.ignoreCase;
-              }
-              if (typeof a != 'object' || typeof b != 'object') return false;
-              // Assume equality for cyclic structures. The algorithm for detecting cyclic
-              // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
-              var length = stack.length;
-              while (length--) {
-                // Linear search. Performance is inversely proportional to the number of
-                // unique nested structures.
-                if (stack[length] == a) return true;
-              }
-              // Add the first object to the stack of traversed objects.
-              stack.push(a);
-              var size = 0, result = true;
-              // Recursively compare objects and arrays.
-              if (className == '[object Array]') {
-                // Compare array lengths to determine if a deep comparison is necessary.
-                size = a.length;
-                result = size == b.length;
-                if (result) {
-                  // Deep compare the contents, ignoring non-numeric properties.
-                  while (size--) {
-                    // Ensure commutative equality for sparse arrays.
-                    if (!(result = size in a == size in b && eq(a[size], b[size], stack))) break;
+            var eq = function(a, b, aStack, bStack) {
+                // Identical objects are equal. `0 === -0`, but they aren't identical.
+                // See the Harmony `egal` proposal: http://wiki.ecmascript.org/doku.php?id=harmony:egal.
+                if (a === b) return a !== 0 || 1 / a == 1 / b;
+                // A strict comparison is necessary because `null == undefined`.
+                if (a == null || b == null) return a === b;
+                // Unwrap any wrapped objects.
+                // if (a instanceof _) a = a._wrapped;
+                // if (b instanceof _) b = b._wrapped;
+                // Compare `[[Class]]` names.
+                var className = toString.call(a);
+                if (className != toString.call(b)) return false;
+                switch (className) {
+                  // Strings, numbers, dates, and booleans are compared by value.
+                  case '[object String]':
+                    // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
+                    // equivalent to `new String("5")`.
+                    return a == String(b);
+                  case '[object Number]':
+                    // `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
+                    // other numeric values.
+                    return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
+                  case '[object Date]':
+                  case '[object Boolean]':
+                    // Coerce dates and booleans to numeric primitive values. Dates are compared by their
+                    // millisecond representations. Note that invalid dates with millisecond representations
+                    // of `NaN` are not equivalent.
+                    return +a == +b;
+                  // RegExps are compared by their source patterns and flags.
+                  case '[object RegExp]':
+                    return a.source == b.source &&
+                           a.global == b.global &&
+                           a.multiline == b.multiline &&
+                           a.ignoreCase == b.ignoreCase;
+                }
+                if (typeof a != 'object' || typeof b != 'object') return false;
+                // Assume equality for cyclic structures. The algorithm for detecting cyclic
+                // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
+                var length = aStack.length;
+                while (length--) {
+                  // Linear search. Performance is inversely proportional to the number of
+                  // unique nested structures.
+                  if (aStack[length] == a) return bStack[length] == b;
+                }
+                // Add the first object to the stack of traversed objects.
+                aStack.push(a);
+                bStack.push(b);
+                var size = 0, result = true;
+                // Recursively compare objects and arrays.
+                if (className == '[object Array]') {
+                  // Compare array lengths to determine if a deep comparison is necessary.
+                  size = a.length;
+                  result = size == b.length;
+                  if (result) {
+                    // Deep compare the contents, ignoring non-numeric properties.
+                    while (size--) {
+                      if (!(result = eq(a[size], b[size], aStack, bStack))) break;
+                    }
+                  }
+                } else {
+                  // Objects with different constructors are not equivalent.
+                  if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) return false;
+                  // Deep compare objects.
+                  for (var key in a) {
+                    if (hasOwnProperty.call(a, key)) {
+                      // Count the expected number of properties.
+                      size++;
+                      // Deep compare each member.
+                      if (!(result = hasOwnProperty.call(b, key) && eq(a[key], b[key], aStack, bStack))) break;
+                    }
+                  }
+                  // Ensure that both objects contain the same number of properties.
+                  if (result) {
+                    for (key in b) {
+                        size--;
+                        if (hasOwnProperty.call(b, key) && !(size--)) break;
+                    }
+                    result = !size;
                   }
                 }
-              } else {
-                // Objects with different constructors are not equivalent.
-                if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) return false;
-                // Deep compare objects.
-                for (var key in a) {
-                  if (hasOwnProperty.call(a, key)) {
-                    // Count the expected number of properties.
-                    size++;
-                    // Deep compare each member.
-                    if (!(result = hasOwnProperty.call(b, key) && eq(a[key], b[key], stack))) break;
-                  }
-                }
-                // Ensure that both objects contain the same number of properties.
-                if (result) {
-                  for (key in b) {
-                    if (hasOwnProperty.call(b, key) && !(size--)) break;
-                  }
-                  result = !size;
-                }
-              }
-              // Remove the first object from the stack of traversed objects.
-              stack.pop();
-              return result;
-            };
+                // Remove the first object from the stack of traversed objects.
+                aStack.pop();
+                bStack.pop();
+                return result;
+              };            
             
-            jQuery.data_originalReplacedByFireQuery = jQuery.data;
+            // taken from jQuery 1.7.1
+            var myExtend = function() {
+                var options, name, src, copy, copyIsArray, clone,
+                    target = arguments[0] || {},
+                    i = 1,
+                    length = arguments.length,
+                    deep = false;
+
+                // Handle a deep copy situation
+                if ( typeof target === "boolean" ) {
+                    deep = target;
+                    target = arguments[1] || {};
+                    // skip the boolean and the target
+                    i = 2;
+                }
+
+                // Handle case when target is a string or something (possible in deep copy)
+                if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
+                    target = {};
+                }
+
+                // extend jQuery itself if only one argument is passed
+                if ( length === i ) {
+                    target = this;
+                    --i;
+                }
+
+                for ( ; i < length; i++ ) {
+                    // Only deal with non-null/undefined values
+                    if ( (options = arguments[ i ]) != null ) {
+                        // Extend the base object
+                        for ( name in options ) {
+                            src = target[ name ];
+                            copy = options[ name ];
+
+                            // Prevent never-ending loop
+                            if ( target === copy ) {
+                                continue;
+                            }
+
+                            // Recurse if we're merging plain objects or arrays
+                            if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
+                                if ( copyIsArray ) {
+                                    copyIsArray = false;
+                                    clone = src && jQuery.isArray(src) ? src : [];
+
+                                } else {
+                                    clone = src && jQuery.isPlainObject(src) ? src : {};
+                                }
+
+                                // Never move original objects, clone them
+                                target[ name ] = myExtend( deep, clone, copy );
+
+                            // Don't bring in undefined values
+                            } else if ( copy !== undefined ) {
+                                target[ name ] = copy;
+                            }
+                        }
+                    }
+                }
+
+                // Return the modified object
+                return target;
+            };            
+            
+            jQuery.__FireQueryShared = {
+                getPref: function(x) { // for some reason we need to wrap it
+                    return Firebug.FireQuery.getPref(x);
+                },
+                extend: function() {
+                    return myExtend.apply(this, Array.prototype.slice.apply(arguments));
+                },
+                eq: eq,
+                __exposedProps__ : {
+                    getPref: "r",
+                    extend: "r",
+                    eq: "r"
+                }
+            };
+            var jQuery_data = jQuery.data;
+            jQuery.__FireQueryShared.data_originalReplacedByFireQuery = function() { 
+                var res = jQuery_data.apply(this, Array.prototype.slice.apply(arguments));
+                return {
+                    res: res,
+                    __exposedProps__ : {
+                        res: "rw"
+                    }    
+                }
+            };
+            jQuery.__FireQueryShared.__exposedProps__.data_originalReplacedByFireQuery = "r";
             jQuery.data = function(elem, name, data, showInternals) {
+                var originalDataImplementation = this.__FireQueryShared.data_originalReplacedByFireQuery;
                 // since jQuery 1.7, jQuery.data() does not show internal jQuery data structures like 'events'
                 // there is a 4th optional private parameter on jQuery.data() which enables original behavior
                 // https://github.com/darwin/firequery/issues/24
                 var reading = (data===undefined && !(typeof name === "object" || typeof name === "function")); // when reading values
                 var writing = !reading;
-                var forceInternals = Firebug.FireQuery.getPref('showInternalData')?true:undefined;
+                var forceInternals = this.__FireQueryShared.getPref('showInternalData')?true:undefined;
                 if (writing) {
-                    var snapshot = this.data_originalReplacedByFireQuery.apply(this, [elem, undefined, undefined, forceInternals]);
-                    var oldData = this.extend(true, {}, snapshot); // need to do a deep copy of the whole structure
+                    var snapshot = originalDataImplementation.apply(this, [elem, undefined, undefined, forceInternals]).res;
+                    var oldData = this.__FireQueryShared.extend(true, {}, snapshot); // need to do a deep copy of the whole structure
                 }
-                var res = this.data_originalReplacedByFireQuery.apply(this, [elem, name, data, showInternals]);
+                var res = originalDataImplementation.apply(this, [elem, name, data, showInternals]).res;
                 if (writing) {
                     try {
-                        var newData = this.data_originalReplacedByFireQuery.apply(this, [elem, undefined, undefined, forceInternals]);
+                        var newData = originalDataImplementation.apply(this, [elem, undefined, undefined, forceInternals]).res;
+                        // add/modify all newData
                         for (var item in newData) {
                             if (newData.hasOwnProperty(item)) {
-                                if (!eq(oldData[item], newData[item], [])) { // highlight only modified items
+                                if (!this.__FireQueryShared.eq(oldData[item], newData[item], [], [])) { // highlight only modified items
                                     mutateData.call(context.getPanel('html'), elem, MODIFICATION, item, newData[item]);
                                 }
+                            }
+                        }
+                        // remove missing oldData
+                        for (var item in oldData) {
+                            if (!newData.hasOwnProperty(item)) {
+                                mutateData.call(context.getPanel('html'), elem, REMOVAL, item);
                             }
                         }
                     } catch (ex) {
@@ -466,12 +570,38 @@ FBL.ns(function() {
                 }
                 return res;
             };
-            jQuery.removeData_originalReplacedByFireQuery = jQuery.removeData;
+            var jQuery_removeData = jQuery.removeData;
+            jQuery.__FireQueryShared.removeData_originalReplacedByFireQuery = function() { 
+                var res = jQuery_removeData.apply(this, Array.prototype.slice.apply(arguments));
+                return {
+                    res: res,
+                    __exposedProps__ : {
+                        res: "rw"
+                    }    
+                }
+            };
+            jQuery.__FireQueryShared.__exposedProps__.removeData_originalReplacedByFireQuery = "r";
             jQuery.removeData = function(elem, name) {
-                var res = this.removeData_originalReplacedByFireQuery.apply(this, arguments);
+                var originalDataImplementation = this.__FireQueryShared.data_originalReplacedByFireQuery;
+                var forceInternals = this.__FireQueryShared.getPref('showInternalData')?true:undefined;
+                var snapshot = originalDataImplementation.apply(this, [elem, undefined, undefined, forceInternals]).res;
+                var oldData = this.__FireQueryShared.extend(true, {}, snapshot); // need to do a deep copy of the whole structure
+                var res = this.__FireQueryShared.removeData_originalReplacedByFireQuery.apply(this, Array.prototype.slice.apply(arguments)).res;
                 try {
-                    if (name) {
-                        mutateData.call(context.getPanel('html'), elem, REMOVAL, name);
+                    var newData = originalDataImplementation.apply(this, [elem, undefined, undefined, forceInternals]).res;
+                    // add/modify all newData
+                    for (var item in newData) {
+                        if (newData.hasOwnProperty(item)) {
+                            if (!this.__FireQueryShared.eq(oldData[item], newData[item], [], [])) { // highlight only modified items
+                                mutateData.call(context.getPanel('html'), elem, MODIFICATION, item, newData[item]);
+                            }
+                        }
+                    }
+                    // remove missing oldData
+                    for (var item in oldData) {
+                        if (!newData.hasOwnProperty(item)) {
+                            mutateData.call(context.getPanel('html'), elem, REMOVAL, item);
+                        }
                     }
                 } catch (ex) {
                     // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
