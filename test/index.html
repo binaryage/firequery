@@ -45,19 +45,19 @@
             }
             if (v!='none') {
                 google.setOnLoadCallback(function() {
-					try { // when there is an error in google.load, this callback still gets called without $ defined
-	                    var version = $.fn.jquery;
-	                    if (version.length==3) version += ".0";
-	                    $('.version-switcher a.selected-version').removeClass('selected-version');
-	                    $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
-					} catch(e) {}
+                    try { // when there is an error in google.load, this callback still gets called without $ defined
+                        var version = $.fn.jquery;
+                        if (version.length==3) version += ".0";
+                        $('.version-switcher a.selected-version').removeClass('selected-version');
+                        $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
+                    } catch(e) {}
                 });
-				try {
-	                google.load("jquery", v, { uncompressed:true });
-		            window.selectedVersion = v;
-				} catch (e) {
-					console.log("Unable to load jQuery version %o using Google AJAX library: %o", v, e.message);
-				}
+                try {
+                    google.load("jquery", v, { uncompressed:true });
+                    window.selectedVersion = v;
+                } catch (e) {
+                    console.log("Unable to load jQuery version %o using Google AJAX library: %o", v, e.message);
+                }
             }
         })();
     </script>
