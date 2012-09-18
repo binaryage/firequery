@@ -53,7 +53,7 @@
 					} catch(e) {}
                 });
 				try {
-	                google.load("jquery", v);
+	                google.load("jquery", v, { uncompressed:true });
 		            window.selectedVersion = v;
 				} catch (e) {
 					console.log("Unable to load jQuery version %o using Google AJAX library: %o", v, e.message);
