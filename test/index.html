@@ -1,9 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-    "http://www.w3.org/TR/html4/strict.dtd">
-
+<!DOCTYPE html>
 <html>
 <head>
-    <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <script type="text/javascript" charset="utf-8">
         (function() {
             // parseUri 1.2.2
@@ -39,25 +37,17 @@
             };
 
             var query = parseUri(location+"");
-            var v = '1'; // don't append major and minor version number, this will pick the latest
+            var v = '1.8.1';
             if (query && query.queryKey && query.queryKey['v']) {
                 v = query.queryKey['v'];
             }
             if (v!='none') {
-                google.setOnLoadCallback(function() {
-                    try { // when there is an error in google.load, this callback still gets called without $ defined
-                        var version = $.fn.jquery;
-                        if (version.length==3) version += ".0";
-                        $('.version-switcher a.selected-version').removeClass('selected-version');
-                        $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
-                    } catch(e) {}
-                });
-                try {
-                    google.load("jquery", v, { uncompressed:true });
-                    window.selectedVersion = v;
-                } catch (e) {
-                    console.log("Unable to load jQuery version %o using Google AJAX library: %o", v, e.message);
-                }
+                var headID = document.getElementsByTagName("head")[0];         
+                var newScript = document.createElement('script');
+                newScript.type = 'text/javascript';
+                newScript.src = '//ajax.googleapis.com/ajax/libs/jquery/'+v+'/jquery.js';
+                headID.appendChild(newScript);
+                window.selectedVersion = v;
             }
         })();
     </script>
@@ -172,10 +162,20 @@
                 1000);
             });
         }
-
+        
         if (window.selectedVersion) {
-            exercise();
+            var interval = setInterval(function() {
+                if (window.jQuery) {
+                    clearInterval(interval);
+                    var version = $.fn.jquery;
+                    if (version.length==3) version += ".0";
+                    $('.version-switcher a.selected-version').removeClass('selected-version');
+                    $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
+                    exercise();
+                }
+            }, 200);
         }
+        
     </script>
 </body>                                                                 
 </html>
