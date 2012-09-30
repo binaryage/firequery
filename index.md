@@ -9,7 +9,7 @@ download: https://addons.mozilla.org/firefox/addon/firequery
 downloadtitle: Install v1.2
 downloadsubtitle: and become jQuery Jedi
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after install</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
-repo: http://github.com/darwin/firequery
+repo: http://github.com/binaryage/firequery
 advert: After installation and Firefox restart you can visit the <a href="/test/index.html">FireQuery test page</a>
 meta_title: FireQuery is a Firebug extension for jQuery development
 meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development,antonin hildebrand
