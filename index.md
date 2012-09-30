@@ -93,7 +93,7 @@ If you want to install the addon from the latest source, you need to build it. I
 
 #### Build steps:
 
-    git clone git://github.com/darwin/firequery.git
+    git clone git://github.com/binaryage/firequery.git
     cd firequery
     rake
   
@@ -131,7 +131,7 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 ## Changelog
 
 * **v1.2** (17.04.2012)
-  * fixed broken jQuery.data when using "Show internal jQuery data", introduced in v1.1 (<a href="https://github.com/darwin/firequery/issues/28">issue #28</a>)
+  * fixed broken jQuery.data when using "Show internal jQuery data", introduced in v1.1 (<a href="https://github.com/binaryage/firequery/issues/28">issue #28</a>)
 
 * **v1.1** (06.01.2012)
   * jQuery 1.7.1 does not present internal jQuery data structures in .data() call anymore, see <a href="http://firequery.binaryage.com#faq">FAQ</a>
@@ -156,7 +156,7 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 * **v0.7** (28.02.2010)
   * added jQuery Lint support, see: <a href="http://github.com/jamespadolsey/jQuery-Lint">http://github.com/jamespadolsey/jQuery-Lint</a>
   * fixed Firebug version check bug
-  * fixed incorrect object representation in console (<a href="http://github.com/darwin/firequery/issues/closed#issue/10">issue #10</a>)
+  * fixed incorrect object representation in console (<a href="http://github.com/binaryage/firequery/issues/closed#issue/10">issue #10</a>)
 
 * **v0.6** (20.02.2010)
   * fix retrieval of jQuery.data with jQuery 1.4+ (missing data in HTML panel and missing small envelope icons)
@@ -196,5 +196,5 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 [sroussey]: http://github.com/sroussey
 [download]: https://addons.mozilla.org/en-US/firefox/addon/12632
 [firebug]: https://addons.mozilla.org/en-US/firefox/addon/1843
-[testsource]: http://github.com/darwin/firequery/tree/gh-pages/test/index.html
+[testsource]: http://github.com/binaryage/firequery/tree/gh-pages/test/index.html
 [testpage]: /test/index.html
