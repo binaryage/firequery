@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8">
     <script type="text/javascript" charset="utf-8">
         (function() {
             // parseUri 1.2.2
@@ -37,17 +37,21 @@
             };
 
             var query = parseUri(location+"");
-            var v = '1.8.1';
+            var v = '1.8.1'; // default
             if (query && query.queryKey && query.queryKey['v']) {
                 v = query.queryKey['v'];
             }
             if (v!='none') {
-                var headID = document.getElementsByTagName("head")[0];         
-                var newScript = document.createElement('script');
-                newScript.type = 'text/javascript';
-                newScript.src = '//ajax.googleapis.com/ajax/libs/jquery/'+v+'/jquery.js';
-                headID.appendChild(newScript);
-                window.selectedVersion = v;
+                try {
+                    var oHead = document.getElementsByTagName('HEAD').item(0);
+                    var oScript= document.createElement("script");
+                    oScript.type = "text/javascript";
+                    oScript.src="http://ajax.googleapis.com/ajax/libs/jquery/"+v+"/jquery.js";
+                    oHead.appendChild(oScript);
+                    window.selectedVersion = v;
+                } catch (e) {
+                    console.log("Unable to load jQuery version %o using Google AJAX library: %o", v, e.message);
+                }
             }
         })();
     </script>
@@ -163,19 +167,26 @@
             });
         }
         
-        if (window.selectedVersion) {
-            var interval = setInterval(function() {
-                if (window.jQuery) {
-                    clearInterval(interval);
-                    var version = $.fn.jquery;
-                    if (version.length==3) version += ".0";
-                    $('.version-switcher a.selected-version').removeClass('selected-version');
-                    $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
-                    exercise();
-                }
-            }, 200);
+        function onReady() {
+            try {
+                var version = $.fn.jquery;
+                if (version.length==3) version += ".0";
+                $('.version-switcher a.selected-version').removeClass('selected-version');
+                $('.version-switcher a:contains(\''+version+'\')').addClass('selected-version');
+            } catch(e) {}
+            if (window.selectedVersion) {
+                exercise();
+            }
         }
         
+        // we are loading jQuery by dynamic script tag insertion, wait here for async load
+        var interval = setInterval(function() {
+            if (typeof $ != "undefined") {
+                clearInterval(interval);
+                onReady();
+            }
+        }, 200);
+
     </script>
 </body>                                                                 
 </html>
