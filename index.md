@@ -4,9 +4,9 @@ title: FireQuery is a Firebug extension for jQuery development
 product: firequery
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
-download: https://addons.mozilla.org/firefox/addon/firequery
-#download: https://addons.mozilla.org/firefox/addons/versions/12632
-downloadtitle: Install v1.2
+#download: https://addons.mozilla.org/firefox/addon/firequery
+download: https://addons.mozilla.org/firefox/addons/versions/12632
+downloadtitle: Install v1.3
 downloadsubtitle: and become jQuery Jedi
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after install</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
 repo: http://github.com/binaryage/firequery
@@ -129,6 +129,10 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 > You have to enable Console panel for this feature to work
 
 ## Changelog
+
+* **v1.3** (03.10.2012)
+  * updated for more strict <a href="https://blog.mozilla.org/addons/2012/08/20/exposing-objects-to-content-safely/">Firefox 17 security model</a>
+  * yellow highlighting of data changes works more reliably in HTML Panel
 
 * **v1.2** (17.04.2012)
   * fixed broken jQuery.data when using "Show internal jQuery data", introduced in v1.1 (<a href="https://github.com/binaryage/firequery/issues/28">issue #28</a>)
