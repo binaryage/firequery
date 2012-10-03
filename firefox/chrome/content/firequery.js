@@ -354,95 +354,199 @@ FBL.ns(function() {
             if (jQuery._patchedByFireQuery) return;
             jQuery._patchedByFireQuery = true;
             
-            // thanks Jeremy, taken from:
-            //     Underscore.js 1.3.3
-            //     (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
-            var eq = function(a, b, aStack, bStack) {
-                // Identical objects are equal. `0 === -0`, but they aren't identical.
-                // See the Harmony `egal` proposal: http://wiki.ecmascript.org/doku.php?id=harmony:egal.
-                if (a === b) return a !== 0 || 1 / a == 1 / b;
-                // A strict comparison is necessary because `null == undefined`.
-                if (a == null || b == null) return a === b;
-                // Unwrap any wrapped objects.
-                // if (a instanceof _) a = a._wrapped;
-                // if (b instanceof _) b = b._wrapped;
-                // Compare `[[Class]]` names.
+            ////////////////////////////////////////////////////////////////////////////////////////////////////
+            // following code taken from:
+            // https://github.com/bestiejs/lodash/blob/master/lodash.js
+            // thanks Jeremy & John-David
+            
+            var argsClass = '[object Arguments]',
+                arrayClass = '[object Array]',
+                boolClass = '[object Boolean]',
+                dateClass = '[object Date]',
+                funcClass = '[object Function]',
+                numberClass = '[object Number]',
+                objectClass = '[object Object]',
+                regexpClass = '[object RegExp]',
+                stringClass = '[object String]';
+                
+            // Used to identify object classifications that are array-like
+            var arrayLikeClasses = {};
+            arrayLikeClasses[boolClass] = arrayLikeClasses[dateClass] = arrayLikeClasses[funcClass] =
+            arrayLikeClasses[numberClass] = arrayLikeClasses[objectClass] = arrayLikeClasses[regexpClass] = false;
+            arrayLikeClasses[argsClass] = arrayLikeClasses[arrayClass] = arrayLikeClasses[stringClass] = true;
+            
+            function isArguments(value) {
+              return toString.call(value) == argsClass;
+            }
+            var noArgsClass = !isArguments(arguments);
+            // fallback for browsers that can't detect `arguments` objects by [[Class]]
+            if (noArgsClass) {
+              isArguments = function(value) {
+                return !!(value && hasOwnProperty.call(value, 'callee'));
+              };
+            }
+            
+            var objectTypes = {
+               'boolean': false,
+               'function': true,
+               'object': true,
+               'number': false,
+               'string': false,
+               'undefined': false,
+               'unknown': true
+             };
+            
+             
+              // * Detect if a node's [[Class]] is unresolvable (IE < 9)
+              // * and that the JS engine won't error when attempting to coerce an object to
+              // * a string without a `toString` property value of `typeof` "function".
+             try {
+               var noNodeClass = ({ 'toString': 0 } + '', toString.call(window.document || 0) == objectClass);
+             } catch(e) { }
+                          
+            function isFunction(value) {
+              return typeof value == 'function';
+            }
+            
+            function isEqual(a, b, stackA, stackB) {
+                // a strict comparison is necessary because `null == undefined`
+                if (a == null || b == null) {
+                  return a === b;
+                }
+                // exit early for identical values
+                if (a === b) {
+                  // treat `+0` vs. `-0` as not equal
+                  return a !== 0 || (1 / a == 1 / b);
+                }
+                // unwrap any `lodash` wrapped values
+                if (objectTypes[typeof a] || objectTypes[typeof b]) {
+                  a = a.__wrapped__ || a;
+                  b = b.__wrapped__ || b;
+                }
+                // compare [[Class]] names
                 var className = toString.call(a);
-                if (className != toString.call(b)) return false;
+                if (className != toString.call(b)) {
+                  return false;
+                }
                 switch (className) {
-                  // Strings, numbers, dates, and booleans are compared by value.
-                  case '[object String]':
-                    // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
-                    // equivalent to `new String("5")`.
-                    return a == String(b);
-                  case '[object Number]':
-                    // `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
-                    // other numeric values.
-                    return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
-                  case '[object Date]':
-                  case '[object Boolean]':
-                    // Coerce dates and booleans to numeric primitive values. Dates are compared by their
-                    // millisecond representations. Note that invalid dates with millisecond representations
-                    // of `NaN` are not equivalent.
+                  case boolClass:
+                  case dateClass:
+                    // coerce dates and booleans to numbers, dates to milliseconds and booleans
+                    // to `1` or `0`, treating invalid dates coerced to `NaN` as not equal
                     return +a == +b;
-                  // RegExps are compared by their source patterns and flags.
-                  case '[object RegExp]':
-                    return a.source == b.source &&
-                           a.global == b.global &&
-                           a.multiline == b.multiline &&
-                           a.ignoreCase == b.ignoreCase;
+            
+                  case numberClass:
+                    // treat `NaN` vs. `NaN` as equal
+                    return a != +a
+                      ? b != +b
+                      // but treat `+0` vs. `-0` as not equal
+                      : (a == 0 ? (1 / a == 1 / b) : a == +b);
+            
+                  case regexpClass:
+                  case stringClass:
+                    // coerce regexes to strings (http://es5.github.com/#x15.10.6.4)
+                    // treat string primitives and their corresponding object instances as equal
+                    return a == b + '';
                 }
-                if (typeof a != 'object' || typeof b != 'object') return false;
-                // Assume equality for cyclic structures. The algorithm for detecting cyclic
-                // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
-                var length = aStack.length;
+                // exit early, in older browsers, if `a` is array-like but not `b`
+                var isArr = arrayLikeClasses[className];
+                if (noArgsClass && !isArr && (isArr = isArguments(a)) && !isArguments(b)) {
+                  return false;
+                }
+                // exit for functions and DOM nodes
+                if (!isArr && (className != objectClass || (noNodeClass && (
+                    (typeof a.toString != 'function' && typeof (a + '') == 'string') ||
+                    (typeof b.toString != 'function' && typeof (b + '') == 'string'))))) {
+                  return false;
+                }
+            
+                // assume cyclic structures are equal
+                // the algorithm for detecting cyclic structures is adapted from ES 5.1
+                // section 15.12.3, abstract operation `JO` (http://es5.github.com/#x15.12.3)
+                stackA || (stackA = []);
+                stackB || (stackB = []);
+            
+                var length = stackA.length;
                 while (length--) {
-                  // Linear search. Performance is inversely proportional to the number of
-                  // unique nested structures.
-                  if (aStack[length] == a) return bStack[length] == b;
+                  if (stackA[length] == a) {
+                    return stackB[length] == b;
+                  }
                 }
-                // Add the first object to the stack of traversed objects.
-                aStack.push(a);
-                bStack.push(b);
-                var size = 0, result = true;
-                // Recursively compare objects and arrays.
-                if (className == '[object Array]') {
-                  // Compare array lengths to determine if a deep comparison is necessary.
+            
+                var index = -1,
+                    result = true,
+                    size = 0;
+            
+                // add `a` and `b` to the stack of traversed objects
+                stackA.push(a);
+                stackB.push(b);
+            
+                // recursively compare objects and arrays (susceptible to call stack limits)
+                if (isArr) {
+                  // compare lengths to determine if a deep comparison is necessary
                   size = a.length;
                   result = size == b.length;
+            
                   if (result) {
-                    // Deep compare the contents, ignoring non-numeric properties.
+                    // deep compare the contents, ignoring non-numeric properties
                     while (size--) {
-                      if (!(result = eq(a[size], b[size], aStack, bStack))) break;
+                      if (!(result = isEqual(a[size], b[size], stackA, stackB))) {
+                        break;
+                      }
                     }
                   }
-                } else {
-                  // Objects with different constructors are not equivalent.
-                  if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) return false;
-                  // Deep compare objects.
-                  for (var key in a) {
-                    if (hasOwnProperty.call(a, key)) {
-                      // Count the expected number of properties.
-                      size++;
-                      // Deep compare each member.
-                      if (!(result = hasOwnProperty.call(b, key) && eq(a[key], b[key], aStack, bStack))) break;
+                  return result;
+                }
+            
+                var ctorA = a.constructor,
+                    ctorB = b.constructor;
+            
+                // non `Object` object instances with different constructors are not equal
+                if (ctorA != ctorB && !(
+                      isFunction(ctorA) && ctorA instanceof ctorA &&
+                      isFunction(ctorB) && ctorB instanceof ctorB
+                    )) {
+                  return false;
+                }
+                // deep compare objects
+                for (var prop in a) {
+                  if (hasOwnProperty.call(a, prop)) {
+                    // count the number of properties.
+                    size++;
+                    // deep compare each property value.
+                    // !!!!!!!!!!!!!!!!!!
+                    // ! original line from lodash: if (!(hasOwnProperty.call(b, prop) && isEqual(a[prop], b[prop], stackA, stackB))) {
+                    // ! we need to be less strict here, for some reason b could be wrapped in "empty object" and original object chained via __proto__
+                    // ! this is probably caused by some security model quirks in Firefox
+                    // !!!!!!!!!!!!!!!!!!
+                    if (!(b[prop]!==undefined && isEqual(a[prop], b[prop], stackA, stackB))) {
+                      return false;
                     }
-                  }
-                  // Ensure that both objects contain the same number of properties.
-                  if (result) {
-                    for (key in b) {
-                        size--;
-                        if (hasOwnProperty.call(b, key) && !(size--)) break;
-                    }
-                    result = !size;
                   }
                 }
-                // Remove the first object from the stack of traversed objects.
-                aStack.pop();
-                bStack.pop();
-                return result;
-              };            
-            
+                // ensure both objects have the same number of properties
+                for (prop in b) {
+                  // The JS engine in Adobe products, like InDesign, has a bug that causes
+                  // `!size--` to throw an error so it must be wrapped in parentheses.
+                  // https://github.com/documentcloud/underscore/issues/355
+                  if (hasOwnProperty.call(b, prop) && !(size--)) {
+                    // `size` will be `-1` if `b` has more properties than `a`
+                    return false;
+                  }
+                }
+                // handle JScript [[DontEnum]] bug
+                // if (hasDontEnumBug) {
+                //   while (++index < 7) {
+                //     prop = shadowed[index];
+                //     if (hasOwnProperty.call(a, prop) &&
+                //         !(hasOwnProperty.call(b, prop) && isEqual(a[prop], b[prop], stackA, stackB))) {
+                //       return false;
+                //     }
+                //   }
+                // }
+                return true;
+              }
+                          
             // taken from jQuery 1.7.1
             var myExtend = function() {
                 var options, name, src, copy, copyIsArray, clone,
@@ -515,7 +619,7 @@ FBL.ns(function() {
                 extend: function() {
                     return myExtend.apply(this, Array.prototype.slice.apply(arguments));
                 },
-                eq: eq,
+                eq: isEqual,
                 __exposedProps__ : {
                     getPref: "r",
                     extend: "r",
@@ -565,7 +669,7 @@ FBL.ns(function() {
                         }
                     } catch (ex) {
                         // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
-                        dbg("   ! "+ex);
+                        dbg("   ! ", ex);
                     }
                 }
                 return res;
@@ -645,7 +749,7 @@ FBL.ns(function() {
                         patchJQuery(jQuery, context);
                         dbg(">>>FireQuery: successfully notified and patched late jQuery in the window ", win);
                     } catch (ex) {
-                        dbg(">>>FireQuery: fatal error patching late jQuery in the window ", win);
+                        dbg(">>>FireQuery: fatal error patching late jQuery in the window ", ex);
                     }
                 }, true);
                 installJQueryWatcher(win, context);
