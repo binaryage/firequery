@@ -760,7 +760,7 @@ FBL.ns(function() {
         // Firebug.FireQuery
         //
         Firebug.FireQuery = extend(Firebug.ActivableModule, {
-            version: '1.2',
+            version: '1.3',
             /////////////////////////////////////////////////////////////////////////////////////////
             start: function() {
                 dbg(">>>FireQuery.start");
