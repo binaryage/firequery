@@ -158,13 +158,10 @@
             console.log($('li'));
             console.log($('#nonsense'));
 
-            $(function() {
-                var counter = 0;
-                setInterval(function() {
-                    $('body').data('counter', counter++);
-                },
-                1000);
-            });
+            var counter = 0;
+            setInterval(function() {
+                $('body').data('counter', counter++);
+            }, 1000);
         }
         
         function onReady() {
