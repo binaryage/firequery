@@ -14,7 +14,7 @@ advert: After installation and Firefox restart you can visit the <a href="/test/
 meta_title: FireQuery is a Firebug extension for jQuery development
 meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development,antonin hildebrand
 meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
-meta_image: http://www.binaryage.com/base/img/icons/firequery-256.png
+meta_image: http://www.binaryage.com/shared/img/icons/firequery-256.png
 facebook: 1
 retweet: 1
 buzz: 1
@@ -27,12 +27,12 @@ ogmeta: {
     type: "product",
     title: "FireQuery",
     url: "http://firequery.binaryage.com",
-    image: "http://www.binaryage.com/base/img/icons/firequery-256.png"
+    image: "http://www.binaryage.com/shared/img/icons/firequery-256.png"
 }
 shots: [{
     title: "FireQuery in action! Please note inlined datas in the HTML Panel",
-    thumb: "/base/img/firequery-mainshot.png",
-    full: "/base/img/firequery-mainshot-full.png"
+    thumb: "/shared/img/firequery-mainshot.png",
+    full: "/shared/img/firequery-mainshot-full.png"
 }]
 ---
 
