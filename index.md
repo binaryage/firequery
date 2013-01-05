@@ -97,7 +97,7 @@ If you want to install the addon from the latest source, you need to build it. I
     git clone git://github.com/binaryage/firequery.git
     cd firequery
     rake
-  
+
 After that your XPI should be available in ``build/firequery-X.Y.xpi``.
 
 You should now be able to install the XPI file in Firefox: ``File -> Open File`` ... and browse for ``firequery-X.Y.xpi``.
@@ -106,7 +106,7 @@ You should now be able to install the XPI file in Firefox: ``File -> Open File``
 
 **<span style="color: #a00">This extension may be insecure!</span>**
 
-So please don't browse porn sites with this enabled. I still don't fully understand the Firefox extension security model. The reality is that I interact with naked HTML page from privileged code which may be insecure. 
+So please don't browse porn sites with this enabled. I still don't fully understand the Firefox extension security model. The reality is that I interact with naked HTML page from privileged code which may be insecure.
 
 A good solution is to have dedicated [Firefox profile](http://support.mozilla.com/en-US/kb/Profiles) for development and use it only for safe sites.
 
@@ -131,71 +131,13 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 
 ## Changelog
 
-* **v1.3** (03.10.2012)
-  * updated for more strict <a href="https://blog.mozilla.org/addons/2012/08/20/exposing-objects-to-content-safely/">Firefox 17 security model</a>
-  * yellow highlighting of data changes works more reliably in HTML Panel
+<div class="changelogx"></div>
 
-* **v1.2** (17.04.2012)
-  * fixed broken jQuery.data when using "Show internal jQuery data", introduced in v1.1 (<a href="https://github.com/binaryage/firequery/issues/28">issue #28</a>)
-
-* **v1.1** (06.01.2012)
-  * jQuery 1.7.1 does not present internal jQuery data structures in .data() call anymore, see <a href="http://firequery.binaryage.com#faq">FAQ</a>
-  * marked as compatible with Firefox 9.*
-  * fixed compatibility with Firebug 1.9
-  * updated jQuery to 1.7.1 (jQuerify feature)
-
-* **v1.0** (26.06.2011)
-  * marked as compatible with Firefox 5.*
-  * fixed broken compatibility with Firebug 1.8
-  * updated jQuery to 1.6.1 (jQuerify feature)
-  * updated jQueryLint to 1.1
-
-* **v0.9** (07.02.2011)
-  * upgraded jQuery to 1.5 (jQuerify feature)
-
-* **v0.8** (30.10.2010)
-  * fixed compatibility with Firebug 1.6 and early Firebug 1.7 alpha
-  * upgraded jQuerify to inject jQuery 1.4.3
-  * upgraded jQuery Lint to 1.01
-
-* **v0.7** (28.02.2010)
-  * added jQuery Lint support, see: <a href="http://github.com/jamespadolsey/jQuery-Lint">http://github.com/jamespadolsey/jQuery-Lint</a>
-  * fixed Firebug version check bug
-  * fixed incorrect object representation in console (<a href="http://github.com/binaryage/firequery/issues/closed#issue/10">issue #10</a>)
-
-* **v0.6** (20.02.2010)
-  * fix retrieval of jQuery.data with jQuery 1.4+ (missing data in HTML panel and missing small envelope icons)
-  * extended test page to enable testing historical jQuery versions
-  * jQuerify script upgraded to jQuery 1.4.2
-
-* **v0.5** (20.01.2010)
-  * jQuerify script upgraded to jQuery 1.4
-  * Firebug 1.5 compatibility (thanks to Steven Roussey) [[sroussey][sroussey]]
-  * fixed mysterious bug with jQueryUI and its datepicker (<a href="http://getsatisfaction.com/binaryage/topics/breaks_the_jquery_ui_datepicker">more info</a>)
-
-* **v0.4.1** (24.12.2009)
-  * Fixed broken compatibility with Firebug 1.4
-
-* **v0.4** (13.12.2009)
-  * Firebug 1.5 compatibility [[sroussey][sroussey]]
-  * Firefox 3.6 compatibility
-  * SeaMonkey 2.0 support
-  * It is possible to specify your own jQuery URL (see [FAQ](#faq))
-
-* **v0.3** (27.06.2009)
-  * Firebug 1.3 compatibility
-  * correct support for jQuery.removeData
-
-* **v0.2** (26.06.2009)
-  * effective way how to retrieve jQuery data
-  * mutation events
-  * integrated jQuerify
-  * works with jQuery loaded dynamically (late binding)
-
-* **v0.1** (07.01.2009)
-  * support for jQuery expressions
-  * support for jQuery data
-  * highlighter for jQuery collections 
+<script type="text/javascript" charset="utf-8">
+    $(function() {
+        $('.changelogx').load('changelog.html?x='+((Math.random()+"").substring(2))+' #page');
+    });
+</script>
 
 [darwin]: http://github.com/darwin
 [sroussey]: http://github.com/sroussey
