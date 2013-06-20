@@ -534,7 +534,7 @@ div#gsfn_list_widget span.time{color:#999;margin-left:3px}
 .webkit .main-product .main-product-left .product-buttons-box .product-buttons .product-button-thumbup .trial-note,.gecko .main-product .main-product-left .product-buttons-box .product-buttons .product-button-thumbup .trial-note,.opera .main-product .main-product-left .product-buttons-box .product-buttons .product-button-thumbup .trial-note{display:block}
 .main-product .main-product-left .product-buttons-box .product-buttons .product-button-thumbup .trial-note{background-color:#3aaa00}
 .main-product .main-product-left .product-buttons-box .product-buttons .price-tag{background:transparent url("http://static.binaryage.com/cbbb5804_shared_img2_assets.png") no-repeat -544px -253px !important;width:68px;height:28px;display:block;position:absolute;position:absolute;right:-14px;top:8px}
-.main-product .main-product-left .product-buttons-box .product-buttons .price-tag-totalspaces{background:transparent url("http://static.binaryage.com/cbbb5804_shared_img2_assets.png") no-repeat -464px -253px !important;width:68px;height:28px;display:block;position:absolute;position:absolute;right:-14px;top:8px}
+.main-product .main-product-left .product-buttons-box .product-buttons .price-tag-totalspaces{background:transparent url("http://static.binaryage.com/cbbb5804_shared_img2_assets.png") no-repeat -544px -253px !important;width:68px;height:28px;display:block;position:absolute;position:absolute;right:-14px;top:8px}
 .main-product .main-product-left .product-buttons-box .product-buttons .reasons-to-buy{position:relative;top:-3px;text-align:right;text-shadow:#fff 0 1px 1px;font-size:10px;line-height:13px;}
 .main-product .main-product-left .product-buttons-box .product-buttons .reasons-to-buy a{color:#555}
 .main-product .main-product-right{position:relative;}
@@ -629,10 +629,14 @@ div#gsfn_list_widget span.time{color:#999;margin-left:3px}
 #buy.overlay .buy-pack .button{width:190px}
 #buy.overlay .buy-pack .image{background:transparent url("http://static.binaryage.com/9a87c4d2_shared_img2_overlay-buy.png") no-repeat -173px -21px !important;width:200px;height:144px;display:block;position:absolute;position:absolute;left:40px;top:60px}
 #buy.overlay .buy-pack .price-tag{background:transparent url("http://static.binaryage.com/cbbb5804_shared_img2_assets.png") no-repeat -544px -221px !important;width:68px;height:28px;display:block;position:absolute;position:absolute;right:-14px;top:8px}
-#teaser.overlay{background-image:url("http://static.binaryage.com/3e088e65_shared_img2_overlay-664x400.png");width:664px;height:400px;}
+#teaser.overlay{background-image:url("http://static.binaryage.com/3e088e65_shared_img2_overlay-664x400.png");width:664px;}
 #teaser.overlay .overlay-content{text-align:center;z-index:20000;position:absolute;left:11px;top:9px}
 #teaser.overlay .overlay-content object{display:block;border:1px solid #444;-webkit-border-radius:4px;-moz-border-radius:4px;-o-border-radius:4px;border-radius:4px}
 #teaser.overlay .close{background-image:url("http://static.binaryage.com/692e332d_shared_img2_overlay-close.png");position:absolute;left:16px;top:16px;z-index:30000;cursor:pointer;height:13px;width:13px}
+#ts-teaser.overlay{background-image:url("http://static.binaryage.com/0cd216fb_shared_img2_overlay-664x442.png");width:664px;}
+#ts-teaser.overlay .overlay-content{text-align:center;z-index:20000;position:absolute;left:11px;top:9px}
+#ts-teaser.overlay .overlay-content object{display:block;border:1px solid #444;-webkit-border-radius:4px;-moz-border-radius:4px;-o-border-radius:4px;border-radius:4px}
+#ts-teaser.overlay .close{background-image:url("http://static.binaryage.com/692e332d_shared_img2_overlay-close.png");position:absolute;left:16px;top:16px;z-index:30000;cursor:pointer;height:13px;width:13px}
 #download.overlay{background-image:url("http://static.binaryage.com/fcbf63fe_shared_img2_overlay-664x349.png");width:664px;height:349px;}
 #download.overlay .overlay-content{text-align:center;padding:22px 20px}
 #download.overlay .close{background-image:url("http://static.binaryage.com/692e332d_shared_img2_overlay-close.png");position:absolute;left:16px;top:16px;z-index:30000;cursor:pointer;height:13px;width:13px}
