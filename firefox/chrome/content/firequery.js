@@ -808,9 +808,10 @@ FBL.ns(function() {
             },
             /////////////////////////////////////////////////////////////////////////////////////////
             showPanel: function(browser, panel) {
-                dbg(">>>FireQuery.showPanel "+panel.name, panel);
-                var isConsole = panel.name == "console";
-                var isHTML = panel.name == "html";
+                var name = panel ? panel.name : null;
+                dbg(">>>FireQuery.showPanel "+name, panel);
+                var isConsole = name == "console";
+                var isHTML = name == "html";
                 if (isConsole || isHTML) {
                     this.applyPanelCSS("chrome://firequery/skin/firequery.css", panel);
                 }
