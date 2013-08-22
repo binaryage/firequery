@@ -37,7 +37,7 @@
             };
 
             var query = parseUri(location+"");
-            var v = '1.8.1'; // default
+            var v = '1.10.2'; // default
             if (query && query.queryKey && query.queryKey['v']) {
                 v = query.queryKey['v'];
             }
@@ -57,8 +57,8 @@
     </script>
     <style type="text/css" media="screen">
         html{font-family:arial;}
-        .version-switcher{font-size:10px;background-color:#ccc;color:black;padding:6px 8px;font-weight:bold;white-space:nowrap;}
-        .version-switcher a{color:#2C679C;background-color:#ddd;padding:1px 4px;-moz-border-radius:4px;-webkit-border-radius:4px;border:1px solid #ddd;}
+        .version-switcher{font-size:10px;background-color:#ccc;color:black;padding:6px 8px;font-weight:bold;}
+        .version-switcher a{display:inline-block;color:#2C679C;background-color:#ddd;padding:1px 4px;-moz-border-radius:4px;-webkit-border-radius:4px;border:1px solid #ddd;}
         .version-switcher a.selected-version{background-color:#2C679C;color:white;padding:1px 4px;-moz-border-radius:4px;-webkit-border-radius:4px;border:1px solid #2C679C;}
         a.selected-version{color:white;}
         iframe {height:180px; border: 2px dashed #999; margin: 10px;}
@@ -100,12 +100,16 @@
             <a href="?v=1.9.1">1.9.1</a> |
             <a href="?v=1.10.0">1.10.0</a> |
             <a href="?v=1.10.1">1.10.1</a> |
-            <a href="?v=1.10.2">1.10.2</a> or
+            <a href="?v=1.10.2">1.10.2</a> |
+            <a href="?v=2.0.0">2.0.0</a> |
+            <a href="?v=2.0.1">2.0.1</a> |
+            <a href="?v=2.0.2">2.0.2</a> |
+            <a href="?v=2.0.3">2.0.3</a> or
             <a href="?v=none">none</a>
             <script type="text/javascript" charset="utf-8">
                 if (!window.selectedVersion) {
                     var a = document.getElementsByClassName('version-switcher')[0].children;
-                    var last = a[a.length-2]; // last one is this <script>
+                    var last = a[a.length-2]; // the last one is this <script>
                     last.className = 'selected-version';
                 }
             </script>
@@ -167,8 +171,11 @@
 
             var counter = 0;
             setInterval(function() {
-                $('body').data('counter', counter++);
+              $.data($('body').get(0), 'counter', counter++);
             }, 1000);
+            setInterval(function() {
+              $('p').data('hexCounter', counter.toString(16));
+            }, 3000);
         }
 
         function onReady() {
