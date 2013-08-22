@@ -7,7 +7,7 @@ FBL.ns(function() {
             }
             return Firebug.currentContext; // Firebug 1.8+
         };
-        
+
         var checkFirebugVersion = function(minMajor, minMinor, minPatch) {
             if (!minPatch) minPatch = 0;
             if (!minMinor) minMinor = 0;
@@ -25,7 +25,7 @@ FBL.ns(function() {
                    (major==minMajor && minor>minMinor) ||
                    (major==minMajor && minor==minMinor && patch>=minPatch);
         };
-        
+
         if (!Firebug.CommandLine.evaluateInWebPage) {
             // backport from FB1.4
             Firebug.CommandLine.evaluateInWebPage = function(expr, context, targetWindow) {
@@ -54,6 +54,23 @@ FBL.ns(function() {
         const MODIFICATION = MutationEvent.MODIFICATION;
         const ADDITION = MutationEvent.ADDITION;
         const REMOVAL = MutationEvent.REMOVAL;
+
+        // http://stackoverflow.com/a/3816986/84283
+        var readChromeFile = function(file) {
+           var ioService=Components.classes["@mozilla.org/network/io-service;1"]
+               .getService(Components.interfaces.nsIIOService);
+           var scriptableStream=Components
+               .classes["@mozilla.org/scriptableinputstream;1"]
+               .getService(Components.interfaces.nsIScriptableInputStream);
+
+           var channel=ioService.newChannel(file,null,null);
+           var input=channel.open();
+           scriptableStream.init(input);
+           var str=scriptableStream.read(input.available());
+           scriptableStream.close();
+           input.close();
+           return str;
+        };
 
         // jQuerify by Karl Swedberg, taken from http://www.learningjquery.com/2009/04/better-stronger-safer-jquerify-bookmarklet and slightly modified styles
         const jQuerifyCode = "\
@@ -225,13 +242,13 @@ FBL.ns(function() {
                 firequeryPrefs.setBoolPref('extensions.firebug.DBG_FIREQUERY', false);
             } catch(e) {}
         }
-    
+
         var dbg = function() {
-            if (FBTrace && FBTrace.DBG_FIREQUERY) { 
+            if (FBTrace && FBTrace.DBG_FIREQUERY) {
                 FBTrace.sysout.apply(this, arguments);
             }
         };
-        
+
         var OBJECTBOX = this.OBJECTBOX =
             SPAN({'class': "objectBox objectBox-$className"});
 
@@ -266,7 +283,7 @@ FBL.ns(function() {
             if (!context.highlightStyle.parentNode || context.highlightStyle.ownerDocument != doc)
                 addStyleSheet(body.ownerDocument, context.highlightStyle);
         };
-        
+
         var evalJQueryCache = function(object, context) {
             try {
                 var forceInternals = Firebug.FireQuery.getPref('showInternalData')?true:undefined;
@@ -277,7 +294,7 @@ FBL.ns(function() {
                 // jQuery.data(elem) no longer returns an id, it returns the element’s object cache instead.
                 var idOrCache = jQuery.data(object.wrappedJSObject || object, undefined, undefined, forceInternals);
                 if (typeof idOrCache == "object") return idOrCache; // jQuery 1.4+ path
-                return jQuery.cache[idOrCache]; // jQuery 1.3- path 
+                return jQuery.cache[idOrCache]; // jQuery 1.3- path
             } catch (ex) {}
         };
 
@@ -298,7 +315,7 @@ FBL.ns(function() {
                 }
             }
         };
-        
+
         var dataDescriptor = function(name, data, tag) {
             var rep = {};
             rep[name] = data;
@@ -348,205 +365,212 @@ FBL.ns(function() {
                 }
             }
         };
-    
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        // following code taken from:
+        // https://github.com/bestiejs/lodash/blob/master/lodash.js
+        // thanks Jeremy & John-David
+
+        var argsClass = '[object Arguments]',
+            arrayClass = '[object Array]',
+            boolClass = '[object Boolean]',
+            dateClass = '[object Date]',
+            funcClass = '[object Function]',
+            numberClass = '[object Number]',
+            objectClass = '[object Object]',
+            regexpClass = '[object RegExp]',
+            stringClass = '[object String]';
+
+        // Used to identify object classifications that are array-like
+        var arrayLikeClasses = {};
+        arrayLikeClasses[boolClass] = arrayLikeClasses[dateClass] = arrayLikeClasses[funcClass] =
+        arrayLikeClasses[numberClass] = arrayLikeClasses[objectClass] = arrayLikeClasses[regexpClass] = false;
+        arrayLikeClasses[argsClass] = arrayLikeClasses[arrayClass] = arrayLikeClasses[stringClass] = true;
+
+        function isArguments(value) {
+          return toString.call(value) == argsClass;
+        }
+        var noArgsClass = !isArguments(arguments);
+        // fallback for browsers that can't detect `arguments` objects by [[Class]]
+        if (noArgsClass) {
+          isArguments = function(value) {
+            return !!(value && hasOwnProperty.call(value, 'callee'));
+          };
+        }
+
+        var objectTypes = {
+           'boolean': false,
+           'function': true,
+           'object': true,
+           'number': false,
+           'string': false,
+           'undefined': false,
+           'unknown': true
+         };
+
+          // * Detect if a node's [[Class]] is unresolvable (IE < 9)
+          // * and that the JS engine won't error when attempting to coerce an object to
+          // * a string without a `toString` property value of `typeof` "function".
+         try {
+           var noNodeClass = ({ 'toString': 0 } + '', toString.call(window.document || 0) == objectClass);
+         } catch(e) { }
+
+        function isFunction(value) {
+          return typeof value == 'function';
+        }
+
+        function isEqual(a, b, stackA, stackB) {
+            // a strict comparison is necessary because `null == undefined`
+            if (a == null || b == null) {
+              return a === b;
+            }
+            // exit early for identical values
+            if (a === b) {
+              // treat `+0` vs. `-0` as not equal
+              return a !== 0 || (1 / a == 1 / b);
+            }
+            // unwrap any `lodash` wrapped values
+            if (objectTypes[typeof a] || objectTypes[typeof b]) {
+              a = a.__wrapped__ || a;
+              b = b.__wrapped__ || b;
+            }
+            // compare [[Class]] names
+            var className = toString.call(a);
+            if (className != toString.call(b)) {
+              return false;
+            }
+            switch (className) {
+              case boolClass:
+              case dateClass:
+                // coerce dates and booleans to numbers, dates to milliseconds and booleans
+                // to `1` or `0`, treating invalid dates coerced to `NaN` as not equal
+                return +a == +b;
+
+              case numberClass:
+                // treat `NaN` vs. `NaN` as equal
+                return a != +a
+                  ? b != +b
+                  // but treat `+0` vs. `-0` as not equal
+                  : (a == 0 ? (1 / a == 1 / b) : a == +b);
+
+              case regexpClass:
+              case stringClass:
+                // coerce regexes to strings (http://es5.github.com/#x15.10.6.4)
+                // treat string primitives and their corresponding object instances as equal
+                return a == b + '';
+            }
+            // exit early, in older browsers, if `a` is array-like but not `b`
+            var isArr = arrayLikeClasses[className];
+            if (noArgsClass && !isArr && (isArr = isArguments(a)) && !isArguments(b)) {
+              return false;
+            }
+            // exit for functions and DOM nodes
+            if (!isArr && (className != objectClass || (noNodeClass && (
+                (typeof a.toString != 'function' && typeof (a + '') == 'string') ||
+                (typeof b.toString != 'function' && typeof (b + '') == 'string'))))) {
+              return false;
+            }
+
+            // assume cyclic structures are equal
+            // the algorithm for detecting cyclic structures is adapted from ES 5.1
+            // section 15.12.3, abstract operation `JO` (http://es5.github.com/#x15.12.3)
+            stackA || (stackA = []);
+            stackB || (stackB = []);
+
+            var length = stackA.length;
+            while (length--) {
+              if (stackA[length] == a) {
+                return stackB[length] == b;
+              }
+            }
+
+            var index = -1,
+                result = true,
+                size = 0;
+
+            // add `a` and `b` to the stack of traversed objects
+            stackA.push(a);
+            stackB.push(b);
+
+            // recursively compare objects and arrays (susceptible to call stack limits)
+            if (isArr) {
+              // compare lengths to determine if a deep comparison is necessary
+              size = a.length;
+              result = size == b.length;
+
+              if (result) {
+                // deep compare the contents, ignoring non-numeric properties
+                while (size--) {
+                  if (!(result = isEqual(a[size], b[size], stackA, stackB))) {
+                    break;
+                  }
+                }
+              }
+              return result;
+            }
+
+            var ctorA = a.constructor,
+                ctorB = b.constructor;
+
+            // non `Object` object instances with different constructors are not equal
+            if (ctorA != ctorB && !(
+                  isFunction(ctorA) && ctorA instanceof ctorA &&
+                  isFunction(ctorB) && ctorB instanceof ctorB
+                )) {
+              return false;
+            }
+            // deep compare objects
+            for (var prop in a) {
+              if (hasOwnProperty.call(a, prop)) {
+                // count the number of properties.
+                size++;
+                // deep compare each property value.
+                // !!!!!!!!!!!!!!!!!!
+                // ! original line from lodash: if (!(hasOwnProperty.call(b, prop) && isEqual(a[prop], b[prop], stackA, stackB))) {
+                // ! we need to be less strict here, for some reason b could be wrapped in "empty object" and original object chained via __proto__
+                // ! this is probably caused by some security model quirks in Firefox
+                // !!!!!!!!!!!!!!!!!!
+                if (!(b[prop]!==undefined && isEqual(a[prop], b[prop], stackA, stackB))) {
+                  return false;
+                }
+              }
+            }
+            // ensure both objects have the same number of properties
+            for (prop in b) {
+              // The JS engine in Adobe products, like InDesign, has a bug that causes
+              // `!size--` to throw an error so it must be wrapped in parentheses.
+              // https://github.com/documentcloud/underscore/issues/355
+              if (hasOwnProperty.call(b, prop) && !(size--)) {
+                // `size` will be `-1` if `b` has more properties than `a`
+                return false;
+              }
+            }
+            // handle JScript [[DontEnum]] bug
+            // if (hasDontEnumBug) {
+            //   while (++index < 7) {
+            //     prop = shadowed[index];
+            //     if (hasOwnProperty.call(a, prop) &&
+            //         !(hasOwnProperty.call(b, prop) && isEqual(a[prop], b[prop], stackA, stackB))) {
+            //       return false;
+            //     }
+            //   }
+            // }
+            return true;
+          }
+
         var patchJQuery = function(jQuery, context) {
             if (jQuery.wrappedJSObject) jQuery = jQuery.wrappedJSObject;
+            if (jQuery.fn.jquery.split(".")[0]!="1") {
+              // jQuery 2.0+ path
+              dbg("patchJQuery2+");
+              var code = readChromeFile("chrome://firequery-resources/content/jquery2-patch.js");
+              Firebug.CommandLine.evaluateInWebPage(code, context);
+              return;
+            }
+            // jQuery 1.3+ path
             if (jQuery._patchedByFireQuery) return;
             jQuery._patchedByFireQuery = true;
-            
-            ////////////////////////////////////////////////////////////////////////////////////////////////////
-            // following code taken from:
-            // https://github.com/bestiejs/lodash/blob/master/lodash.js
-            // thanks Jeremy & John-David
-            
-            var argsClass = '[object Arguments]',
-                arrayClass = '[object Array]',
-                boolClass = '[object Boolean]',
-                dateClass = '[object Date]',
-                funcClass = '[object Function]',
-                numberClass = '[object Number]',
-                objectClass = '[object Object]',
-                regexpClass = '[object RegExp]',
-                stringClass = '[object String]';
-                
-            // Used to identify object classifications that are array-like
-            var arrayLikeClasses = {};
-            arrayLikeClasses[boolClass] = arrayLikeClasses[dateClass] = arrayLikeClasses[funcClass] =
-            arrayLikeClasses[numberClass] = arrayLikeClasses[objectClass] = arrayLikeClasses[regexpClass] = false;
-            arrayLikeClasses[argsClass] = arrayLikeClasses[arrayClass] = arrayLikeClasses[stringClass] = true;
-            
-            function isArguments(value) {
-              return toString.call(value) == argsClass;
-            }
-            var noArgsClass = !isArguments(arguments);
-            // fallback for browsers that can't detect `arguments` objects by [[Class]]
-            if (noArgsClass) {
-              isArguments = function(value) {
-                return !!(value && hasOwnProperty.call(value, 'callee'));
-              };
-            }
-            
-            var objectTypes = {
-               'boolean': false,
-               'function': true,
-               'object': true,
-               'number': false,
-               'string': false,
-               'undefined': false,
-               'unknown': true
-             };
-            
-             
-              // * Detect if a node's [[Class]] is unresolvable (IE < 9)
-              // * and that the JS engine won't error when attempting to coerce an object to
-              // * a string without a `toString` property value of `typeof` "function".
-             try {
-               var noNodeClass = ({ 'toString': 0 } + '', toString.call(window.document || 0) == objectClass);
-             } catch(e) { }
-                          
-            function isFunction(value) {
-              return typeof value == 'function';
-            }
-            
-            function isEqual(a, b, stackA, stackB) {
-                // a strict comparison is necessary because `null == undefined`
-                if (a == null || b == null) {
-                  return a === b;
-                }
-                // exit early for identical values
-                if (a === b) {
-                  // treat `+0` vs. `-0` as not equal
-                  return a !== 0 || (1 / a == 1 / b);
-                }
-                // unwrap any `lodash` wrapped values
-                if (objectTypes[typeof a] || objectTypes[typeof b]) {
-                  a = a.__wrapped__ || a;
-                  b = b.__wrapped__ || b;
-                }
-                // compare [[Class]] names
-                var className = toString.call(a);
-                if (className != toString.call(b)) {
-                  return false;
-                }
-                switch (className) {
-                  case boolClass:
-                  case dateClass:
-                    // coerce dates and booleans to numbers, dates to milliseconds and booleans
-                    // to `1` or `0`, treating invalid dates coerced to `NaN` as not equal
-                    return +a == +b;
-            
-                  case numberClass:
-                    // treat `NaN` vs. `NaN` as equal
-                    return a != +a
-                      ? b != +b
-                      // but treat `+0` vs. `-0` as not equal
-                      : (a == 0 ? (1 / a == 1 / b) : a == +b);
-            
-                  case regexpClass:
-                  case stringClass:
-                    // coerce regexes to strings (http://es5.github.com/#x15.10.6.4)
-                    // treat string primitives and their corresponding object instances as equal
-                    return a == b + '';
-                }
-                // exit early, in older browsers, if `a` is array-like but not `b`
-                var isArr = arrayLikeClasses[className];
-                if (noArgsClass && !isArr && (isArr = isArguments(a)) && !isArguments(b)) {
-                  return false;
-                }
-                // exit for functions and DOM nodes
-                if (!isArr && (className != objectClass || (noNodeClass && (
-                    (typeof a.toString != 'function' && typeof (a + '') == 'string') ||
-                    (typeof b.toString != 'function' && typeof (b + '') == 'string'))))) {
-                  return false;
-                }
-            
-                // assume cyclic structures are equal
-                // the algorithm for detecting cyclic structures is adapted from ES 5.1
-                // section 15.12.3, abstract operation `JO` (http://es5.github.com/#x15.12.3)
-                stackA || (stackA = []);
-                stackB || (stackB = []);
-            
-                var length = stackA.length;
-                while (length--) {
-                  if (stackA[length] == a) {
-                    return stackB[length] == b;
-                  }
-                }
-            
-                var index = -1,
-                    result = true,
-                    size = 0;
-            
-                // add `a` and `b` to the stack of traversed objects
-                stackA.push(a);
-                stackB.push(b);
-            
-                // recursively compare objects and arrays (susceptible to call stack limits)
-                if (isArr) {
-                  // compare lengths to determine if a deep comparison is necessary
-                  size = a.length;
-                  result = size == b.length;
-            
-                  if (result) {
-                    // deep compare the contents, ignoring non-numeric properties
-                    while (size--) {
-                      if (!(result = isEqual(a[size], b[size], stackA, stackB))) {
-                        break;
-                      }
-                    }
-                  }
-                  return result;
-                }
-            
-                var ctorA = a.constructor,
-                    ctorB = b.constructor;
-            
-                // non `Object` object instances with different constructors are not equal
-                if (ctorA != ctorB && !(
-                      isFunction(ctorA) && ctorA instanceof ctorA &&
-                      isFunction(ctorB) && ctorB instanceof ctorB
-                    )) {
-                  return false;
-                }
-                // deep compare objects
-                for (var prop in a) {
-                  if (hasOwnProperty.call(a, prop)) {
-                    // count the number of properties.
-                    size++;
-                    // deep compare each property value.
-                    // !!!!!!!!!!!!!!!!!!
-                    // ! original line from lodash: if (!(hasOwnProperty.call(b, prop) && isEqual(a[prop], b[prop], stackA, stackB))) {
-                    // ! we need to be less strict here, for some reason b could be wrapped in "empty object" and original object chained via __proto__
-                    // ! this is probably caused by some security model quirks in Firefox
-                    // !!!!!!!!!!!!!!!!!!
-                    if (!(b[prop]!==undefined && isEqual(a[prop], b[prop], stackA, stackB))) {
-                      return false;
-                    }
-                  }
-                }
-                // ensure both objects have the same number of properties
-                for (prop in b) {
-                  // The JS engine in Adobe products, like InDesign, has a bug that causes
-                  // `!size--` to throw an error so it must be wrapped in parentheses.
-                  // https://github.com/documentcloud/underscore/issues/355
-                  if (hasOwnProperty.call(b, prop) && !(size--)) {
-                    // `size` will be `-1` if `b` has more properties than `a`
-                    return false;
-                  }
-                }
-                // handle JScript [[DontEnum]] bug
-                // if (hasDontEnumBug) {
-                //   while (++index < 7) {
-                //     prop = shadowed[index];
-                //     if (hasOwnProperty.call(a, prop) &&
-                //         !(hasOwnProperty.call(b, prop) && isEqual(a[prop], b[prop], stackA, stackB))) {
-                //       return false;
-                //     }
-                //   }
-                // }
-                return true;
-              }
-                          
+
             // taken from jQuery 1.7.1
             var myExtend = function() {
                 var options, name, src, copy, copyIsArray, clone,
@@ -610,8 +634,8 @@ FBL.ns(function() {
 
                 // Return the modified object
                 return target;
-            };            
-            
+            };
+
             jQuery.__FireQueryShared = {
                 getPref: function(x) { // for some reason we need to wrap it
                     return Firebug.FireQuery.getPref(x);
@@ -627,13 +651,13 @@ FBL.ns(function() {
                 }
             };
             var jQuery_data = jQuery.data;
-            jQuery.__FireQueryShared.data_originalReplacedByFireQuery = function() { 
+            jQuery.__FireQueryShared.data_originalReplacedByFireQuery = function() {
                 var res = jQuery_data.apply(this, Array.prototype.slice.apply(arguments));
                 return {
                     res: res,
                     __exposedProps__ : {
                         res: "rw"
-                    }    
+                    }
                 }
             };
             jQuery.__FireQueryShared.__exposedProps__.data_originalReplacedByFireQuery = "r";
@@ -675,13 +699,13 @@ FBL.ns(function() {
                 return res;
             };
             var jQuery_removeData = jQuery.removeData;
-            jQuery.__FireQueryShared.removeData_originalReplacedByFireQuery = function() { 
+            jQuery.__FireQueryShared.removeData_originalReplacedByFireQuery = function() {
                 var res = jQuery_removeData.apply(this, Array.prototype.slice.apply(arguments));
                 return {
                     res: res,
                     __exposedProps__ : {
                         res: "rw"
-                    }    
+                    }
                 }
             };
             jQuery.__FireQueryShared.__exposedProps__.removeData_originalReplacedByFireQuery = "r";
@@ -733,7 +757,33 @@ FBL.ns(function() {
                 dbg("   ! "+ex, context);
             }
         };
-        
+
+        var processFireQueryEvent = function(event, context) {
+          var elem = event.target;
+          var oldData = event.detail.oldValues;
+          var newData = event.detail.newValues;
+          dbg("processFireQueryEvent", elem);
+          try {
+              // add/modify all newData
+              for (var item in newData) {
+                  if (newData.hasOwnProperty(item)) {
+                      if (!isEqual(oldData[item], newData[item], [], [])) { // highlight only modified items
+                          mutateData.call(context.getPanel('html'), elem, MODIFICATION, item, newData[item]);
+                      }
+                  }
+              }
+              // remove missing oldData
+              for (var item in oldData) {
+                  if (!newData.hasOwnProperty(item)) {
+                      mutateData.call(context.getPanel('html'), elem, REMOVAL, item);
+                  }
+              }
+          } catch (ex) {
+              // html panel may not exist yet (also want to be safe, when our highlighter throws for any reason)
+              dbg("   ! "+ex);
+          }
+        };
+
         var patchWindow = function(win, context) {
             try {
                 var wrapper = win.wrappedJSObject;
@@ -752,10 +802,17 @@ FBL.ns(function() {
                         dbg(">>>FireQuery: fatal error patching late jQuery in the window ", ex);
                     }
                 }, true);
+                win.document.wrappedJSObject.addEventListener('firequery-event', function(event) {
+                    try {
+                        processFireQueryEvent(event, context);
+                    } catch (ex) {
+                        dbg(">>>FireQuery: error when processing firequery event from the page ", ex);
+                    }
+                }, true);
                 installJQueryWatcher(win, context);
             }
         };
-        
+
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery
         //
@@ -825,7 +882,7 @@ FBL.ns(function() {
             prepareJQuerifyCode: function() {
                 var jQueryURL = this.getPref('jQueryURL') || 'chrome://firequery-resources/content/jquery.js';
                 var jQueryURLTimeout = this.getPref('jQueryURLTimeout') || 5000;
-        
+
                 var code = jQuerifyCode;
                 code = code.replace(/\{\{jQueryURL\}\}/g, jQueryURL.replace("'", "\\'"));
                 code = code.replace(/\{\{jQueryURLTimeout\}\}/g, jQueryURLTimeout+'');
@@ -835,7 +892,7 @@ FBL.ns(function() {
             prepareJQueryLintCode: function() {
                 var jQueryLintURL = this.getPref('jQueryLintURL') || 'chrome://firequery-resources/content/jquery.lint.js';
                 var jQueryLintURLTimeout = this.getPref('jQueryLintURLTimeout') || 5000;
-        
+
                 var code = jQueryLintInjectorCode;
                 code = code.replace(/\{\{jQueryLintURL\}\}/g, jQueryLintURL.replace("'", "\\'"));
                 code = code.replace(/\{\{jQueryLintURLTimeout\}\}/g, jQueryLintURLTimeout+'');
@@ -855,7 +912,7 @@ FBL.ns(function() {
             /////////////////////////////////////////////////////////////////////////////////////////
             getPrefDomain: function() {
                 return Firebug.prefDomain + "." + this.panelName;
-            },            
+            },
             /////////////////////////////////////////////////////////////////////////////////////////
             getPref: function(name) {
                 var prefName = this.getPrefDomain().toLowerCase() + "." + name;
@@ -913,10 +970,10 @@ FBL.ns(function() {
             getOptionsMenuItems: function() {
                 var optionMenu = function(label, option) {
                     return {
-                        label: label, 
+                        label: label,
                         nol10n: true,
-                        type: "checkbox", 
-                        checked: Firebug.FireQuery.getPref(option), 
+                        type: "checkbox",
+                        checked: Firebug.FireQuery.getPref(option),
                         option: option,
                         command: function() {
                             Firebug.FireQuery.setPref(option, !Firebug.FireQuery.getPref(option)); // toggle
@@ -944,14 +1001,14 @@ FBL.ns(function() {
                 return heads[0];
             }
         });
-            
+
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery.JQueryHighlighter
         //
         Firebug.FireQuery.JQueryHighlighter = function() {
             this.seed = "highlighter-"+generateGuid();
         };
-        
+
         Firebug.FireQuery.JQueryHighlighter.prototype = {
             /////////////////////////////////////////////////////////////////////////////////////////
             highlight: function(context, element) {
@@ -962,7 +1019,7 @@ FBL.ns(function() {
                     // Firebug 1.3 path
                     dims = getViewOffset(element, true);
                     x = dims.x; y = dims.y;
-                    w = element.offsetWidth; h = element.offsetHeight;                
+                    w = element.offsetWidth; h = element.offsetHeight;
                 } catch (ex) {
                     try {
                         // Firebug 1.4 path
@@ -981,31 +1038,31 @@ FBL.ns(function() {
                         }
                     }
                 }
-        
+
                 var wacked = isNaN(x) || isNaN(y) || isNaN(w) || isNaN(h);
                 if (wacked) return;
-        
+
                 var nodes = this.getNodes(context, element);
-        
+
                 move(nodes.top, x, y-edgeSize);
                 resize(nodes.top, w, edgeSize);
-        
+
                 move(nodes.right, x+w, y-edgeSize);
                 resize(nodes.right, edgeSize, h+edgeSize*2);
-        
+
                 move(nodes.bottom, x, y+h);
                 resize(nodes.bottom, w, edgeSize);
-        
+
                 move(nodes.left, x-edgeSize, y-edgeSize);
                 resize(nodes.left, edgeSize, h+edgeSize*2);
-                
+
                 move(nodes.content, x, y);
                 resize(nodes.content, w, h);
-                
+
                 var body = getNonFrameBody(element);
                 if (!body)
                     return this.unhighlight(context);
-        
+
                 var needsAppend = !nodes.top.parentNode || nodes.top.ownerDocument != body.ownerDocument;
                 if (needsAppend) {
                     attachStyles(context, body);
@@ -1056,13 +1113,13 @@ FBL.ns(function() {
                 return context[this.seed];
             }
         };
-        
+
         ////////////////////////////////////////////////////////////////////////
         // monkey-patching of Firebug.Inspector.highlightObject
-        // related discussion: http://code.google.com/p/fbug/issues/detail?id=3462 
+        // related discussion: http://code.google.com/p/fbug/issues/detail?id=3462
         var hasExposedBoxModelHighlighter = function() {
             // BoxModelHighlighter has been exposed in FB1.6 or in early FB1.7 alpha => use it if available
-            // http://code.google.com/p/fbug/issues/detail?id=3462 
+            // http://code.google.com/p/fbug/issues/detail?id=3462
             return !!Firebug.Inspector.BoxModelHighlighter;
         };
 
@@ -1095,7 +1152,7 @@ FBL.ns(function() {
                 }
             };
         } else {
-            if (!checkFirebugVersion(1, 9)) { // since FB1.9 we implement highlightObject method on JQueryExpression rep 
+            if (!checkFirebugVersion(1, 9)) { // since FB1.9 we implement highlightObject method on JQueryExpression rep
                 // path for Firebug 1.6-1.8
                 Firebug.Inspector.originalHighlightObject = Firebug.Inspector.highlightObject;
                 Firebug.Inspector.highlightObject = function(element, context, highlightType, boxFrame) {
@@ -1111,7 +1168,7 @@ FBL.ns(function() {
                         }
                     }
                     this.multiHighlighters = [];
-        
+
                     if (!element || !FirebugReps.Arr.isArray(element)) {
                         return Firebug.Inspector.originalHighlightObject.call(this, element, context, highlightType, boxFrame);
                     } else {
@@ -1130,7 +1187,7 @@ FBL.ns(function() {
                 }
             }
         }
-        
+
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery.JQueryExpression
         //
@@ -1157,7 +1214,7 @@ FBL.ns(function() {
                     var rep = Firebug.getRep(value);
                     var tag = rep.shortTag ? rep.shortTag : rep.tag;
                     var delim = (i == array.length-1 ? "" : ", ");
-        
+
                     items.push({object: value, tag: tag, delim: delim});
                 }
                 return items;
@@ -1166,7 +1223,7 @@ FBL.ns(function() {
             className: "jquery-expression",
             /////////////////////////////////////////////////////////////////////////////////////////
             highlightObject: function(object, context, target) { // FB1.9+
-                // treat jQuery object as an array 
+                // treat jQuery object as an array
                 FirebugReps.Arr.highlightObject(object, context, target);
             },
             /////////////////////////////////////////////////////////////////////////////////////////
@@ -1183,7 +1240,7 @@ FBL.ns(function() {
                 return null;
             }
         });
-            
+
         ////////////////////////////////////////////////////////////////////////
         // Firebug.FireQuery.JQueryElement
         //
@@ -1240,14 +1297,14 @@ FBL.ns(function() {
                 return hasJQueryCache(object);
             }
         });
-        
+
         ////////////////////////////////////////////////////////////////////////
         // patch Firebug.HTMLPanel.*Element
         //
 
         if (checkFirebugVersion(1, 5)) {
             // Firebug 1.5 and later
-            
+
             var AttrTag = Firebug.HTMLPanel.AttrTag;
             var TextTag = Firebug.HTMLPanel.TextTag;
             var DataTag =
@@ -1255,11 +1312,11 @@ FBL.ns(function() {
                     SPAN({"class": "nodeName"}, "$attr.name"), "=",
                     TAG("$attr.tag", {object: "$attr.data"})
                 );
-        
+
             Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
                 tag: DataTag
             });
-        
+
             Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object", role :"presentation"},
@@ -1283,7 +1340,7 @@ FBL.ns(function() {
                         )
                     )
             });
-        
+
             Firebug.HTMLPanel.CompleteElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
@@ -1307,12 +1364,12 @@ FBL.ns(function() {
                             "&gt;"
                          )
                     ),
-        
+
                 getNodeTag: Firebug.HTMLPanel.CompleteElement.getNodeTag,
-        
+
                 childIterator: Firebug.HTMLPanel.CompleteElement.childIterator
             });
-        
+
             Firebug.HTMLPanel.EmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
@@ -1327,7 +1384,7 @@ FBL.ns(function() {
                         )
                     )
             });
-        
+
             Firebug.HTMLPanel.XEmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
@@ -1342,7 +1399,7 @@ FBL.ns(function() {
                         )
                     )
             });
-        
+
             Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({"class": "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object", role : 'presentation'},
@@ -1368,17 +1425,17 @@ FBL.ns(function() {
                     "&nbsp;", SPAN({'class': "nodeName editable"}, "$attr.nodeName"), "=&quot;",
                     SPAN({'class': "nodeValue editable"}, "$attr.nodeValue"), "&quot;"
                 );
-        
+
             DataTag =
                 SPAN({'class': "nodeData", _repObject: "$attr.rep"},
                     SPAN({'class': "nodeName"}, "$attr.name"), "=",
                     TAG("$attr.tag", {object: "$attr.data"})
                 );
-        
+
             Firebug.HTMLPanel.DataNode = domplate(FirebugReps.Element, {
                 tag: DataTag
             });
-        
+
             Firebug.HTMLPanel.Element = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox containerNodeBox $object|getHidden repIgnore", _repObject: "$object"},
@@ -1402,7 +1459,7 @@ FBL.ns(function() {
                          )
                     )
             });
-        
+
             Firebug.HTMLPanel.CompleteElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox open $object|getHidden repIgnore", _repObject: "$object"},
@@ -1426,15 +1483,15 @@ FBL.ns(function() {
                             "&gt;"
                          )
                     ),
-        
+
                 getNodeTag: function(node) {
                     return getNodeTag(node, true);
                 },
-        
+
                 childIterator: function(node) {
                     if (node.contentDocument)
                         return [node.contentDocument.documentElement];
-        
+
                     if (Firebug.showWhitespaceNodes)
                         return cloneArray(node.childNodes);
                     else {
@@ -1447,7 +1504,7 @@ FBL.ns(function() {
                     }
                 }
             });
-        
+
             Firebug.HTMLPanel.EmptyElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox emptyNodeBox $object|getHidden repIgnore", _repObject: "$object"},
@@ -1462,7 +1519,7 @@ FBL.ns(function() {
                         )
                     )
             });
-        
+
             Firebug.HTMLPanel.TextElement = domplate(Firebug.FireQuery.JQueryElement, {
                 tag:
                     DIV({'class': "nodeBox textNodeBox $object|getHidden repIgnore", _repObject: "$object"},
@@ -1482,7 +1539,7 @@ FBL.ns(function() {
                     )
             });
         }
-        
+
         Firebug.registerModule(Firebug.FireQuery);
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryExpression); // need to insert this before array rep (jQuery expression behaves like array since JQuery 1.3)
         Firebug.reps.splice(0, 0, Firebug.FireQuery.JQueryElement); // need to insert this before old Element rep
