@@ -46,11 +46,11 @@
                     var oHead = document.getElementsByTagName('HEAD').item(0);
                     var oScript= document.createElement("script");
                     oScript.type = "text/javascript";
-                    oScript.src="http://ajax.googleapis.com/ajax/libs/jquery/"+v+"/jquery.js";
+                    oScript.src="http://code.jquery.com/jquery-"+v+".js";
                     oHead.appendChild(oScript);
                     window.selectedVersion = v;
                 } catch (e) {
-                    console.log("Unable to load jQuery version %o using Google AJAX library: %o", v, e.message);
+                    console.log("Unable to load jQuery %o from code.jquery.com: %o", v, e.message);
                 }
             }
         })();
@@ -70,30 +70,37 @@
 </head>
 <body>
     <div class="controls">
-        <div class="version-switcher">Test with jQuery: 
-            <a href="?v=1.2.3">1.2.3</a> | 
-            <a href="?v=1.2.6">1.2.6</a> | 
-            <a href="?v=1.3.0">1.3.0</a> | 
-            <a href="?v=1.3.1">1.3.1</a> | 
-            <a href="?v=1.3.2">1.3.2</a> | 
-            <a href="?v=1.4.0">1.4.0</a> | 
-            <a href="?v=1.4.1">1.4.1</a> | 
-            <a href="?v=1.4.2">1.4.2</a> | 
-            <a href="?v=1.4.3">1.4.3</a> | 
-            <a href="?v=1.4.4">1.4.4</a> | 
-            <a href="?v=1.5.0">1.5.0</a> | 
-            <a href="?v=1.5.1">1.5.1</a> | 
-            <a href="?v=1.5.2">1.5.2</a> | 
-            <a href="?v=1.6.0">1.6.0</a> | 
+        <div class="version-switcher">Test with jQuery:
+            <a href="?v=1.2.3">1.2.3</a> |
+            <a href="?v=1.2.6">1.2.6</a> |
+            <a href="?v=1.3">1.3.0</a> |
+            <a href="?v=1.3.1">1.3.1</a> |
+            <a href="?v=1.3.2">1.3.2</a> |
+            <a href="?v=1.4">1.4.0</a> |
+            <a href="?v=1.4.1">1.4.1</a> |
+            <a href="?v=1.4.2">1.4.2</a> |
+            <a href="?v=1.4.3">1.4.3</a> |
+            <a href="?v=1.4.4">1.4.4</a> |
+            <a href="?v=1.5">1.5.0</a> |
+            <a href="?v=1.5.1">1.5.1</a> |
+            <a href="?v=1.5.2">1.5.2</a> |
+            <a href="?v=1.6">1.6.0</a> |
             <a href="?v=1.6.1">1.6.1</a> |
             <a href="?v=1.6.2">1.6.2</a> |
             <a href="?v=1.6.3">1.6.3</a> |
             <a href="?v=1.6.4">1.6.4</a> |
-            <a href="?v=1.7.0">1.7.0</a> |
+            <a href="?v=1.7">1.7.0</a> |
             <a href="?v=1.7.1">1.7.1</a> |
             <a href="?v=1.7.2">1.7.2</a> |
             <a href="?v=1.8.0">1.8.0</a> |
-            <a href="?v=1.8.1">1.8.1</a> or
+            <a href="?v=1.8.1">1.8.1</a> |
+            <a href="?v=1.8.2">1.8.2</a> |
+            <a href="?v=1.8.3">1.8.3</a> |
+            <a href="?v=1.9.0">1.9.0</a> |
+            <a href="?v=1.9.1">1.9.1</a> |
+            <a href="?v=1.10.0">1.10.0</a> |
+            <a href="?v=1.10.1">1.10.1</a> |
+            <a href="?v=1.10.2">1.10.2</a> or
             <a href="?v=none">none</a>
             <script type="text/javascript" charset="utf-8">
                 if (!window.selectedVersion) {
@@ -127,7 +134,7 @@
             <ul class="long-list">
                 <li>01</li><li>02</li><li>03</li><li>04</li><li>05</li><li>06</li><li>07</li><li>08</li><li>09</li><li>10</li>
                 <li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li>
-                <li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li>            
+                <li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li>
             </ul>
             <div style="clear:both"></div>
         </div>
@@ -137,7 +144,7 @@
             $('h1').append(' - jQuery ' + $.fn.jquery);
             console.warn('Simon says: "Do some exercise with jQuery v' + $.fn.jquery + '"');
             $('body').data('Firebug', 'makes it possible').data('jQuery', "is pretty damn cool!").data('FireQuery', 'is just a cherry');
-            
+
             $('h1').bind('click', function() {
                 $(this).css('background-color', '#fee');
             });
@@ -163,7 +170,7 @@
                 $('body').data('counter', counter++);
             }, 1000);
         }
-        
+
         function onReady() {
             try {
                 var version = $.fn.jquery;
@@ -175,7 +182,7 @@
                 exercise();
             }
         }
-        
+
         // we are loading jQuery by dynamic script tag insertion, wait here for async load
         var interval = setInterval(function() {
             if (typeof $ != "undefined") {
@@ -185,5 +192,5 @@
         }, 200);
 
     </script>
-</body>                                                                 
+</body>
 </html>
