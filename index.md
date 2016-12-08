@@ -6,8 +6,7 @@ product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
 product_icon: /shared/img/icons/firequery-256.png
 download: https://addons.mozilla.org/firefox/addon/firequery
-downloadtitle: Install v1.4.1
-downloadsubtitle: and become jQuery Jedi
+downloadtitle: Install via Mozilla Addons
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after install</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
 repo: http://github.com/binaryage/firequery
 advert: After installation and Firefox restart you can visit the <a href="/test/index.html">FireQuery test page</a>
@@ -15,11 +14,6 @@ meta_title: FireQuery is a Firebug extension for jQuery development
 meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development,antonin hildebrand
 meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
 meta_image: /shared/img/icons/firequery-256.png
-facebook: 1
-retweet: 1
-buzz: 1
-fbsdk: 1
-flattr: "http://firequery.binaryage.com"
 build_tabs: 1
 ogmeta: {
     site_name: "BinaryAge website",
@@ -33,6 +27,13 @@ ogmeta: {
 ---
 
 {% contentfor product-buttons %}
+<div class="product-buttons">
+  <div class="button-container">
+    <a href="{{page.download}}" id="o-download-button" class="button product-button-download">
+      <span><i class="fa fa-download fa-lg"></i>{{page.downloadtitle}}</span>
+    </a>
+  </div>
+</div>
 {% endcontentfor %}
 
 ## Features
