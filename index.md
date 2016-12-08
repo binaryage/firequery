@@ -1,11 +1,11 @@
 ---
-layout: product
+layout: product-home
 title: FireQuery is a Firebug extension for jQuery development
 product: firequery
 product_title: FireQuery
 product_subtitle: a Firebug extension for jQuery development
+product_icon: /shared/img/icons/firequery-256.png
 download: https://addons.mozilla.org/firefox/addon/firequery
-#download: https://addons.mozilla.org/firefox/addons/versions/12632
 downloadtitle: Install v1.4.1
 downloadsubtitle: and become jQuery Jedi
 buttons: <a href="/test" class="button product-button-thumbup"><div><div><div class="trial-note">after install</div>Visit Test Page<div class="product-specs">to check that your installation works correctly</div></div></div></a>
@@ -14,12 +14,13 @@ advert: After installation and Firefox restart you can visit the <a href="/test/
 meta_title: FireQuery is a Firebug extension for jQuery development
 meta_keywords: jquery,firebug,firefox,addon,firequery,lint,javascript,binaryage,productivity,software,web,development,antonin hildebrand
 meta_description: jQuery expressions are intelligently presented in Firebug Console and DOM inspector
-meta_image: http://www.binaryage.com/shared/img/icons/firequery-256.png
+meta_image: /shared/img/icons/firequery-256.png
 facebook: 1
 retweet: 1
 buzz: 1
 fbsdk: 1
 flattr: "http://firequery.binaryage.com"
+build_tabs: 1
 ogmeta: {
     site_name: "BinaryAge website",
     description: "FireQuery is a Firebug extension for jQuery development",
@@ -29,14 +30,14 @@ ogmeta: {
     url: "http://firequery.binaryage.com",
     image: "http://www.binaryage.com/shared/img/icons/firequery-256.png"
 }
-shots: [{
-    title: "FireQuery in action! Please note inlined datas in the HTML Panel",
-    thumb: "/shared/img/firequery-mainshot.png",
-    full: "/shared/img/firequery-mainshot-full.png"
-}]
 ---
 
+{% contentfor product-buttons %}
+{% endcontentfor %}
+
 ## Features
+
+<a href="/shared/img/firequery-mainshot-full.png"><img src="/shared/img/firequery-mainshot-full.png"></a>
 
 ### FireQuery is a Firefox extension integrated with Firebug
 
