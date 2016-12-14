@@ -1,5 +1,5 @@
 ---
-layout: product-home
+layout: product
 title: FireQuery is a Firebug extension for jQuery development
 product: firequery
 product_title: FireQuery
