@@ -96,7 +96,7 @@ If you want to install the addon from the latest source, you need to build it. I
 
 #### Build steps:
 
-    git clone git://github.com/binaryage/firequery.git
+    git clone https://github.com/binaryage/firequery.git
     cd firequery
     rake
 
