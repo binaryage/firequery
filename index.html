@@ -5,9 +5,9 @@
     <link rel="canonical" href="https://firequery.binaryage.com/"/>
     <link rel="shortcut icon" href="https://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
     <link rel="icon" href="https://static.binaryage.com/5604bda0_favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://static.binaryage.com/493de12c_shared_css_site.css" type="text/css"/>
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>WebFont.load({google:{families:["Play:400,700:latin"]}})</script>
-    <link rel="stylesheet" href="https://static.binaryage.com/26f8d85b_shared_css_site.css" type="text/css"/>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="google-site-verification" content="N_xzdr6ymSUQFhAEvQg7f-sp1JAeJCdW2JuaRg-da0w"/>
@@ -24,9 +24,9 @@
     <meta property="og:url" content="http://firequery.binaryage.com"/>
     <meta property="og:image" content="http://www.binaryage.com/shared/img/icons/firequery-256.png"/>
     <link href="https://feeds.feedburner.com/binaryage-blog" type="application/atom+xml" rel="alternate" title="Ideas from BinaryAge"/>
-    <script>function defer$(e){if(window.jQuery){e()}else{setTimeout(function(){defer$(e)},50)}}</script>
+    <script>function defer$(e){window.jQuery?e():setTimeout(function(){defer$(e)},50)}</script>
   </head>
-  <body id="page-firequery-index">
+  <body id="page-firequery-index" class="site-firequery">
     <div id="header">
       <div class="container">
         <div class="row">
@@ -61,7 +61,6 @@
             </div>
             <div class="relativize">
               <ul class="header-menu menu-selected-products">
-                <li class="menu-item-store"><a href="https://sites.fastspring.com/binaryage/product/store"><i class="fa fa-shopping-cart"></i><span>store</span></a></li>
                 <li class="menu-item-products"><a href="//www.binaryage.com"><i class="fa fa-star"></i><span>products</span></a></li>
                 <li class="menu-item-blog"><a href="//blog.binaryage.com"><i class="fa fa-bullhorn"></i><span>blog</span></a></li>
                 <li class="menu-item-support"><a href="//discuss.binaryage.com"><i class="fa fa-comments"></i><span>support</span></a></li>
@@ -109,9 +108,9 @@
       </div>
       <div id="firequery-content" class="product-content" style="display:none">
         <div class="container">
-          <h2>Features</h2>
+          <h2 id="features">Features</h2>
           <p><a href="https://static.binaryage.com/3a1f7407_shared_img_firequery-mainshot-full.png"><img src="https://static.binaryage.com/3a1f7407_shared_img_firequery-mainshot-full.png"/></a></p>
-          <h3>FireQuery is a Firefox extension integrated with Firebug</h3>
+          <h3 id="firequery-is-a-firefox-extension-integrated-with-firebug">FireQuery is a Firefox extension integrated with Firebug</h3>
           <ul>
             <li>jQuery expressions are intelligently presented in Firebug Console and DOM inspector</li>
             <li>attached jQuery data are first class citizens</li>
@@ -119,12 +118,12 @@
             <li>jQuerify: enables you to inject jQuery into any web page</li>
             <li><a href="http://github.com/jamespadolsey/jQuery-Lint">jQuery Lint</a>: enables you to automatically inject jQuery Lint into the page as it is loaded (great for ad-hoc code validation)</li>
           </ul>
-          <h3>Compatibility</h3>
-          <p>Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I'm unable to test all possible combinations.</p>
+          <h3 id="compatibility">Compatibility</h3>
+          <p>Both Firefox and Firebug are moving targets. Please make sure you use compatible versions. I’m unable to test all possible combinations.</p>
           <ul style="margin-bottom: 0px !important">
             <li><b>v1.3</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9, 1.10.3 (Firefox 3.0 - 18.0)</li>
           </ul>
-          <p><a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions &darr;</a></p>
+          <p><a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions ↓</a></p>
           <ul class="older-compatibility" style="display:none">
             <li><b>v1.2</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 13.0)</li>
             <li><b>v1.1</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 11.0)</li>
@@ -139,72 +138,80 @@
             <li><b>v0.3</b> works with official Firebug 1.3 and official Firebug 1.4 (Firefox 2.0 - 3.5)</li>
             <li><b>v0.2</b> works with beta Firebug 1.4 (Firefox 3.0.x or Firefox 3.5)</li>
           </ul>
-          <h2>Screencast</h2>
-          <h3>Intro ScreenCast by <a href="http://thechangelog.com/post/383855879/firequery-jquery-love-for-firebug"><strong>the Changelog</strong></a>, which brings fresh news about open-source.</h3>
-  <object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0' width='100%' height="600"><param name='movie' value='http://screenr.com/Content/assets/screenr_1116090935.swf'/></param><param name='flashvars' value='i=46448'/></param><param name='allowFullScreen' value='true'/></param><embed src='http://screenr.com/Content/assets/screenr_1116090935.swf' flashvars='i=46448' allowFullScreen='true' width='100%' height="600" pluginspage='http://www.macromedia.com/go/getflashplayer'/></embed></object>
-  <div style="position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;">the screencast was produced by <a href="http://wynnnetherland.com/">Wynn Netherland</a>, thanks!</div>
-  <p><br style="clear:both"/></p>
-  <h2>Installation</h2>
-  <h3><strong><a href="https://addons.mozilla.org/en-US/firefox/addon/12632">Install the addon</a></strong> from addons.mozilla.org.</h3>
-  <p>After you restart Firefox, you should visit <a href="https://static.binaryage.com/4502da85_test_index.html">FireQuery Test Page</a> to make sure all is working correctly.</p>
-  <hr/>
-  <h3>How to build FireQuery from source</h3>
-  <p>If you want to install the addon from the latest source, you need to build it. It should be simple, but make sure you have these tools in your path:</p>
-  <ul>
-    <li>git</li>
-    <li>zip</li>
-    <li>ruby and rake</li>
-  </ul>
-  <h4>Build steps:</h4>
-  <pre><code>git clone git://github.com/binaryage/firequery.git
+          <h2 id="screencast">Screencast</h2>
+          <h3 id="intro-screencast-by-the-changelog-which-brings-fresh-news-about-open-source">Intro ScreenCast by <a href="http://thechangelog.com/post/383855879/firequery-jquery-love-for-firebug"><strong>the Changelog</strong></a>, which brings fresh news about open-source.</h3>
+          <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0" width="100%" height="600"><param name="movie" value="http://screenr.com/Content/assets/screenr_1116090935.swf"/>&lt;/param&gt;<param name="flashvars" value="i=46448"/>&lt;/param&gt;<param name="allowFullScreen" value="true"/>&lt;/param&gt;<embed src="http://screenr.com/Content/assets/screenr_1116090935.swf" flashvars="i=46448" allowfullscreen="true" width="100%" height="600" pluginspage="http://www.macromedia.com/go/getflashplayer"/>&lt;/embed&gt;</object>
+          <div style="position:relative; top: -2px; float:right; font-size:11px;font-weight:bold;">the screencast was produced by <a href="http://wynnnetherland.com/">Wynn Netherland</a>, thanks!</div>
+          <p><br style="clear:both"/></p>
+          <h2 id="installation">Installation</h2>
+          <h3 id="install-the-addon-from-addonsmozillaorg"><strong><a href="https://addons.mozilla.org/en-US/firefox/addon/12632">Install the addon</a></strong> from addons.mozilla.org.</h3>
+          <p>After you restart Firefox, you should visit <a href="https://static.binaryage.com/4502da85_test_index.html">FireQuery Test Page</a> to make sure all is working correctly.</p>
+          <hr/>
+          <h3 id="how-to-build-firequery-from-source">How to build FireQuery from source</h3>
+          <p>If you want to install the addon from the latest source, you need to build it. It should be simple, but make sure you have these tools in your path:</p>
+          <ul>
+            <li>git</li>
+            <li>zip</li>
+            <li>ruby and rake</li>
+          </ul>
+          <h4 id="build-steps">Build steps:</h4>
+          <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/binaryage/firequery.git
 cd firequery
 rake
-</code></pre>
-  <p>After that your XPI should be available in <code>build/firequery-X.Y.xpi</code>.</p>
-  <p>You should now be able to install the XPI file in Firefox: <code>File -&gt; Open File</code> ... and browse for <code>firequery-X.Y.xpi</code>.</p>
-  <h3>Security Note</h3>
-  <p><strong><span style="color: #a00">This extension may be insecure!</span></strong></p>
-  <p>So please don't browse porn sites with this enabled. I still don't fully understand the Firefox extension security model. The reality is that I interact with naked HTML page from privileged code which may be insecure.</p>
-  <p>A good solution is to have dedicated <a href="http://support.mozilla.com/en-US/kb/Profiles">Firefox profile</a> for development and use it only for safe sites.</p>
-  <h2>FAQ</h2>
-  <h4>How can I specify my own jQuery when pressing jQuerify button?</h4>
-  <blockquote><p>You can specify your own URL in <code>about:config</code> for the key <code>extensions.firebug.firequery.jQueryURL</code>.<br/>For example you can use Google's jQuery urls <a href="http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery">http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery</a></p></blockquote>
-  <h4>How can I show internal jQuery data (e.g. 'events')?</h4>
-  <blockquote><p>Since jQuery 1.7.1 data() function does not return internal jQuery data structures. You may switch FireQuery into original behavior using this option:</p></blockquote>
-  <p><a target="_blank" href="https://static.binaryage.com/ad09be68_img_firequery-internal-data.png"><img src="https://static.binaryage.com/ad09be68_img_firequery-internal-data.png" width="600"/></a></p>
-  <h4>How can I use jQuery Lint with FireQuery?</h4>
-  <p><a target="_blank" href="https://static.binaryage.com/371f776f_img_firequery-with-lint.png"><img src="https://static.binaryage.com/371f776f_img_firequery-with-lint.png" width="600"/></a></p>
-  <h4>How can I specify my own jQuery Lint version?</h4>
-  <blockquote><p>You can specify your own URL in <code>about:config</code> for the key <code>extensions.firebug.firequery.jQueryLintURL</code>.</p></blockquote>
-  <h4>When I update values via $.data() I don't see changes in HTML panel. What's wrong?</h4>
-  <blockquote><p>You have to enable Console panel for this feature to work</p></blockquote>
-  <h2>Changelog</h2>
-  <div class="changelogx"></div>
-  <script type="text/javascript" charset="utf-8">$(function(){$(".changelogx").load("changelog.html?x="+(Math.random()+"").substring(2)+" #page")})</script>
-</div>
-</div>
-</div>
-<div id="footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8">
+</code></pre></div></div>
+          <p>After that your XPI should be available in <code class="language-plaintext highlighter-rouge">build/firequery-X.Y.xpi</code>.</p>
+          <p>You should now be able to install the XPI file in Firefox: <code class="language-plaintext highlighter-rouge">File -&gt; Open File</code> … and browse for <code class="language-plaintext highlighter-rouge">firequery-X.Y.xpi</code>.</p>
+          <h3 id="security-note">Security Note</h3>
+          <p><strong><span style="color: #a00">This extension may be insecure!</span></strong></p>
+          <p>So please don’t browse porn sites with this enabled. I still don’t fully understand the Firefox extension security model. The reality is that I interact with naked HTML page from privileged code which may be insecure.</p>
+          <p>A good solution is to have dedicated <a href="http://support.mozilla.com/en-US/kb/Profiles">Firefox profile</a> for development and use it only for safe sites.</p>
+          <h2 id="faq">FAQ</h2>
+          <h4 id="how-can-i-specify-my-own-jquery-when-pressing-jquerify-button">How can I specify my own jQuery when pressing jQuerify button?</h4>
+          <blockquote>
+            <p>You can specify your own URL in <code class="language-plaintext highlighter-rouge">about:config</code> for the key <code class="language-plaintext highlighter-rouge">extensions.firebug.firequery.jQueryURL</code>.<br/>For example you can use Google’s jQuery urls <a href="http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery">http://code.google.com/apis/ajaxlibs/documentation/index.html#jquery</a></p>
+          </blockquote>
+          <h4 id="how-can-i-show-internal-jquery-data-eg-events">How can I show internal jQuery data (e.g. ‘events’)?</h4>
+          <blockquote>
+            <p>Since jQuery 1.7.1 data() function does not return internal jQuery data structures. You may switch FireQuery into original behavior using this option:</p>
+          </blockquote>
+          <p><a target="_blank" href="https://static.binaryage.com/ad09be68_img_firequery-internal-data.png"><img src="https://static.binaryage.com/ad09be68_img_firequery-internal-data.png" width="600"/></a></p>
+          <h4 id="how-can-i-use-jquery-lint-with-firequery">How can I use jQuery Lint with FireQuery?</h4>
+          <p><a target="_blank" href="https://static.binaryage.com/371f776f_img_firequery-with-lint.png"><img src="https://static.binaryage.com/371f776f_img_firequery-with-lint.png" width="600"/></a></p>
+          <h4 id="how-can-i-specify-my-own-jquery-lint-version">How can I specify my own jQuery Lint version?</h4>
+          <blockquote>
+            <p>You can specify your own URL in <code class="language-plaintext highlighter-rouge">about:config</code> for the key <code class="language-plaintext highlighter-rouge">extensions.firebug.firequery.jQueryLintURL</code>.</p>
+          </blockquote>
+          <h4 id="when-i-update-values-via-data-i-dont-see-changes-in-html-panel-whats-wrong">When I update values via $.data() I don’t see changes in HTML panel. What’s wrong?</h4>
+          <blockquote>
+            <p>You have to enable Console panel for this feature to work</p>
+          </blockquote>
+          <h2 id="changelog">Changelog</h2>
+          <div class="changelogx"></div>
+          <script type="text/javascript" charset="utf-8">$(function(){$(".changelogx").load("changelog.html?x="+(Math.random()+"").substring(2)+" #page")})</script>
+        </div>
       </div>
-      <div class="col-md-4">
-        <div class="footer-box-right">
-          <div class="footer-copyright">
-            <div class="footer-license">
-              <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0"><img title="the website license" alt="Creative Commons License" style="border-width:0" src="https://static.binaryage.com/69a4ba35_shared_img_byccnd.png"/></a>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+          </div>
+          <div class="col-md-4">
+            <div class="footer-box-right">
+              <div class="footer-copyright">
+                <div class="footer-license">
+                  <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0"><img title="the website license" alt="Creative Commons License" style="border-width:0" src="https://static.binaryage.com/69a4ba35_shared_img_byccnd.png"/></a>
+                </div>
+                <a href="https://www.binaryage.com/about">BinaryAge</a>
+              </div>
             </div>
-            <a href="https://www.binaryage.com/about">BinaryAge</a>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<script src="https://static.binaryage.com/0518c6ed_shared_js_code.js"></script>
-<script type="text/javascript">window["ga"]=function(){}</script>
-<script>window["ga"]=undefined;(function(e,n,a,t,i,o,r){e["GoogleAnalyticsObject"]=i;e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},e[i].l=1*new Date;o=n.createElement(a),r=n.getElementsByTagName(a)[0];o.async=1;o.src=t;r.parentNode.insertBefore(o,r)})(window,document,"script","//www.google-analytics.com/analytics.js","ga");ga("create","UA-8404259-1","auto",{allowLinker:true});ga("send","pageview");ga("require","linker");ga("linker:autoLink",["fastspring.com"],true)</script>
-<script type="text/javascript" charset="utf-8">defer$(function(){$(function(){setTimeout(function(){var i=location.hash.substring(1);if(i.substring(0,2)=="o-"){$("#"+i).trigger("click")}},500)})})</script>
-</body>
+    <script src="https://static.binaryage.com/bb6250cd_shared_js_code.js"></script>
+    <script type="text/javascript">window.ga=function(){}</script>
+    <script>window.ga=undefined,function(e,n,a,t,i,o,c){e.GoogleAnalyticsObject=i,e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},e[i].l=1*new Date,o=n.createElement(a),c=n.getElementsByTagName(a)[0],o.async=1,o.src=t,c.parentNode.insertBefore(o,c)}(window,document,"script","//www.google-analytics.com/analytics.js","ga"),ga("create","UA-8404259-1","auto",{allowLinker:!0}),ga("send","pageview"),ga("require","linker"),ga("linker:autoLink",["fastspring.com"],!0)</script>
+    <script type="text/javascript" charset="utf-8">defer$(function(){$(function(){setTimeout(function(){var i=location.hash.substring(1);"o-"==i.substring(0,2)&&$("#"+i).trigger("click")},500)})})</script>
+  </body>
 </html>
