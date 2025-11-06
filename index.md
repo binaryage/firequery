@@ -54,7 +54,7 @@ Both Firefox and Firebug are moving targets. Please make sure you use compatible
 <ul style="margin-bottom: 0px !important">
     <li><b>v1.3</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9, 1.10.3 (Firefox 3.0 - 18.0)</li>
 </ul>
-<a style="margin-top: 0px !important" href="javascript:$('.older-compatibility').toggle(); $(this).hide()">show compatibility of older versions &darr;</a>
+<a style="margin-top: 0px !important" href="javascript:defer$(function(){$('.older-compatibility').toggle(); $(this).hide()})">show compatibility of older versions &darr;</a>
 <ul class="older-compatibility" style="display:none">
 <li><b>v1.2</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 13.0)</li>
 <li><b>v1.1</b> works with official Firebug 1.3.3, 1.4.5, 1.5.4, 1.6, 1.7, 1.8, 1.9 (Firefox 3.0 - 11.0)</li>
@@ -136,7 +136,7 @@ A good solution is to have dedicated [Firefox profile](http://support.mozilla.co
 <div class="changelogx"></div>
 
 <script type="text/javascript" charset="utf-8">
-    $(function() {
+    defer$(function() {
         $('.changelogx').load('changelog.html?x='+((Math.random()+"").substring(2))+' #page');
     });
 </script>
