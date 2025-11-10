@@ -1,0 +1,45 @@
+#about {
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 3em;
+  }
+}
+
+#people {
+  margin-bottom: 20px;
+
+  h3 {
+    font-size: 2em;
+    margin-top: 40px;
+  }
+}
+
+.people-text {
+  margin-top: 134px;
+}
+
+.person {
+  text-align: center;
+
+  .photo {
+    margin: auto;
+    height: 256px;
+    display: block;
+  }
+
+  .name {
+    font-size: 18px;
+    display: block;
+  }
+
+  .role {
+    display: block;
+    color: var(--color-gray-medium);  /* #999 */
+  }
+
+  .contact {
+    display: block;
+    margin-top: 10px;
+  }
+}

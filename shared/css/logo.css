@@ -1,0 +1,60 @@
+/* Logo colors now in tokens.css:
+   --color-logo-badge: #686d76
+   --color-logo-orange: #f9a538
+   --color-white: #fff
+*/
+
+.binaryage-logo {
+  position: absolute;  /* Expanded absolute() - needed for responsive design, header should not break with small width */
+  margin-top: 6px;
+  opacity: 0.2;
+  transition: opacity var(--transition-speed) ease 0s;  /* 0.5s tspeed */
+  transform: scale(0.6);
+  transform-origin: 0 0;
+
+  .logo {
+    width: 260px;
+    height: 56px;
+    fill-rule: evenodd;
+
+    .logo-badge {
+      stroke-width: 1;
+
+      .logo-badge-background {
+        fill: var(--color-logo-badge);  /* #686d76 */
+      }
+
+      .logo-letter-b {
+        stroke: var(--color-logo-badge-dark);  /* #383b40 darken(logo-badge-color, 20) */
+        fill: var(--color-white);  /* #fff */
+      }
+
+      .logo-letter-a {
+        stroke: var(--color-logo-badge-dark);  /* #383b40 darken(logo-badge-color, 20) */
+        fill: var(--color-logo-orange);  /* #f9a538 */
+      }
+    }
+
+    .logo-label {
+      stroke: none;
+
+      .logo-word-binary {
+        fill: var(--color-logo-badge);  /* #686d76 */
+      }
+
+      .logo-word-age {
+        fill: var(--color-logo-orange);  /* #f9a538 */
+      }
+    }
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+@media (width >= 620px) {  /* logo-menu-not-clashing */
+  .binaryage-logo {
+    margin-top: 32px;
+  }
+}

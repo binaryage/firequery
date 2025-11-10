@@ -1,0 +1,48 @@
+/* price-tag-background-color = #ce0000 */
+/* price-tag-color = #fff */
+/* price-tag-font-size = 18px */
+/* price-tag-dot-color = darken(price-tag-background-color, 20) = #680000 */
+
+.price-tag {
+  /* Expanded relative(left 30px) */
+  position: relative;
+  left: 30px;
+  padding: 2px 6px;
+  color: var(--color-white);  /* #fff price-tag-color */
+  font-size: 18px;  /* price-tag-font-size */
+  text-shadow: var(--color-price-tag-shadow) 0 1px 1px;  /* #350000 darken(price-tag-background-color, 30) */
+  background: var(--color-price-tag-bg);  /* #ce0000 price-tag-background-color */
+  border-left: 1px solid var(--color-price-tag-bg);  /* #ce0000 */
+  border-bottom: 1px solid var(--color-price-tag-bg);  /* #ce0000 */
+  border-radius: 4px;
+  box-shadow: 1px 1px 2px var(--color-gray-medium);  /* #999 */
+}
+
+.price-tag:after {
+  left: -4px;
+  top: 11px;
+  content: " ";
+  height: 5px;
+  width: 5px;
+  border-radius: 2px;
+  background-color: var(--color-price-tag-dot);  /* #680000 price-tag-dot-color */
+  position: absolute;
+  pointer-events: none;
+}
+
+.price-tag:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.price-tag:before {
+  border-right-color: var(--color-price-tag-bg);  /* #ce0000 price-tag-background-color */
+  border-width: 12px;
+  margin-top: -12px;
+}

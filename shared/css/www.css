@@ -1,0 +1,156 @@
+#page-www-index {
+  #welcome {  /* homepage does not need explanatory welcome icon */
+    display: none;
+  }
+}
+
+.page-icon {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 3em;
+  font-weight: bold;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--color-border);  /* #ccc techstack-icon-color */
+}
+
+.icon-box {
+  width: 400px;
+  margin: 40px auto;
+  display: block;
+  text-align: center;
+  text-decoration: none !important;
+
+  .face {
+    transition: all 0.2s ease;
+    margin: auto;
+    width: 260px;
+  }
+
+  .title {
+    display: inline-block;
+    font: bold 48px 'Play', arial, serif;  /* product-title-font */
+    color: var(--color-link);  /* #4f6393 link-color */
+    text-shadow: var(--color-white) 0 2px 1px;  /* #fff */
+    line-height: 42px;
+    text-decoration: none;
+  }
+
+  .subtitle {
+    position: relative;  /* Expanded relative() */
+    display: inline-block;
+    font: 18px 'Play', arial, serif;  /* product-subtitle-font */
+    color: var(--color-product-subtitle);  /* #303137 product-subtitle-color */
+    text-shadow: var(--color-white) 0 2px 1px;  /* #fff */
+    line-height: 24px;
+  }
+
+  .tech {
+    display: none;
+    text-shadow: var(--color-white) 0 2px 1px;  /* #fff */
+    margin-top: 6px;
+
+    i {
+      font-size: 24px;
+      color: var(--color-border);  /* #ccc techstack-icon-color */
+    }
+  }
+
+  &:hover .title {
+    color: var(--color-link-hover) !important;  /* #0f56b3 selection-color */
+  }
+
+  &:hover .face {
+    transform: scale(1.15);
+  }
+}
+
+.products-wrapper {
+  text-align: center;
+}
+
+.products {
+  display: inline-block;
+  margin: auto;
+
+  .product {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 170px;
+    height: 130px;
+    display: inline-block;
+    text-decoration: none !important;
+
+    .icon {
+      width: 80px;
+      height: 80px;
+      transition: all 0.2s ease;
+      display: block;
+      margin: auto;
+    }
+
+    .title {
+      transition: color var(--transition-speed) ease 0s;  /* 0.5s tspeed */
+      font: bold 20px 'Play', arial, serif;  /* www-product-font */
+      color: var(--color-link);  /* #4f6393 link-color */
+      text-shadow: var(--color-white) 0 2px 1px;  /* #fff */
+      line-height: 24px;
+      display: block;
+    }
+
+    .desc {
+      font: 10px 'Play', arial, serif;  /* product-info-font */
+      color: var(--color-product-subtitle);  /* #303137 product-subtitle-color */
+      text-shadow: var(--color-white) 0 2px 1px;  /* #fff */
+      line-height: 13px;
+      display: block;
+    }
+
+    .tech {
+      display: none;
+      text-shadow: var(--color-white) 0 2px 1px;  /* #fff */
+      margin-top: 6px;
+
+      i {
+        font-size: 18px;
+        color: var(--color-border);  /* #ccc techstack-icon-color */
+      }
+    }
+
+    &:hover .title {
+      color: var(--color-link-hover) !important;  /* #0f56b3 selection-color */
+    }
+
+    &:hover .icon {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.more-wrapper {
+  text-align: center;
+  text-shadow: var(--color-white) 0 2px 1px;  /* #fff */
+  font-size: 14px;
+
+  .more-box {
+    padding: 0 40px;
+    display: inline-block;
+
+    .generic-separator {
+      margin-bottom: 10px;
+    }
+
+    .more-extension {
+      padding: 2px 20px;
+
+      i {
+        padding-right: 6px;
+      }
+
+      a {
+        color: #999;  /* TODO: Add to tokens if this color is used elsewhere */
+      }
+    }
+  }
+}

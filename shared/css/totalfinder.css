@@ -1,0 +1,118 @@
+#page-totalfinder-index {
+  .product-icon {
+    top: -14px;
+  }
+
+  .product-button-buy {
+    i {
+      color: var(--color-product-red-desaturated);  /* #b34d4d desaturate(red, 60) */
+    }
+
+    &:hover {
+      i {
+        color: var(--color-product-red);  /* #f00 red */
+      }
+    }
+  }
+
+  .product-button-download {
+    i {
+      color: var(--color-button-accent);  /* #658bbb */
+    }
+
+    &:hover {
+      i {
+        color: var(--color-product-blue-saturated);  /* #2283fe saturate(#658bbb, 60) */
+      }
+    }
+  }
+
+  .product-button-buy {  /* Needed to have same dimensions as .product-button-download */
+    width: 254px;
+    overflow: hidden;
+  }
+
+  .product-button-download {
+    width: 254px;  /* We need some extra space for trial-note */
+    overflow: hidden;
+  }
+
+  .product-content {
+    margin-top: 20px;
+    position: relative;
+
+    .button {
+      /* Expanded minor-button() mixin */
+      margin: 0;
+      user-select: none;
+      display: inline-block;
+      text-decoration: none;
+      position: relative;
+      cursor: pointer;
+      font: bold 16px 'Play', arial, serif;
+      color: var(--color-button-text);  /* #8d9198 */
+      border: 1px solid var(--color-border);  /* #ccc */
+      padding: 2px 14px;
+      text-shadow: var(--color-white) 0 1px 1px;  /* #fff */
+      text-align: left;
+      border-radius: 8px;
+      min-height: 38px;
+      line-height: 30px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px var(--color-border);  /* #ccc */
+      background-color: var(--color-white);  /* #fff */
+      background: linear-gradient(to bottom, var(--color-white), var(--color-button-bg-gradient-end));  /* #fff to #f4f4f4 */
+      white-space: nowrap;
+      transition: all var(--transition-speed) ease 0s;  /* 0.5s tspeed */
+      margin-right: 20px;
+
+      &:hover {
+        background-color: var(--color-button-hover-bg-light);  /* #f3f3f3 */
+        background: linear-gradient(to bottom, var(--color-white), var(--color-button-hover-gradient-end));  /* #fff to #f8f8f8 */
+        border-color: var(--color-link-hover);  /* #0f56b3 selection-color */
+      }
+
+      i {
+        transition: all var(--transition-speed) ease 0s;  /* 0.5s tspeed */
+        margin-right: 10px;
+      }
+
+      .trial-note {
+        padding: 3px 29px;
+        background-color: var(--color-button-accent);  /* #658bbb */
+        text-shadow: none;
+        font-weight: normal;
+        color: var(--color-white);  /* #fff */
+        font-size: 9px;
+        line-height: 8px;
+        text-align: center;
+        position: absolute;
+        top: 11px;
+        right: -32px;
+        transform: rotate(45deg);
+      }
+
+      .price-note {
+        padding: 3px 29px;
+        background-color: var(--color-price-note-bg);  /* #a2393c */
+        text-shadow: none;
+        font-weight: normal;
+        color: var(--color-white);  /* #fff */
+        font-size: 9px;
+        line-height: 8px;
+        text-align: center;
+        position: absolute;
+        top: 11px;
+        right: -20px;
+        transform: rotate(45deg);
+      }
+    }
+
+    @media (width >= 1200px) {
+      .manual-button-box {
+        position: relative;
+        left: 30px;  /* highlights-shift */
+      }
+    }
+  }
+}

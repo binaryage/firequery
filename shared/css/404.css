@@ -1,0 +1,26 @@
+#main-404 {
+  .error-box {
+    margin: 80px 0;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+
+    .error404 {
+      font-weight: bold;
+      margin-top: 30px;
+      font-size: 28px;
+      line-height: 28px;
+      text-shadow: var(--color-white) 0 1px 1px;  /* #FFF */
+      text-align: center;
+    }
+
+    .desc404 {
+      margin-top: 10px;
+    }
+
+    .home404 {
+      font-weight: bold;
+      margin-top: 30px;
+    }
+  }
+}

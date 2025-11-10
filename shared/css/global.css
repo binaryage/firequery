@@ -1,0 +1,104 @@
+html {
+  height: 101%;
+}
+
+body {
+  background: var(--color-bg) url('/shared/img/background.png') repeat top left;  /* #f2f2f2 */
+  font: 12px 'Play', arial, serif;  /* basic-font */
+}
+
+a,
+a:visited,
+a:active {
+  color: var(--color-link);  /* #4f6393 link-color */
+  text-decoration: none;
+  transition: color var(--transition-speed) ease 0s;  /* 0.5s tspeed */
+}
+
+a:hover,
+a:focus {
+  color: var(--color-link-hover) !important;  /* #0f56b3 selection-color */
+}
+
+a.red,
+a.red:visited,
+a.red:active {
+  color: var(--color-red-link);  /* #c00 red-link-color */
+  text-decoration: none;
+  transition: color var(--transition-speed) ease 0s;  /* 0.5s tspeed */
+}
+
+a.red:hover,
+a.red:focus {
+  color: var(--color-red-link-hover) !important;  /* #f00 red-selection-color */
+}
+
+.container {  /* important for absolute positioned elements inside main area */
+  position: relative;  /* Expanded relative() */
+}
+
+li {
+  line-height: 18px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  margin-top: 12px;
+  font-size: 16px;
+}
+
+h4 {
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+h5, h6 {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+p {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+blockquote {
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.generic-separator {
+  height: 1px;
+  box-shadow: var(--shadow-separator);  /* rgba(255, 255, 255, 0.75) 0 1px 1px */
+  background-color: var(--color-border-light);  /* #ddd */
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid var(--color-border-light);  /* #ddd */
+}
+
+.highlighted-section {
+  animation: pusate 1s infinite alternate;
+}
+
+@keyframes pusate {
+  from {
+    box-shadow: 0 0 10px var(--highlight-start);  /* transparent anchorable-section-hightlight-start-color */
+  }
+
+  to {
+    box-shadow: 0 0 20px var(--highlight-end);  /* #ff0 yellow anchorable-section-hightlight-end-color */
+    background-color: var(--highlight-end);  /* #ff0 yellow anchorable-section-hightlight-end-color */
+  }
+}

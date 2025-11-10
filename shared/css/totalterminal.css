@@ -1,0 +1,13 @@
+#page-totalterminal-index {
+  .product-button-download {
+    i {
+      color: var(--color-button-accent);  /* #658bbb */
+    }
+
+    &:hover {
+      i {
+        color: var(--color-product-blue-saturated);  /* #2283fe saturate(#658bbb, 60) */
+      }
+    }
+  }
+}

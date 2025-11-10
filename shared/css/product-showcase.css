@@ -1,0 +1,192 @@
+/* natural-screenshot-width = 650px */
+/* natural-screenshot-height = 430px */
+
+/* highlights-shift = 30px */
+/* hovered-highlight-background-color = #f5f5f5 */
+/* active-highlight-background-color = #fff */
+
+.showcase {
+  padding-top: 20px;
+  padding-left: 3px; /* width in max layout should be 650px (showcase is 653px in max layout) */
+  clear: both;
+}
+
+.screenshot-box {
+  .screenshot {
+    width: 100%;
+    display: inline-block;
+  }
+
+  &.tf-shadow .screenshot {
+    box-shadow: 0 0 20px var(--color-gray-dark);  /* #666 */
+    border-radius: 4px;
+  }
+
+  &.no-shadow .screenshot {
+    box-shadow: none;
+  }
+
+  a {
+    img {
+      width: 100%;
+      display: block;
+    }
+  }
+
+  .zoom-icon {
+    cursor: pointer;
+    /* Expanded sprite(0, 0, 74px, 74px, "/shared/img/zoom.png") */
+    background: transparent url("/shared/img/zoom.png") no-repeat 0 0 !important;
+    width: 74px;
+    height: 74px;
+    display: block;
+    /* Expanded absolute(top 40% left 45%) */
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    transition: opacity 0.5s ease 0s;  /* tspeed */
+    opacity: 0;
+  }
+
+  &:hover .zoom-icon {
+    opacity: 1;
+  }
+}
+
+.screenshot-controls {
+  /* Expanded absolute(left 404px top 560px) */
+  position: absolute;
+  left: 404px;
+  top: 560px;
+
+  .navi {
+    a {
+      cursor: pointer;
+      display: block;
+      background-color: var(--color-border);  /* #ccc */
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      float: left;
+      margin: 2px;
+      outline: none;
+    }
+
+    a:hover {
+      opacity: 0.6;
+      background-color: var(--color-gray-medium);  /* #999 */
+    }
+
+    a.active {
+      background-color: var(--color-gray-dark);  /* #666 */
+    }
+  }
+}
+
+.highlights {
+  padding-top: 20px;
+}
+
+@media (width >= 1200px) {
+  .highlights {
+    /* Expanded relative(left highlights-shift) */
+    position: relative;
+    left: 30px;  /* highlights-shift */
+  }
+}
+
+@media (width <= 992px) {
+  .highlight {
+    margin-right: 25px;
+  }
+}
+
+.highlight {
+  width: 290px;
+  height: 75px;
+  position: relative;
+  border-radius: 3px;
+  padding: 5px;
+  float: left;
+
+  .highlight-icon {
+    float: left;
+    margin-right: 10px;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: var(--color-white);  /* #fff */
+    display: block;
+    transition: all 0.5s ease 0s;  /* tspeed */
+    border: 1px solid var(--color-border);  /* #ccc */
+    opacity: 0.7;
+  }
+
+  .highlight-icon div {
+    width: 60px;
+    height: 60px;
+  }
+
+  .highlight-content h3 {
+    margin: 2px 0;
+    font: bold 14px 'Play', arial, serif;  /* highlight-title-font */
+    color: var(--color-product-title);  /* #393d44 highlight-title-color */
+    text-shadow: var(--color-white) 0 1px 1px;  /* #fff */
+    line-height: 15px;
+  }
+
+  .highlight-content p {
+    margin: 0;
+    font: 12px 'Play', arial, serif;  /* highlight-text-font */
+    color: var(--color-button-text);  /* #8d9198 highlight-text-color */
+    text-shadow: var(--color-white) 0 1px 1px;  /* #fff */
+    line-height: 14px;
+  }
+}
+
+.highlight-selectable {
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-highlight-hover-bg);  /* #f5f5f5 hovered-highlight-background-color */
+  }
+
+  &.active {
+    background: var(--color-white) !important;  /* #fff active-highlight-background-color */
+  }
+
+  @media (width >= 992px) {
+    &:hover:after, :hover:before {
+      left: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &:hover:after {
+      border-left-color: var(--color-highlight-hover-bg);  /* #f5f5f5 hovered-highlight-background-color */
+      border-width: 36px;
+      margin-top: -36px;
+    }
+
+    &.active:after, .active:before {
+      left: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &.active:after {
+      border-left-color: var(--color-white) !important;  /* #fff active-highlight-background-color */
+      border-width: 36px;
+      margin-top: -36px;
+    }
+  }
+}

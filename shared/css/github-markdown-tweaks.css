@@ -1,0 +1,54 @@
+/* This styles are supposed to cancel some of our conflicting site-wide styles */
+
+.markdown-body.markdown-tweaks {
+  p {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  li {
+    line-height: inherit;
+  }
+
+  a {
+    color: var(--color-link);  /* #4F6393 link-color */
+  }
+
+  h2, h3, h4, h5, h6 {
+    padding-bottom: 0;
+    padding-top: 0;
+
+    &.highlighted-section {
+      border-color: transparent !important;
+    }
+  }
+
+  .octicon-link {
+    color: var(--color-text-dark);  /* #1b1f23 */
+    vertical-align: middle;
+    visibility: hidden;
+    opacity: 0.5;
+  }
+
+  .anchor {
+    float: none;
+    position: absolute;
+    left: 0;
+  }
+
+  .add-anchor {
+    position: relative;
+  }
+
+  .add-anchor:hover > .anchor {
+    text-decoration: none;
+  }
+
+  .add-anchor:hover > .anchor .octicon-link {
+    visibility: visible;
+  }
+
+  pre {
+    overflow: visible;
+  }
+}
